@@ -64,6 +64,14 @@ st.markdown(f"""
         object-fit: contain;
     }}
 
+    /* Linha divisória vertical entre as logos */
+    .header-logo-divider {{
+        width: 1px;
+        height: 40px;
+        background: rgba(56, 189, 248, 0.4);
+        margin: 0 10px;
+    }}
+
     .header-center-title {{
         text-align: center;
         flex-grow: 1;
@@ -323,7 +331,7 @@ st.markdown(f"""
 
         .header-logos-mobile {{
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             width: 100%;
             margin-bottom: 6px;
@@ -335,6 +343,11 @@ st.markdown(f"""
 
         .header-logo-right {{
             height: 32px !important;
+        }}
+
+        .header-logo-divider {{
+            height: 25px !important;
+            margin: 0 12px !important;
         }}
 
         .header-center-title {{
@@ -364,7 +377,7 @@ st.markdown(f"""
     </style>
 """, unsafe_allow_html=True)
 
-# 3. CABEÇALHO HTML NATIVO
+# 3. CABEÇALHO HTML NATIVO COM LINHA DIVISÓRIA
 src_logo_ps = f"data:image/png;base64,{logo_ps_b64}" if logo_ps_b64 else "logo.png"
 src_logo_inno = f"data:image/png;base64,{logo_inno_b64}" if logo_inno_b64 else "logo_innovation2026.png"
 
@@ -372,6 +385,7 @@ st.html(f"""
     <div class="header-container">
         <div class="header-logos-mobile">
             <img src="{src_logo_ps}" class="header-logo-left" alt="Platform Science">
+            <div class="header-logo-divider"></div>
             <img src="{src_logo_inno}" class="header-logo-right" alt="Innovation Day 2026">
         </div>
         <div class="header-center-title">
@@ -628,7 +642,7 @@ with aba1:
     
     st.html(table_html)
 
-    # CARD DA EQUIPE DO PROJETO - AGORA NO FINAL DA ABA 1
+    # CARD DA EQUIPE DO PROJETO - NO FINAL DA ABA 1
     st.html("""
         <div class="team-card">
             <div class="team-card-header">
@@ -815,7 +829,7 @@ with aba2:
             st.markdown("### ⚙️ Solução Proposta (Acesso Direto / GR)")
             st.success("""
             **Fluxo Direto de Atendimento:**
-            * Garantir **accesso direto às oficinas** ou direcionar solicitações pelo fluxo de **agendamento GR**.
+            * Garantir **acesso direto às oficinas** ou direcionar solicitações pelo fluxo de **agendamento GR**.
             * **Regra de Escalonamento:** O consultor só deve ser acionado **caso não haja retorno ou resolução** após a tentativa direta com a oficina/agendamento.
             """)
 
@@ -922,7 +936,7 @@ with aba2:
             st.markdown("### ⚙️ Solução Proposta (Atendimento Direto / GR)")
             st.success("""
             **Acesso Direto às Oficinas ou Agendamento GR:**
-            * Permitir o **accesso direto às oficinas** ou canalizar as solicitações via fluxo de **agendamento GR**.
+            * Permitir o **acesso direto às oficinas** ou canalizar as solicitações via fluxo de **agendamento GR**.
             * **Regra de Escalonamento:** O consultor só deverá ser acionado **caso não haja retorno ou posicionamento** por parte da oficina ou da equipe de agendamento.
             """)
 
