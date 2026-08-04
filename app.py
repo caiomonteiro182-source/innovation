@@ -20,7 +20,7 @@ def get_base64_of_bin_file(bin_file):
 
 img_base64 = get_base64_of_bin_file("estradas.jpeg")
 
-# 2. Injeção de CSS com Marca d'Água da imagem estradas.jpeg e Fundo Dark Mode
+# 2. Injeção de CSS com Marca d'Água da imagem estradas.jpeg, Fundo Dark Mode e Tabela Customizada
 st.markdown(f"""
     <style>
     /* Marca d'água no fundo da aplicação */
@@ -110,6 +110,83 @@ st.markdown(f"""
         opacity: 0.4;
     }}
 
+    /* ESTILO DA TABELA PERSONALIZADA (GLASSMORPHISM + BADGES) */
+    .table-container {{
+        width: 100%;
+        overflow-x: auto;
+        background: rgba(15, 23, 42, 0.7);
+        backdrop-filter: blur(8px);
+        border-radius: 12px;
+        border: 1px solid rgba(0, 153, 229, 0.3);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }}
+
+    .custom-table {{
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        font-size: 0.95rem;
+    }}
+
+    .custom-table th {{
+        background-color: rgba(30, 41, 59, 0.85);
+        color: #38BDF8;
+        padding: 14px 16px;
+        font-weight: 700;
+        border-bottom: 2px solid rgba(0, 153, 229, 0.4);
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+    }}
+
+    .custom-table td {{
+        padding: 14px 16px;
+        color: #E2E8F0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }}
+
+    .custom-table tbody tr:hover {{
+        background-color: rgba(0, 153, 229, 0.12);
+        transition: background-color 0.2s ease;
+    }}
+
+    /* BADGES DE IMPACTO */
+    .badge {{
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-weight: 700;
+        font-size: 0.8rem;
+        display: inline-block;
+        text-align: center;
+        letter-spacing: 0.3px;
+    }}
+
+    .badge-muito-alto {{
+        background-color: rgba(239, 68, 68, 0.2);
+        color: #EF4444;
+        border: 1px solid rgba(239, 68, 68, 0.5);
+    }}
+
+    .badge-alto {{
+        background-color: rgba(245, 158, 11, 0.2);
+        color: #F59E0B;
+        border: 1px solid rgba(245, 158, 11, 0.5);
+    }}
+
+    .badge-medio {{
+        background-color: rgba(16, 185, 129, 0.2);
+        color: #10B981;
+        border: 1px solid rgba(16, 185, 129, 0.5);
+    }}
+
+    .badge-baixo {{
+        background-color: rgba(100, 116, 139, 0.2);
+        color: #94A3B8;
+        border: 1px solid rgba(100, 116, 139, 0.5);
+    }}
+
     /* Ajustes responsivos para celular */
     @media (max-width: 768px) {{
         .block-container {{
@@ -146,11 +223,6 @@ st.markdown(f"""
         button[data-baseweb="tab"] {{
             font-size: 13px !important;
             padding: 6px 8px !important;
-        }}
-
-        [data-testid="stDataFrame"] {{
-            width: 100% !important;
-            overflow-x: auto !important;
         }}
     }}
     </style>
@@ -246,14 +318,16 @@ dados_acionamentos = [
 
 df = pd.DataFrame(dados_acionamentos)
 
-# Renomeando as colunas para exibição amigável
-df_exibicao = df.rename(columns={
-    "problema_atual": "Problema Atual",
-    "canal_atual": "Canal Atual",
-    "acionado_atual": "Quem é Acionado Hoje",
-    "destino_correto": "Destino Correto",
-    "impacto": "Nível de Impacto"
-})
+# Função para formatar o badge HTML do impacto
+def get_impact_badge(impacto):
+    if impacto == "Muito Alto":
+        return f'<span class="badge badge-muito-alto">Muito Alto</span>'
+    elif impacto == "Alto":
+        return f'<span class="badge badge-alto">Alto</span>'
+    elif impacto == "Médio":
+        return f'<span class="badge badge-medio">Médio</span>'
+    else:
+        return f'<span class="badge badge-baixo">Baixo</span>'
 
 # Link do Vídeo (Modo Preview)
 video_url = "https://drive.google.com/file/d/1CMn5TEiWUZ-Jzul_Z4das8bYXHNJk1q6/preview"
@@ -278,11 +352,35 @@ with aba1:
 
     st.markdown("---")
     st.markdown("### Resumo das Situações Atuais")
-    st.dataframe(
-        df_exibicao[["Problema Atual", "Canal Atual", "Quem é Acionado Hoje", "Destino Correto", "Nível de Impacto"]],
-        use_container_width=True,
-        hide_index=True
-    )
+
+    # GERAÇÃO DA TABELA HTML CUSTOMIZADA COM GLASSMORPHISM E BADGES
+    html_table = '<div class="table-container"><table class="custom-table">'
+    html_table += '''
+        <thead>
+            <tr>
+                <th>Problema Atual</th>
+                <th>Canal Atual</th>
+                <th>Quem é Acionado Hoje</th>
+                <th>Destino Correto</th>
+                <th>Nível de Impacto</th>
+            </tr>
+        </thead>
+        <tbody>
+    '''
+    for _, row in df.iterrows():
+        badge_html = get_impact_badge(row["impacto"])
+        html_table += f'''
+            <tr>
+                <td><strong>{row["problema_atual"]}</strong></td>
+                <td>{row["canal_atual"]}</td>
+                <td>{row["acionado_atual"]}</td>
+                <td>{row["destino_correto"]}</td>
+                <td>{badge_html}</td>
+            </tr>
+        '''
+    html_table += '</tbody></table></div>'
+    
+    st.markdown(html_table, unsafe_allow_html=True)
 
 # ABA 2: DETALHAMENTO - COMO RESOLVER?
 with aba2:
