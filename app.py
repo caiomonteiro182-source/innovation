@@ -378,17 +378,6 @@ with aba1:
         st.metric("Problemas Mapeados", len(df))
         st.metric("Acionamentos Indevidos ao Consultor", "7 de 9", delta="-77%", delta_color="inverse")
         
-        # EXIBIÇÃO DOS CANAIS EM TÓPICOS/BADGES
-        st.html("""
-            <div class="canal-card">
-                <div class="canal-title">Canais Pulverizados (3)</div>
-                <div class="canal-badges-container">
-                    <span class="canal-badge">• WhatsApp</span>
-                    <span class="canal-badge">• E-mail</span>
-                    <span class="canal-badge">• Slack</span>
-                </div>
-            </div>
-        """)
         
     with col_video:
         st.subheader("📺 Vídeo de Apresentação")
