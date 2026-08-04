@@ -561,7 +561,7 @@ with aba1:
     col_texto, col_video = st.columns([1, 1], vertical_alignment="top")
     
     with col_texto:
-        # ENCAPSULAMENTO GLASSMOPHISM DO BLOCO COMPLETO DO GRÁFICO 3D ESTILIZADO
+        # ENCAPSULAMENTO GLASSMOPHISM DO BLOCO COMPLETO DO GRÁFICO 3D / DONUT ESTILIZADO
         with st.container():
             st.html("""
                 <div class="glass-card-full">
@@ -585,13 +585,13 @@ with aba1:
             values = contagem_impacto.values.tolist()
             colors = [cores_mapa.get(l, '#0099E5') for l in labels]
             
-            # Efeito de deslocamento 3D das fatias (Pull out)
-            pull_effect = [0.06 if l in ['Muito Alto', 'Alto'] else 0.02 for l in labels]
+            # Efeito de profundidade/destaque 3D através de 'pull' diferenciado
+            pull_effect = [0.08 if l in ['Muito Alto', 'Alto'] else 0.03 for l in labels]
 
             fig_pizza_3d = go.Figure(data=[go.Pie(
                 labels=labels,
                 values=values,
-                hole=0.6,
+                hole=0.58,
                 pull=pull_effect,
                 direction='clockwise',
                 sort=False,
