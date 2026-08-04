@@ -391,12 +391,12 @@ dados_acionamentos = [
     {
         "id": 7,
         "problema_atual": "Trava no Cliente (Acionamento Oficina)",
-        "detalhamento": "Oficina pede apoio ao consultor por travamentos no cliente (ex: falta de equipamento ou frota ausente no local).",
-        "canal_atual": "WhatsApp",
+        "detalhamento": "A oficina pede apoio ao consultor por travamentos no cliente (ex: falta de equipamento, problema no aplicativo).",
+        "canal_atual": "WhatsApp / Campo",
         "acionado_atual": "Consultor",
-        "destino_correto": "Consultor (Válido)",
+        "destino_correto": "Ponto Focal / Filtro de Demandas",
         "impacto": "Alto",
-        "acao_recomendada": "Ficha de impeditivo rápida de campo para atuação pontual e comercial do consultor."
+        "acao_recomendada": "Designar uma pessoa para filtrar as demandas de campo e compreender a situação antes de escalar ao consultor."
     },
     {
         "id": 8,
@@ -745,4 +745,31 @@ with aba2:
             **Redirecionamento para o Setor de Inteligência:**
             * Acionar o **Setor de Inteligência (Robson)** para conduzir todas as tratativas e cobranças de documentos diretamente com a oficina.
             * Desonerar o consultor desse acompanhamento burocrático diário.
+            """)
+
+    # DESTRINCHAMENTO - CAUSA 7
+    elif selected_id == 7:
+        st.markdown("---")
+        st.markdown("## 🔍 Destrinchamento da Causa 7: Trava no Cliente (Acionamento Oficina)")
+        
+        col_7_1, col_7_2 = st.columns(2)
+        
+        with col_7_1:
+            st.markdown("### ⚠️ Como é feito hoje & Impacto")
+            st.error("""
+            **Como é feito hoje?**
+            * A oficina entra em contato buscando apoio quando identifica travamentos no cliente (ex: falta de equipamento, falhas no aplicativo).
+            * O técnico aciona **diretamente o consultor** para qualquer pendência ocorrida em campo.
+            """)
+            st.warning("""
+            **Impacto:**
+            * Gera **altas demandas e sobrecarga** frequente de chamados operacionais no consultor.
+            """)
+            
+        with col_7_2:
+            st.markdown("### ⚙️ Solução Proposta (Triagem / Ponto Focal)")
+            st.success("""
+            **Designação de Ponto Focal para Triagem:**
+            * Definição de **uma pessoa responsável por filtrar as demandas** e compreender a situação técnica/operacional.
+            * **Fluxo de Escalonamento:** Apenas casos que exijam atuação comercial ou negociação direta com a liderança do cliente serão repassados ao consultor.
             """)
