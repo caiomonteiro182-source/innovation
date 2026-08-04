@@ -137,7 +137,7 @@ st.markdown(f"""
         border-radius: 16px;
         padding: 20px 24px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        margin-top: 15px;
+        margin-top: 25px;
         margin-bottom: 25px;
         transition: all 0.3s ease-in-out;
     }}
@@ -615,7 +615,20 @@ with aba1:
             st.components.v1.iframe(video_url, height=330)
             st.html("</div>")
 
-    # CARD DA EQUIPE DO PROJETO COM OS NOVOS INTEGRANTES
+    st.markdown("---")
+    st.markdown("### Resumo das Situações Atuais")
+
+    # CONSTRUÇÃO DO HTML DA TABELA CUSTOMIZADA
+    rows_html = ""
+    for _, row in df.iterrows():
+        badge = get_impact_badge(row["impacto"])
+        rows_html += f"<tr><td><strong>{row['id']}. {row['problema_atual']}</strong></td><td>{row['canal_atual']}</td><td>{row['acionado_atual']}</td><td>{row['destino_correto']}</td><td>{badge}</td></tr>"
+
+    table_html = f"""<div class="table-container"><table class="custom-table"><thead><tr><th>Problema Atual</th><th>Canal Atual</th><th>Quem é Acionado Hoje</th><th>Destino Correto</th><th>Nível de Impacto</th></tr></thead><tbody>{rows_html}</tbody></table></div>"""
+    
+    st.html(table_html)
+
+    # CARD DA EQUIPE DO PROJETO - AGORA NO FINAL DA ABA 1
     st.html("""
         <div class="team-card">
             <div class="team-card-header">
@@ -656,19 +669,6 @@ with aba1:
             </div>
         </div>
     """)
-
-    st.markdown("---")
-    st.markdown("### Resumo das Situações Atuais")
-
-    # CONSTRUÇÃO DO HTML DA TABELA CUSTOMIZADA
-    rows_html = ""
-    for _, row in df.iterrows():
-        badge = get_impact_badge(row["impacto"])
-        rows_html += f"<tr><td><strong>{row['id']}. {row['problema_atual']}</strong></td><td>{row['canal_atual']}</td><td>{row['acionado_atual']}</td><td>{row['destino_correto']}</td><td>{badge}</td></tr>"
-
-    table_html = f"""<div class="table-container"><table class="custom-table"><thead><tr><th>Problema Atual</th><th>Canal Atual</th><th>Quem é Acionado Hoje</th><th>Destino Correto</th><th>Nível de Impacto</th></tr></thead><tbody>{rows_html}</tbody></table></div>"""
-    
-    st.html(table_html)
 
 # ABA 2: DETALHAMENTO - COMO RESOLVER?
 with aba2:
@@ -815,7 +815,7 @@ with aba2:
             st.markdown("### ⚙️ Solução Proposta (Acesso Direto / GR)")
             st.success("""
             **Fluxo Direto de Atendimento:**
-            * Garantir **acesso direto às oficinas** ou direcionar solicitações pelo fluxo de **agendamento GR**.
+            * Garantir **accesso direto às oficinas** ou direcionar solicitações pelo fluxo de **agendamento GR**.
             * **Regra de Escalonamento:** O consultor só deve ser acionado **caso não haja retorno ou resolução** após a tentativa direta com a oficina/agendamento.
             """)
 
@@ -922,7 +922,7 @@ with aba2:
             st.markdown("### ⚙️ Solução Proposta (Atendimento Direto / GR)")
             st.success("""
             **Acesso Direto às Oficinas ou Agendamento GR:**
-            * Permitir o **acesso direto às oficinas** ou canalizar as solicitações via fluxo de **agendamento GR**.
+            * Permitir o **accesso direto às oficinas** ou canalizar as solicitações via fluxo de **agendamento GR**.
             * **Regra de Escalonamento:** O consultor só deverá ser acionado **caso não haja retorno ou posicionamento** por parte da oficina ou da equipe de agendamento.
             """)
 
