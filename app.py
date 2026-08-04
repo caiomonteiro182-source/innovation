@@ -10,7 +10,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Função para converter a imagem local em Base64 e usar como background
+# Função para converter imagens locais em Base64
 def get_base64_of_bin_file(bin_file):
     try:
         with open(bin_file, 'rb') as f:
@@ -21,9 +21,10 @@ def get_base64_of_bin_file(bin_file):
 
 img_base64 = get_base64_of_bin_file("estradas.jpeg")
 
-# Converte as duas logos para Base64
+# Converte as logos e foto da equipe para Base64
 logo_ps_b64 = get_base64_of_bin_file("logo.png")
 logo_inno_b64 = get_base64_of_bin_file("logo_innovation2026.png")
+foto_equipe_b64 = get_base64_of_bin_file("foto_equipe.jpg") # Insira sua foto amanhã com esse nome
 
 # 2. Injeção de CSS com Marca d'Água, Dark Mode, Glassmorphism e Tabela Customizada
 st.markdown(f"""
@@ -146,7 +147,7 @@ st.markdown(f"""
         gap: 8px;
     }}
 
-    /* CARD EXCLUSIVO DA EQUIPE DE DESENVOLVIMENTO */
+    /* CARD EXCLUSIVO DA EQUIPE COM DESTAQUE EM FOTO */
     .team-card {{
         background: rgba(15, 23, 42, 0.85);
         backdrop-filter: blur(12px);
@@ -192,34 +193,55 @@ st.markdown(f"""
         font-weight: 700;
     }}
 
-    .team-grid {{
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 12px;
-    }}
-
-    .team-member-item {{
-        background: rgba(30, 41, 59, 0.7);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 10px;
-        padding: 10px 14px;
+    /* ÁREA DA FOTO DA EQUIPE */
+    .team-photo-container {{
+        width: 100%;
+        max-height: 420px;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        background: rgba(30, 41, 59, 0.4);
         display: flex;
-        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }}
 
-    .member-area {{
-        color: #94A3B8;
-        font-size: 0.75rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+    .team-photo {{
+        width: 100%;
+        height: 100%;
+        max-height: 420px;
+        object-fit: cover;
+        border-radius: 12px;
     }}
 
-    .member-name {{
+    /* CONTAINER E BADGES DOS NOMES DOS INTEGRANTES */
+    .team-members-tags-container {{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 16px;
+        padding: 4px;
+    }}
+
+    .member-tag {{
+        background: rgba(30, 41, 59, 0.85);
+        border: 1px solid rgba(56, 189, 248, 0.3);
         color: #F8FAFC;
-        font-size: 0.95rem;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.88rem;
         font-weight: 600;
-        margin-top: 2px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        backdrop-filter: blur(4px);
+    }}
+
+    .member-tag span {{
+        color: #38BDF8;
+        font-weight: 700;
     }}
 
     /* Estilização das Abas */
@@ -377,6 +399,10 @@ st.markdown(f"""
         button[data-baseweb="tab"] {{
             font-size: 12px !important;
             padding: 4px 6px !important;
+        }}
+
+        .team-photo-container {{
+            max-height: 260px;
         }}
     }}
     </style>
@@ -647,8 +673,21 @@ with aba1:
     
     st.html(table_html)
 
-    # CARD DA EQUIPE DO PROJETO - NO FINAL DA ABA 1
-    st.html("""
+    # CARD DA EQUIPE REESTRUTURADO PARA RECEBER A FOTO AMANHÃ
+    src_foto_equipe = f"data:image/jpeg;base64,{foto_equipe_b64}" if foto_equipe_b64 else ""
+
+    if src_foto_equipe:
+        foto_html = f'<img src="{src_foto_equipe}" class="team-photo" alt="Equipe do Projeto">'
+    else:
+        foto_html = '''
+            <div style="color: #94A3B8; text-align: center; padding: 40px 20px;">
+                <span style="font-size: 2rem;">📷</span><br>
+                <strong style="color: #E2E8F0;">Espaço Reservado para a Foto da Equipe</strong><br>
+                <small style="color: #64748B;">Adicione o arquivo 'foto_equipe.jpg' na pasta do projeto.</small>
+            </div>
+        '''
+
+    st.html(f"""
         <div class="team-card">
             <div class="team-card-header">
                 <div class="team-card-title">
@@ -656,35 +695,21 @@ with aba1:
                 </div>
                 <span class="team-leader-badge">Líder: Paulo Terra</span>
             </div>
-            <div class="team-grid">
-                <div class="team-member-item">
-                    <span class="member-area">Integrante</span>
-                    <span class="member-name">Fabio Silva</span>
-                </div>
-                <div class="team-member-item">
-                    <span class="member-area">Integrante</span>
-                    <span class="member-name">Lucas Ribeiro</span>
-                </div>
-                <div class="team-member-item">
-                    <span class="member-area">Integrante</span>
-                    <span class="member-name">Maria Eduarda Barbosa</span>
-                </div>
-                <div class="team-member-item">
-                    <span class="member-area">Integrante</span>
-                    <span class="member-name">Verusca Cristina</span>
-                </div>
-                <div class="team-member-item">
-                    <span class="member-area">Integrante</span>
-                    <span class="member-name">Karilene Esteves</span>
-                </div>
-                <div class="team-member-item">
-                    <span class="member-area">Integrante</span>
-                    <span class="member-name">Higor Souza</span>
-                </div>
-                <div class="team-member-item">
-                    <span class="member-area">Integrante</span>
-                    <span class="member-name">Caio Monteiro</span>
-                </div>
+            
+            <!-- ÁREA DA FOTO DA EQUIPE -->
+            <div class="team-photo-container">
+                {foto_html}
+            </div>
+
+            <!-- TAGS DOS INTEGRANTES (NOMES ELEGANTES) -->
+            <div class="team-members-tags-container">
+                <div class="member-tag"><span>•</span> Fabio Silva</div>
+                <div class="member-tag"><span>•</span> Lucas Ribeiro</div>
+                <div class="member-tag"><span>•</span> Maria Eduarda Barbosa</div>
+                <div class="member-tag"><span>•</span> Verusca Cristina</div>
+                <div class="member-tag"><span>•</span> Karilene Esteves</div>
+                <div class="member-tag"><span>•</span> Higor Souza</div>
+                <div class="member-tag"><span>•</span> Caio Monteiro</div>
             </div>
         </div>
     """)
