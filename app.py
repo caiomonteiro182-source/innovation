@@ -353,13 +353,9 @@ with aba1:
     with col_texto:
         st.subheader("Métricas do Processo Atual")
         
-        # Metric Principal
-        st.metric("Situações Mapeadas", len(df))
-        
-        # Mapeamento do número de ocorrências por Nível de Impacto
+        # 1. GRÁFICO DE PIZZA / ROSCA (NÍVEIS DE IMPACTO)
         contagem_impacto = df['impacto'].value_counts()
         
-        # Mapeamento de Cores para casar com os Badges da Tabela
         cores_mapa = {
             'Muito Alto': '#EF4444',
             'Alto': '#F59E0B',
@@ -371,7 +367,6 @@ with aba1:
         values = contagem_impacto.values.tolist()
         colors = [cores_mapa.get(l, '#0099E5') for l in labels]
 
-        # Gráfico de Pizza / Rosca Interativo
         fig_pizza = go.Figure(data=[go.Pie(
             labels=labels,
             values=values,
@@ -397,7 +392,7 @@ with aba1:
                 font=dict(color="#E2E8F0", size=12)
             ),
             margin=dict(t=35, b=25, l=10, r=10),
-            height=260,
+            height=250,
             paper_bgcolor='rgba(15, 23, 42, 0.65)',
             plot_bgcolor='rgba(0,0,0,0)',
             annotations=[dict(
@@ -407,6 +402,24 @@ with aba1:
         )
 
         st.plotly_chart(fig_pizza, use_container_width=True, config={'displayModeBar': False})
+        
+        # 2. BARRA DE PROGRESSO DO GARGALO OPERACIONAL
+        st.html("""
+            <div style="background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(6px); border: 1px solid rgba(0, 153, 229, 0.3); padding: 16px; border-radius: 10px; margin-top: 10px;">
+                <div style="color: #94A3B8; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+                    <span>Gargalo da Equipe de Consultores</span>
+                    <span style="color: #EF4444; font-weight: bold; background: rgba(239, 68, 68, 0.15); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(239, 68, 68, 0.4);">
+                        77.8% Desvio de Função
+                    </span>
+                </div>
+                <div style="width: 100%; background-color: rgba(255,255,255,0.08); border-radius: 6px; height: 12px; overflow: hidden; padding: 2px;">
+                    <div style="width: 77.8%; background: linear-gradient(90deg, #F59E0B 0%, #EF4444 100%); height: 100%; border-radius: 4px; box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);"></div>
+                </div>
+                <div style="color: #64748B; font-size: 0.78rem; margin-top: 8px;">
+                    *Indica que 7 de 9 acionamentos ao consultor deveriam ser resolvidos por outros canais/áreas.
+                </div>
+            </div>
+        """)
         
     with col_video:
         st.subheader("📺 Vídeo de Apresentação")
