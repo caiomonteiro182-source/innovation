@@ -123,6 +123,66 @@ st.markdown(f"""
         min-height: 100px;
     }}
 
+    /* ESTILIZAÇÃO MODERNA DO PLAYER DE VÍDEO (GLASSMORPHISM CARD) */
+    .video-card-container {{
+        background: rgba(15, 23, 42, 0.75);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(56, 189, 248, 0.35);
+        border-radius: 16px;
+        padding: 18px;
+        box-shadow: 0 12px 32px 0 rgba(0, 0, 0, 0.45);
+        transition: all 0.3s ease-in-out;
+    }}
+
+    .video-card-container:hover {{
+        border-color: rgba(56, 189, 248, 0.7);
+        box-shadow: 0 12px 40px 0 rgba(0, 153, 229, 0.25);
+    }}
+
+    .video-card-header {{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+    }}
+
+    .video-card-title {{
+        color: #FFFFFF;
+        font-size: 1.15rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }}
+
+    .video-badge {{
+        background: rgba(56, 189, 248, 0.15);
+        color: #38BDF8;
+        border: 1px solid rgba(56, 189, 248, 0.4);
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }}
+
+    .video-wrapper {{
+        position: relative;
+        width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: #000000;
+    }}
+
+    .video-wrapper iframe {{
+        width: 100%;
+        height: 330px;
+        border: none;
+        display: block;
+    }}
+
     /* Estilização das Abas */
     button[data-baseweb="tab"] {{
         color: #94A3B8 !important;
@@ -232,7 +292,7 @@ st.markdown(f"""
         border: 1px solid rgba(100, 116, 139, 0.5);
     }}
 
-    /* TEXTOS NO CELULAR */
+    /* TEXTOS E LAYOUT NO CELULAR */
     @media (max-width: 768px) {{
         .block-container {{
             padding-top: 3.8rem !important;
@@ -277,8 +337,7 @@ st.markdown(f"""
             margin-top: 6px !important;
         }}
 
-        iframe {{
-            width: 100% !important;
+        .video-wrapper iframe {{
             height: 220px !important;
         }}
 
@@ -439,7 +498,7 @@ aba1, aba2 = st.tabs(["📊 Visão Geral Atual", "🔄 Detalhamento - Como Resol
 
 # ABA 1: VISÃO GERAL ATUAL
 with aba1:
-    col_texto, col_video = st.columns([1, 1])
+    col_texto, col_video = st.columns([1, 1], vertical_alignment="top")
     
     with col_texto:
         st.subheader("Métricas do Processo Atual")
@@ -513,8 +572,20 @@ with aba1:
         """)
         
     with col_video:
-        st.subheader("📺 Vídeo de Apresentação")
-        st.components.v1.iframe(video_url, height=360)
+        # PLAYER DE VÍDEO CUSTOMIZADO COM GLASSMORPHISM
+        st.html(f"""
+            <div class="video-card-container">
+                <div class="video-card-header">
+                    <div class="video-card-title">
+                        <span>📺 Vídeo de Apresentação</span>
+                    </div>
+                    <span class="video-badge">Apresentação Executiva</span>
+                </div>
+                <div class="video-wrapper">
+                    <iframe src="{video_url}" allow="autoplay"></iframe>
+                </div>
+            </div>
+        """)
 
     st.markdown("---")
     st.markdown("### Resumo das Situações Atuais")
