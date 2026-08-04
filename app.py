@@ -147,6 +147,36 @@ st.markdown(f"""
         gap: 8px;
     }}
 
+    /* MINI CARDS DE IMPACTO */
+    .impact-metrics-grid {{
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-bottom: 15px;
+    }}
+
+    .impact-metric-card {{
+        background: rgba(30, 41, 59, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 10px;
+        padding: 10px;
+        text-align: center;
+    }}
+
+    .impact-metric-val {{
+        font-size: 1.4rem;
+        font-weight: 800;
+        line-height: 1.1;
+    }}
+
+    .impact-metric-lbl {{
+        font-size: 0.75rem;
+        color: #94A3B8;
+        font-weight: 600;
+        margin-top: 4px;
+        text-transform: uppercase;
+    }}
+
     /* CARD EXCLUSIVO DA EQUIPE COM DESTAQUE EM FOTO */
     .team-card {{
         background: rgba(15, 23, 42, 0.85);
@@ -404,6 +434,10 @@ st.markdown(f"""
         .team-photo-container {{
             max-height: 260px;
         }}
+
+        .impact-metrics-grid {{
+            grid-template-columns: repeat(2, 1fr);
+        }}
     }}
     </style>
 """, unsafe_allow_html=True)
@@ -561,74 +595,87 @@ with aba1:
     col_texto, col_video = st.columns([1, 1], vertical_alignment="top")
     
     with col_texto:
-        # ENCAPSULAMENTO GLASSMOPHISM DO BLOCO COMPLETO DO GRÁFICO
+        # CARD MODERNO DO GRÁFICO (REDEFINIDO)
         with st.container():
             st.html("""
                 <div class="glass-card-full">
                     <div class="glass-card-header">
                         <div class="glass-card-title">
-                            <span>📊 Distribuição por Nível de Impacto</span>
+                            <span>⚡ Gravidade das Ocorrências</span>
                         </div>
                     </div>
             """)
             
-            contagem_impacto = df['impacto'].value_counts()
-            
-            cores_mapa = {
-                'Muito Alto': '#EF4444',
-                'Alto': '#F59E0B',
-                'Médio': '#10B981',
-                'Baixo': '#94A3B8'
-            }
-            
-            labels = contagem_impacto.index.tolist()
-            values = contagem_impacto.values.tolist()
-            colors = [cores_mapa.get(l, '#0099E5') for l in labels]
+            # Contagem dos níveis
+            v_alto = len(df[df['impacto'] == 'Alto'])
+            v_medio = len(df[df['impacto'] == 'Médio'])
+            v_mto_alto = len(df[df['impacto'] == 'Muito Alto'])
+            v_baixo = len(df[df['impacto'] == 'Baixo'])
 
-            fig_pizza = go.Figure(data=[go.Pie(
-                labels=labels,
-                values=values,
-                hole=0.55,
+            # Grid de mini métricas superiores
+            st.html(f"""
+                <div class="impact-metrics-grid">
+                    <div class="impact-metric-card">
+                        <div class="impact-metric-val" style="color: #EF4444;">{v_mto_alto}</div>
+                        <div class="impact-metric-lbl">Muito Alto</div>
+                    </div>
+                    <div class="impact-metric-card">
+                        <div class="impact-metric-val" style="color: #F59E0B;">{v_alto}</div>
+                        <div class="impact-metric-lbl">Alto</div>
+                    </div>
+                    <div class="impact-metric-card">
+                        <div class="impact-metric-val" style="color: #10B981;">{v_medio}</div>
+                        <div class="impact-metric-lbl">Médio</div>
+                    </div>
+                    <div class="impact-metric-card">
+                        <div class="impact-metric-val" style="color: #94A3B8;">{v_baixo}</div>
+                        <div class="impact-metric-lbl">Baixo</div>
+                    </div>
+                </div>
+            """)
+
+            # Dados em ordem crescente para exibição horizontal
+            y_labels = ['Muito Alto', 'Baixo', 'Médio', 'Alto']
+            x_values = [v_mto_alto, v_baixo, v_medio, v_alto]
+            bar_colors = ['#EF4444', '#64748B', '#10B981', '#F59E0B']
+
+            fig_barras = go.Figure(go.Bar(
+                x=x_values,
+                y=y_labels,
+                orientation='h',
                 marker=dict(
-                    colors=colors, 
-                    line=dict(color='#0A141D', width=2)
+                    color=bar_colors,
+                    line=dict(color='rgba(255, 255, 255, 0.15)', width=1)
                 ),
-                hovertemplate="<b>Impacto %{label}</b><br>Ocorrências: <b>%{value}</b><br>Proporção: <b>%{percent}</b><extra></extra>",
-                textinfo="value",
-                textfont=dict(color='#FFFFFF', size=14, family="sans-serif")
-            )])
+                text=[f" <b>{v}</b> ocorrência{'s' if v > 1 else ''}" for v in x_values],
+                textposition='inside',
+                insidetextanchor='start',
+                textfont=dict(color='#FFFFFF', size=13, family="sans-serif")
+            ))
 
-            fig_pizza.update_layout(
-                showlegend=True,
-                legend=dict(
-                    orientation="h",
-                    yanchor="bottom",
-                    y=-0.25,
-                    xanchor="center",
-                    x=0.5,
-                    font=dict(color="#E2E8F0", size=12)
+            fig_barras.update_layout(
+                xaxis=dict(
+                    showgrid=False,
+                    showline=False,
+                    showticklabels=False,
+                    zeroline=False
                 ),
-                hoverlabel=dict(
-                    bgcolor="rgba(15, 23, 42, 0.95)",
-                    bordercolor="#38BDF8",
-                    font_size=13,
-                    font_family="sans-serif",
-                    font_color="#FFFFFF"
+                yaxis=dict(
+                    showgrid=False,
+                    showline=False,
+                    tickfont=dict(color='#CBD5E1', size=12, family="sans-serif"),
+                    autorange="reversed"
                 ),
-                margin=dict(t=5, b=20, l=5, r=5),
-                height=240,
+                margin=dict(t=0, b=10, l=10, r=10),
+                height=175,
                 paper_bgcolor='rgba(0,0,0,0)',
-                plot_bgcolor='rgba(0,0,0,0)',
-                annotations=[dict(
-                    text=f'<b>{total_situacoes}</b><br><span style="font-size:10px;color:#94A3B8">Total</span>',
-                    x=0.5, y=0.5, font_size=18, font_color="#FFFFFF", showarrow=False
-                )]
+                plot_bgcolor='rgba(0,0,0,0)'
             )
 
-            st.plotly_chart(fig_pizza, use_container_width=True, config={'displayModeBar': False})
+            st.plotly_chart(fig_barras, use_container_width=True, config={'displayModeBar': False})
             st.html("</div>")
         
-        # 2. BARRA DE PROGRESSO DO GARGALO OPERACIONAL
+        # BARRA DE PROGRESSO DO GARGALO OPERACIONAL
         st.html(f"""
             <div style="background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(6px); border: 1px solid rgba(0, 153, 229, 0.3); padding: 16px; border-radius: 10px; margin-top: 10px;">
                 <div style="color: #94A3B8; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
