@@ -44,7 +44,7 @@ st.markdown(f"""
         padding-top: 3.5rem !important;
     }}
 
-    /* Layout Desktop do Cabeçalho */
+    /* Layout do Cabeçalho */
     .header-container {{
         display: flex;
         align-items: center;
@@ -54,22 +54,31 @@ st.markdown(f"""
         padding: 5px 0;
     }}
 
+    /* Container Flex que força as logos a ficarem LADO A LADO */
+    .header-logos-wrapper {{
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }}
+
     .header-logo-left {{
-        height: 65px;
+        height: 60px;
         object-fit: contain;
     }}
 
     .header-logo-right {{
-        height: 55px;
+        height: 50px;
         object-fit: contain;
     }}
 
-    /* Linha divisória vertical entre as logos */
+    /* Linha divisória vertical perfeita entre as logos */
     .header-logo-divider {{
-        width: 1px;
-        height: 40px;
-        background: rgba(56, 189, 248, 0.4);
-        margin: 0 10px;
+        width: 1px !important;
+        height: 45px !important;
+        background: rgba(56, 189, 248, 0.5) !important;
+        margin: 0 15px !important;
+        display: block !important;
     }}
 
     .header-center-title {{
@@ -324,30 +333,26 @@ st.markdown(f"""
         }}
 
         .header-container {{
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 8px;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-items: center !important;
         }}
 
-        .header-logos-mobile {{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            margin-bottom: 6px;
+        .header-logos-wrapper {{
+            margin-bottom: 10px !important;
         }}
 
         .header-logo-left {{
-            height: 32px !important;
+            height: 35px !important;
         }}
 
         .header-logo-right {{
-            height: 32px !important;
+            height: 30px !important;
         }}
 
         .header-logo-divider {{
-            height: 25px !important;
-            margin: 0 12px !important;
+            height: 28px !important;
+            margin: 0 10px !important;
         }}
 
         .header-center-title {{
@@ -377,13 +382,13 @@ st.markdown(f"""
     </style>
 """, unsafe_allow_html=True)
 
-# 3. CABEÇALHO HTML NATIVO COM LINHA DIVISÓRIA
+# 3. CABEÇALHO HTML NATIVO COM LOGOS LADO A LADO
 src_logo_ps = f"data:image/png;base64,{logo_ps_b64}" if logo_ps_b64 else "logo.png"
 src_logo_inno = f"data:image/png;base64,{logo_inno_b64}" if logo_inno_b64 else "logo_innovation2026.png"
 
 st.html(f"""
     <div class="header-container">
-        <div class="header-logos-mobile">
+        <div class="header-logos-wrapper">
             <img src="{src_logo_ps}" class="header-logo-left" alt="Platform Science">
             <div class="header-logo-divider"></div>
             <img src="{src_logo_inno}" class="header-logo-right" alt="Innovation Day 2026">
