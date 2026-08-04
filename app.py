@@ -147,36 +147,6 @@ st.markdown(f"""
         gap: 8px;
     }}
 
-    /* MINI CARDS DE IMPACTO */
-    .impact-metrics-grid {{
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 10px;
-        margin-bottom: 15px;
-    }}
-
-    .impact-metric-card {{
-        background: rgba(30, 41, 59, 0.6);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 10px;
-        padding: 10px;
-        text-align: center;
-    }}
-
-    .impact-metric-val {{
-        font-size: 1.4rem;
-        font-weight: 800;
-        line-height: 1.1;
-    }}
-
-    .impact-metric-lbl {{
-        font-size: 0.75rem;
-        color: #94A3B8;
-        font-weight: 600;
-        margin-top: 4px;
-        text-transform: uppercase;
-    }}
-
     /* CARD EXCLUSIVO DA EQUIPE COM DESTAQUE EM FOTO */
     .team-card {{
         background: rgba(15, 23, 42, 0.85);
@@ -434,10 +404,6 @@ st.markdown(f"""
         .team-photo-container {{
             max-height: 260px;
         }}
-
-        .impact-metrics-grid {{
-            grid-template-columns: repeat(2, 1fr);
-        }}
     }}
     </style>
 """, unsafe_allow_html=True)
@@ -595,84 +561,79 @@ with aba1:
     col_texto, col_video = st.columns([1, 1], vertical_alignment="top")
     
     with col_texto:
-        # CARD MODERNO DO GRÁFICO (REDEFINIDO)
+        # ENCAPSULAMENTO GLASSMOPHISM DO BLOCO COMPLETO DO GRÁFICO 3D ESTILIZADO
         with st.container():
             st.html("""
                 <div class="glass-card-full">
                     <div class="glass-card-header">
                         <div class="glass-card-title">
-                            <span>⚡ Gravidade das Ocorrências</span>
+                            <span>📊 Distribuição por Nível de Impacto</span>
                         </div>
                     </div>
             """)
             
-            # Contagem dos níveis
-            v_alto = len(df[df['impacto'] == 'Alto'])
-            v_medio = len(df[df['impacto'] == 'Médio'])
-            v_mto_alto = len(df[df['impacto'] == 'Muito Alto'])
-            v_baixo = len(df[df['impacto'] == 'Baixo'])
+            contagem_impacto = df['impacto'].value_counts()
+            
+            cores_mapa = {
+                'Muito Alto': '#EF4444',
+                'Alto': '#F59E0B',
+                'Médio': '#10B981',
+                'Baixo': '#94A3B8'
+            }
+            
+            labels = contagem_impacto.index.tolist()
+            values = contagem_impacto.values.tolist()
+            colors = [cores_mapa.get(l, '#0099E5') for l in labels]
+            
+            # Efeito de deslocamento 3D das fatias (Pull out)
+            pull_effect = [0.06 if l in ['Muito Alto', 'Alto'] else 0.02 for l in labels]
 
-            # Grid de mini métricas superiores
-            st.html(f"""
-                <div class="impact-metrics-grid">
-                    <div class="impact-metric-card">
-                        <div class="impact-metric-val" style="color: #EF4444;">{v_mto_alto}</div>
-                        <div class="impact-metric-lbl">Muito Alto</div>
-                    </div>
-                    <div class="impact-metric-card">
-                        <div class="impact-metric-val" style="color: #F59E0B;">{v_alto}</div>
-                        <div class="impact-metric-lbl">Alto</div>
-                    </div>
-                    <div class="impact-metric-card">
-                        <div class="impact-metric-val" style="color: #10B981;">{v_medio}</div>
-                        <div class="impact-metric-lbl">Médio</div>
-                    </div>
-                    <div class="impact-metric-card">
-                        <div class="impact-metric-val" style="color: #94A3B8;">{v_baixo}</div>
-                        <div class="impact-metric-lbl">Baixo</div>
-                    </div>
-                </div>
-            """)
-
-            # Dados em ordem crescente para exibição horizontal
-            y_labels = ['Muito Alto', 'Baixo', 'Médio', 'Alto']
-            x_values = [v_mto_alto, v_baixo, v_medio, v_alto]
-            bar_colors = ['#EF4444', '#64748B', '#10B981', '#F59E0B']
-
-            fig_barras = go.Figure(go.Bar(
-                x=x_values,
-                y=y_labels,
-                orientation='h',
+            fig_pizza_3d = go.Figure(data=[go.Pie(
+                labels=labels,
+                values=values,
+                hole=0.6,
+                pull=pull_effect,
+                direction='clockwise',
+                sort=False,
                 marker=dict(
-                    color=bar_colors,
-                    line=dict(color='rgba(255, 255, 255, 0.15)', width=1)
+                    colors=colors, 
+                    line=dict(color='#0A141D', width=3)
                 ),
-                text=[f" <b>{v}</b> ocorrência{'s' if v > 1 else ''}" for v in x_values],
-                textposition='inside',
-                insidetextanchor='start',
-                textfont=dict(color='#FFFFFF', size=13, family="sans-serif")
-            ))
+                hovertemplate="<b>Impacto %{label}</b><br>Casos: <b>%{value}</b><br>Proporção: <b>%{percent}</b><extra></extra>",
+                textinfo="label+value",
+                texttemplate="<b>%{label}</b><br>%{value}",
+                textposition="outside",
+                textfont=dict(color='#E2E8F0', size=12, family="sans-serif")
+            )])
 
-            fig_barras.update_layout(
-                xaxis=dict(
-                    showgrid=False,
-                    showline=False,
-                    showticklabels=False,
-                    zeroline=False
+            fig_pizza_3d.update_layout(
+                showlegend=True,
+                legend=dict(
+                    orientation="h",
+                    yanchor="bottom",
+                    y=-0.22,
+                    xanchor="center",
+                    x=0.5,
+                    font=dict(color="#CBD5E1", size=11)
                 ),
-                yaxis=dict(
-                    showgrid=False,
-                    showline=False,
-                    tickfont=dict(color='#CBD5E1', size=12, family="sans-serif"),
-                    autorange="reversed"
+                hoverlabel=dict(
+                    bgcolor="rgba(15, 23, 42, 0.95)",
+                    bordercolor="#38BDF8",
+                    font_size=13,
+                    font_family="sans-serif",
+                    font_color="#FFFFFF"
                 ),
-                margin=dict(t=0, b=10, l=10, r=10),
-                height=175,
+                margin=dict(t=20, b=30, l=35, r=35),
+                height=255,
                 paper_bgcolor='rgba(0,0,0,0)',
-                plot_bgcolor='rgba(0,0,0,0)'
+                plot_bgcolor='rgba(0,0,0,0)',
+                annotations=[dict(
+                    text=f'<span style="font-size:22px;font-weight:800;color:#FFFFFF">{total_situacoes}</span><br><span style="font-size:10px;color:#38BDF8;font-weight:700">OCORRÊNCIAS</span>',
+                    x=0.5, y=0.5, font_size=14, showarrow=False
+                )]
             )
 
-            st.plotly_chart(fig_barras, use_container_width=True, config={'displayModeBar': False})
+            st.plotly_chart(fig_pizza_3d, use_container_width=True, config={'displayModeBar': False})
             st.html("</div>")
         
         # BARRA DE PROGRESSO DO GARGALO OPERACIONAL
