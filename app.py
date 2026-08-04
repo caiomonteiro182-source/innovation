@@ -8,23 +8,18 @@ st.set_page_config(
     layout="wide"
 )
 
-# 2. Injeção de CSS com a Paleta de Cores da Logo da Platform Science
+# 2. Injeção de CSS com Fundo Escuro em Degradê Azul
 st.markdown("""
     <style>
-    /* Cores Principais: 
-       Azul Vivo: #0099E5 
-       Azul Escuro: #2A3B50
-       Fundo Leve: #F8FAFC
-    */
-
-    /* Fundo da aplicação */
+    /* Fundo Dark Mode com Degradê nos tons da marca */
     .stApp {
-        background-color: #F8FAFC;
+        background: linear-gradient(135deg, #0A141D 0%, #0F2338 50%, #17385C 100%) !important;
+        color: #F0F4F8 !important;
     }
 
     /* Título Principal */
     h1 {
-        color: #2A3B50 !important;
+        color: #FFFFFF !important;
         font-weight: 800 !important;
         margin-bottom: 0px !important;
     }
@@ -35,38 +30,59 @@ st.markdown("""
         font-weight: 700 !important;
     }
 
+    /* Textos gerais */
+    p, span, label {
+        color: #E2E8F0 !important;
+    }
+
     /* Estilização das Métricas */
     [data-testid="stMetricValue"] {
-        color: #0099E5 !important;
+        color: #38BDF8 !important;
         font-weight: bold !important;
     }
     
     [data-testid="stMetricLabel"] {
-        color: #2A3B50 !important;
+        color: #94A3B8 !important;
         font-weight: 600 !important;
+    }
+
+    /* Cartões / Containers internos */
+    [data-testid="stMetric"] {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(0, 153, 229, 0.2);
+        padding: 15px;
+        border-radius: 10px;
     }
 
     /* Estilização das Abas */
     button[data-baseweb="tab"] {
-        color: #2A3B50 !important;
+        color: #94A3B8 !important;
         font-weight: 600 !important;
         font-size: 16px !important;
     }
 
     button[data-baseweb="tab"][aria-selected="true"] {
-        color: #0099E5 !important;
+        color: #38BDF8 !important;
         border-bottom-color: #0099E5 !important;
     }
 
-    /* Caixas de Alertas */
+    /* Caixas de Alerta (Ajuste de transparência para dark mode) */
     .stAlert {
         border-radius: 8px !important;
+        background-color: rgba(15, 23, 42, 0.7) !important;
+    }
+
+    /* Selectbox estilizado */
+    div[data-baseweb="select"] > div {
+        background-color: #1E293B !important;
+        color: #FFFFFF !important;
+        border-color: #0099E5 !important;
     }
 
     /* Linha Divisória */
     hr {
         border-color: #0099E5 !important;
-        opacity: 0.3;
+        opacity: 0.4;
     }
     </style>
 """, unsafe_allow_html=True)
