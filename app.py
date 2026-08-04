@@ -104,7 +104,7 @@ df = pd.DataFrame(dados_acionamentos)
 # Navegação por Abas
 aba1, aba2 = st.tabs(["📊 Visão Geral & Vídeo", "🔄 Matriz de Redirecionamento"])
 
-# ABA 1: VISÃO GERAL + VÍDEO
+# ABA 1: VISÃO GERAL + VÍDEO DO DRIVE
 with aba1:
     col_texto, col_video = st.columns([1, 1])
     
@@ -115,11 +115,12 @@ with aba1:
         st.metric("Canais Pulverizados", "3 (WhatsApp, E-mail, Slack)")
         
     with col_video:
-        st.subheader("📺 Vídeo Explicativo do Processo")
-        # Substitui '/view?usp=sharing' por '/preview' para permitir exibição embutida no iFrame
-        video_url = "https://drive.google.com/file/d/1MGUsWDvAqjwVJAEkml-E4sfkjcRq6wOJ/preview"
+        st.subheader("📺 Vídeo do Processo Atual")
+        # Transforma o link de compartilhamento no link direto de visualização (preview)
+        drive_preview_url = "https://drive.google.com/file/d/1MGUsWDvAqjwVJAEkml-E4sfkjcRq6wOJ/preview"
         
-        st.components.v1.iframe(video_url, width=540, height=320)
+        # Player de Vídeo embutido
+        st.components.v1.iframe(drive_preview_url, height=360)
 
     st.markdown("---")
     st.markdown("### Tabela Resumo dos Gargalos Operacionais")
