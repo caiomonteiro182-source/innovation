@@ -340,8 +340,8 @@ def get_impact_badge(impacto):
     else:
         return '<span class="badge badge-baixo">Baixo</span>'
 
-# Link do Vídeo (Modo Preview)
-video_url = "https://drive.google.com/file/d/1CMn5TEiWUZ-Jzul_Z4das8bYXHNJk1q6/preview"
+# Novo Link do Vídeo (Modo Preview para incorporação)
+video_url = "https://drive.google.com/file/d/1QUtiv23-M1n0L5HsiR2FAts2yKt8H25O/preview"
 
 # Navegação por Abas
 aba1, aba2 = st.tabs(["📊 Visão Geral Atual", "🔄 Detalhamento - Como Resolver?"])
