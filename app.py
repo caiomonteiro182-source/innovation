@@ -259,7 +259,7 @@ dados_acionamentos = [
     {
         "id": 1,
         "problema_atual": "Falta de Equipamento",
-        "detalhamento": "Falta de equipamentos e itens especificados na OS.",
+        "detalhamento": "Falta de equipamentos e itens especificados na OS (Equipamento de Manutenção e Pedido Comercial).",
         "canal_atual": "WhatsApp / E-mail",
         "acionado_atual": "Consultor",
         "destino_correto": "Planejamento / Suprimentos",
@@ -314,7 +314,7 @@ dados_acionamentos = [
         "acionado_atual": "Consultor",
         "destino_correto": "Portal de Conhecimento / Self-Service",
         "impacto": "Baixo",
-        "acao_recomendada": "Central de ajuda online com download de documentação técnica, manuaise checklists em formato self-service."
+        "acao_recomendada": "Central de ajuda online com download de documentação técnica, manuais e checklists em formato self-service."
     },
     {
         "id": 7,
@@ -327,8 +327,8 @@ dados_acionamentos = [
         "acao_recomendada": "Ficha de impeditivo rápida de campo para atuação pontual e comercial do consultor."
     },
     {
-        "problema_atual": "Falta de Dados na OS",
         "id": 8,
+        "problema_atual": "Falta de Dados na OS",
         "detalhamento": "Ausência de endereço do cliente ou localização exata da frota no momento do serviço.",
         "canal_atual": "WhatsApp / E-mail",
         "acionado_atual": "Consultor",
@@ -362,7 +362,6 @@ df = pd.DataFrame(dados_acionamentos)
 
 # Cálculos dinâmicos
 total_situacoes = len(df)
-# Considerando que o acionamento do consultor só é válido na situação 7
 desvios_funcao = len(df[df["destino_correto"] != "Consultor (Válido)"])
 pct_desvio = round((desvios_funcao / total_situacoes) * 100, 1)
 
@@ -440,7 +439,7 @@ with aba1:
 
         st.plotly_chart(fig_pizza, use_container_width=True, config={'displayModeBar': False})
         
-        # 2. BARRA DE PROGRESSO DO GARGALO OPERACIONAL (DINÂMICA)
+        # 2. BARRA DE PROGRESSO DO GARGALO OPERACIONAL
         st.html(f"""
             <div style="background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(6px); border: 1px solid rgba(0, 153, 229, 0.3); padding: 16px; border-radius: 10px; margin-top: 10px;">
                 <div style="color: #94A3B8; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
@@ -505,3 +504,33 @@ with aba2:
         st.markdown("### ✅ Fluxo Proposto (Solução)")
         st.success(f"**Destino Correto:** {detalhe['destino_correto']}")
         st.info(f"**Ação Recomendada:** {detalhe['acao_recomendada']}")
+
+    # SEÇÃO DESTINADA AO DESTRINCHAMENTO APROFUNDADO DOS TÓPICOS
+    if selected_id == 1:
+        st.markdown("---")
+        st.markdown("## 🔍 Destrinchamento da Causa 1: Falta de Equipamento")
+        
+        col_1_1, col_1_2 = st.columns(2)
+        
+        with col_1_1:
+            st.markdown("### 1.1 Equipamento de Manutenção")
+            st.info("""
+            **Ação Necessária:**
+            * Implementação de rotina de **inventário mensal atualizado** diretamente na oficina.
+            * Sincronização contínua com o sistema para impedir a emissão de ordens de serviço sem saldo físico em estoque.
+            """)
+            
+        with col_1_2:
+            st.markdown("### 1.2 Equipamento de Pedido Comercial")
+            
+            st.error("""
+            **Como é feito hoje?**
+            * **Caso 1:** Cliente pede 5 kits e chegam faltando 5 câmeras laterais. O técnico aciona o consultor perguntando se pode fazer instalação parcial. Se não for ADAS ou DSM, o processo é liberado.
+            * **Caso 2:** Durante a instalação, se faltar um item que o técnico possui em seu estoque próprio, ele realiza a reposição por conta própria e depois avisa o consultor.
+            """)
+            
+            st.warning("""
+            **Impactos Financeiros e Operacionais:**
+            * **Improdutivo:** Se o técnico não realizar a instalação parcial, o agendamento é perdido, gerando reagendamento e **custo duplicado** de deslocamento para a empresa.
+            * **Instalação Parcial:** Gera **cobrança duplicada**, pois o técnico precisa retornar futuramente até o cliente apenas para instalar o item remanescente.
+            """)
