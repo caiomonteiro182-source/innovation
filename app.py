@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import base64
 
-# 1. Configuração da página
+# 1. Configuração da página (Ícone da guia alterado para icon_consultor.png)
 st.set_page_config(
     page_title="Platform Science - Fluxo de Atendimento de Consultores",
     page_icon="icon_consultor.png",
@@ -20,7 +20,7 @@ def get_base64_of_bin_file(bin_file):
 
 img_base64 = get_base64_of_bin_file("estradas.jpeg")
 
-# 2. Injeção de CSS com Marca d'Água da imagem estradas.jpeg, Fundo Dark Mode e Tabela Customizada
+# 2. Injeção de CSS com Marca d'Água da imagem estradas.jpeg, Fundo Dark Mode, Tabela e Tópicos Customizados
 st.markdown(f"""
     <style>
     /* Marca d'água no fundo da aplicação */
@@ -76,6 +76,39 @@ st.markdown(f"""
         border-radius: 10px;
         margin-bottom: 10px;
         min-height: 100px;
+    }}
+
+    /* ESTILO DOS CANAIS EM TÓPICOS / BADGES */
+    .canal-card {{
+        background: rgba(15, 23, 42, 0.65);
+        backdrop-filter: blur(6px);
+        border: 1px solid rgba(0, 153, 229, 0.3);
+        padding: 12px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }}
+
+    .canal-title {{
+        color: #94A3B8;
+        font-weight: 600;
+        font-size: 0.875rem;
+        margin-bottom: 8px;
+    }}
+
+    .canal-badges-container {{
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }}
+
+    .canal-badge {{
+        background-color: rgba(0, 153, 229, 0.15);
+        color: #38BDF8;
+        border: 1px solid rgba(0, 153, 229, 0.4);
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        font-weight: 600;
     }}
 
     /* Estilização das Abas */
@@ -344,7 +377,18 @@ with aba1:
         
         st.metric("Problemas Mapeados", len(df))
         st.metric("Acionamentos Indevidos ao Consultor", "7 de 9", delta="-77%", delta_color="inverse")
-        st.metric("Canais Pulverizados", "3 (WhatsApp, E-mail, Slack)")
+        
+        # EXIBIÇÃO DOS CANAIS EM TÓPICOS/BADGES
+        st.html("""
+            <div class="canal-card">
+                <div class="canal-title">Canais Pulverizados (3)</div>
+                <div class="canal-badges-container">
+                    <span class="canal-badge">• WhatsApp</span>
+                    <span class="canal-badge">• E-mail</span>
+                    <span class="canal-badge">• Slack</span>
+                </div>
+            </div>
+        """)
         
     with col_video:
         st.subheader("📺 Vídeo de Apresentação")
@@ -353,7 +397,7 @@ with aba1:
     st.markdown("---")
     st.markdown("### Resumo das Situações Atuais")
 
-    # CONSTRUÇÃO DO HTML DA TABELA SEM ESPAÇOS DE IDENTAÇÃO À ESQUERDA
+    # CONSTRUÇÃO DO HTML DA TABELA
     rows_html = ""
     for _, row in df.iterrows():
         badge = get_impact_badge(row["impacto"])
