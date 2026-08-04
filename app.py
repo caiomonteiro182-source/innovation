@@ -21,7 +21,7 @@ def get_base64_of_bin_file(bin_file):
 
 img_base64 = get_base64_of_bin_file("estradas.jpeg")
 
-# Converte as duas logos para Base64 para garantir que funcionem em qualquer tela/dispositivo
+# Converte as duas logos para Base64
 logo_ps_b64 = get_base64_of_bin_file("logo.png")
 logo_inno_b64 = get_base64_of_bin_file("logo_innovation2026.png")
 
@@ -39,23 +39,28 @@ st.markdown(f"""
         color: #F0F4F8 !important;
     }}
 
-    /* Estilo do Cabeçalho Personalizado Responsive */
+    /* Ajuste de margem superior para o conteúdo não ficar escondido pela barra do Streamlit */
+    .block-container {{
+        padding-top: 3.5rem !important;
+    }}
+
+    /* Layout Desktop do Cabeçalho */
     .header-container {{
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 12px;
+        gap: 15px;
         width: 100%;
         padding: 5px 0;
     }}
 
     .header-logo-left {{
-        height: 65px;
+        height: 60px;
         object-fit: contain;
     }}
 
     .header-logo-right {{
-        height: 55px;
+        height: 50px;
         object-fit: contain;
     }}
 
@@ -75,7 +80,7 @@ st.markdown(f"""
 
     .header-center-title p {{
         color: #94A3B8 !important;
-        margin: 4px 0 0 0 !important;
+        margin: 6px 0 0 0 !important;
         font-size: 0.9rem;
     }}
 
@@ -148,7 +153,7 @@ st.markdown(f"""
         opacity: 0.4;
     }}
 
-    /* ESTILO DA TABELA PERSONALIZADA (GLASSMORPHISM + BADGES) */
+    /* ESTILO DA TABELA PERSONALIZADA */
     .table-container {{
         width: 100%;
         overflow-x: auto;
@@ -225,29 +230,49 @@ st.markdown(f"""
         border: 1px solid rgba(100, 116, 139, 0.5);
     }}
 
-    /* REDIMENSIONAMENTO COMPACTO PARA DISPOSITIVOS MÓVEIS (CELULAR) */
+    /* AJUSTES EXCLUSIVOS PARA CELULAR */
     @media (max-width: 768px) {{
         .block-container {{
-            padding: 0.5rem 0.5rem 1rem 0.5rem !important;
+            padding-top: 3.8rem !important;
+            padding-left: 0.6rem !important;
+            padding-right: 0.6rem !important;
+        }}
+
+        .header-container {{
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }}
+
+        .header-logos-mobile {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 4px;
         }}
 
         .header-logo-left {{
-            height: 38px !important;
+            height: 28px !important;
         }}
 
         .header-logo-right {{
-            height: 38px !important;
+            height: 28px !important;
+        }}
+
+        .header-center-title {{
+            width: 100%;
         }}
 
         .header-center-title h1 {{
-            font-size: 0.95rem !important;
-            line-height: 1.1 !important;
+            font-size: 1.25rem !important;
+            line-height: 1.2 !important;
         }}
 
         .header-center-title p {{
-            font-size: 0.65rem !important;
-            line-height: 1.1 !important;
-            margin-top: 2px !important;
+            font-size: 0.78rem !important;
+            line-height: 1.2 !important;
+            margin-top: 4px !important;
         }}
 
         iframe {{
@@ -263,18 +288,20 @@ st.markdown(f"""
     </style>
 """, unsafe_allow_html=True)
 
-# 3. CABEÇALHO HTML NATIVO (Garante 3 colunas Lado a Lado perfeitas no Celular e Desktop)
+# 3. CABEÇALHO HTML NATIVO ADAPTÁVEL
 src_logo_ps = f"data:image/png;base64,{logo_ps_b64}" if logo_ps_b64 else "logo.png"
 src_logo_inno = f"data:image/png;base64,{logo_inno_b64}" if logo_inno_b64 else "logo_innovation2026.png"
 
 st.html(f"""
     <div class="header-container">
-        <img src="{src_logo_ps}" class="header-logo-left" alt="Platform Science">
+        <div class="header-logos-mobile">
+            <img src="{src_logo_ps}" class="header-logo-left" alt="Platform Science">
+            <img src="{src_logo_inno}" class="header-logo-right" alt="Innovation Day 2026">
+        </div>
         <div class="header-center-title">
             <h1>Fluxo de Atendimento de Consultores</h1>
             <p>Visão atual dos gargalos operacionais e proposta de reestruturação dos fluxos da equipe.</p>
         </div>
-        <img src="{src_logo_inno}" class="header-logo-right" alt="Innovation Day 2026">
     </div>
 """)
 
