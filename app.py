@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import base64
 
-# 1. Configuração da página (Ícone da guia alterado para icon_consultor.png)
+# 1. Configuração da página
 st.set_page_config(
     page_title="Platform Science - Fluxo de Atendimento de Consultores",
     page_icon="icon_consultor.png",
@@ -321,13 +321,13 @@ df = pd.DataFrame(dados_acionamentos)
 # Função para formatar o badge HTML do impacto
 def get_impact_badge(impacto):
     if impacto == "Muito Alto":
-        return f'<span class="badge badge-muito-alto">Muito Alto</span>'
+        return '<span class="badge badge-muito-alto">Muito Alto</span>'
     elif impacto == "Alto":
-        return f'<span class="badge badge-alto">Alto</span>'
+        return '<span class="badge badge-alto">Alto</span>'
     elif impacto == "Médio":
-        return f'<span class="badge badge-medio">Médio</span>'
+        return '<span class="badge badge-medio">Médio</span>'
     else:
-        return f'<span class="badge badge-baixo">Baixo</span>'
+        return '<span class="badge badge-baixo">Baixo</span>'
 
 # Link do Vídeo (Modo Preview)
 video_url = "https://drive.google.com/file/d/1CMn5TEiWUZ-Jzul_Z4das8bYXHNJk1q6/preview"
@@ -353,34 +353,15 @@ with aba1:
     st.markdown("---")
     st.markdown("### Resumo das Situações Atuais")
 
-    # GERAÇÃO DA TABELA HTML CUSTOMIZADA COM GLASSMORPHISM E BADGES
-    html_table = '<div class="table-container"><table class="custom-table">'
-    html_table += '''
-        <thead>
-            <tr>
-                <th>Problema Atual</th>
-                <th>Canal Atual</th>
-                <th>Quem é Acionado Hoje</th>
-                <th>Destino Correto</th>
-                <th>Nível de Impacto</th>
-            </tr>
-        </thead>
-        <tbody>
-    '''
+    # CONSTRUÇÃO DO HTML DA TABELA SEM ESPAÇOS DE IDENTAÇÃO À ESQUERDA
+    rows_html = ""
     for _, row in df.iterrows():
-        badge_html = get_impact_badge(row["impacto"])
-        html_table += f'''
-            <tr>
-                <td><strong>{row["problema_atual"]}</strong></td>
-                <td>{row["canal_atual"]}</td>
-                <td>{row["acionado_atual"]}</td>
-                <td>{row["destino_correto"]}</td>
-                <td>{badge_html}</td>
-            </tr>
-        '''
-    html_table += '</tbody></table></div>'
+        badge = get_impact_badge(row["impacto"])
+        rows_html += f"<tr><td><strong>{row['problema_atual']}</strong></td><td>{row['canal_atual']}</td><td>{row['acionado_atual']}</td><td>{row['destino_correto']}</td><td>{badge}</td></tr>"
+
+    table_html = f"""<div class="table-container"><table class="custom-table"><thead><tr><th>Problema Atual</th><th>Canal Atual</th><th>Quem é Acionado Hoje</th><th>Destino Correto</th><th>Nível de Impacto</th></tr></thead><tbody>{rows_html}</tbody></table></div>"""
     
-    st.markdown(html_table, unsafe_allow_html=True)
+    st.html(table_html)
 
 # ABA 2: DETALHAMENTO - COMO RESOLVER?
 with aba2:
