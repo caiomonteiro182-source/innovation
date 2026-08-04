@@ -201,32 +201,63 @@ st.markdown(f"""
     /* AJUSTES RESPONSIVOS PARA DISPOSITIVOS MÓVEIS (CELULAR) */
     @media (max-width: 768px) {{
         .block-container {{
-            padding-left: 0.8rem !important;
-            padding-right: 0.8rem !important;
-            padding-top: 1rem !important;
+            padding-left: 0.5rem !important;
+            padding-right: 0.5rem !important;
+            padding-top: 0.5rem !important;
         }}
 
-        /* Redimensiona as logos no celular */
+        /* Força as colunas do cabeçalho a ficarem lado a lado no celular */
+        div[data-testid="stHeaderBlock"] {{
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 4px !important;
+        }}
+
+        div[data-testid="stHeaderBlock"] > div {{
+            width: auto !important;
+            min-width: unset !important;
+        }}
+
+        /* Proporções das colunas no celular: Esquerda e Direita menores, Centro expansível */
+        div[data-testid="stHeaderBlock"] > div:nth-child(1) {{
+            flex: 0 0 22% !important;
+        }}
+        div[data-testid="stHeaderBlock"] > div:nth-child(2) {{
+            flex: 1 1 56% !important;
+        }}
+        div[data-testid="stHeaderBlock"] > div:nth-child(3) {{
+            flex: 0 0 22% !important;
+        }}
+
+        /* Ajuste do tamanho das imagens nas logos laterais */
         [data-testid="stImage"] img {{
-            max-width: 120px !important;
+            max-width: 100% !important;
             height: auto !important;
             margin: 0 auto !important;
             display: block !important;
         }}
 
         [data-testid="stImage"] {{
-            display: flex;
-            justify-content: center;
-            margin: 0 auto 10px auto;
+            margin: 0 !important;
         }}
 
         h1 {{
-            font-size: 1.4rem !important;
-            text-align: center;
+            font-size: 1.05rem !important;
+            line-height: 1.2 !important;
+            text-align: center !important;
+        }}
+
+        .stCaption {{
+            font-size: 0.7rem !important;
+            line-height: 1.1 !important;
+            text-align: center !important;
         }}
 
         h2, h3 {{
-            font-size: 1.2rem !important;
+            font-size: 1.1rem !important;
         }}
 
         [data-testid="stMetricValue"] {{
@@ -247,18 +278,21 @@ st.markdown(f"""
     </style>
 """, unsafe_allow_html=True)
 
-# Header de 3 Colunas (Logo Esquerda | Título Central | Logo Innovation Direita)
+# Container do Cabeçalho com wrapper para estilização no celular
+st.markdown('<div data-testid="stHeaderBlock">', unsafe_allow_html=True)
 col_logo, col_titulo, col_innovation = st.columns([1.5, 4, 1.5], vertical_alignment="center")
 
 with col_logo:
-    st.image("logo.png", width=220)
+    st.image("logo.png", use_container_width=True)
 
 with col_titulo:
     st.title("Fluxo de Atendimento de Consultores")
     st.caption("Visão atual dos gargalos operacionais e proposta de reestruturação dos fluxos da equipe.")
 
 with col_innovation:
-    st.image("logo_innovation2026.png", width=180)
+    st.image("logo_innovation2026.png", use_container_width=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
 
 st.divider()
 
