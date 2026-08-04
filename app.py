@@ -254,83 +254,117 @@ with col_innovation:
 
 st.divider()
 
-# Dados das Causas / Problemas Atuais
+# Dados Atualizados - 10 Situações Mapeadas
 dados_acionamentos = [
     {
+        "id": 1,
         "problema_atual": "Falta de Equipamento",
+        "detalhamento": "Falta de equipamentos e itens especificados na OS.",
         "canal_atual": "WhatsApp / E-mail",
         "acionado_atual": "Consultor",
         "destino_correto": "Planejamento / Suprimentos",
         "impacto": "Alto",
-        "acao_recomendada": "Criar fluxo direto para o time de Planejamento de estoque."
+        "acao_recomendada": "Criar fluxo direto para o time de Planejamento e validação de estoque antes do envio da OS."
     },
     {
-        "problema_atual": "Problemas na Oficina",
+        "id": 2,
+        "problema_atual": "Problema na Oficina",
+        "detalhamento": "Problemas de oficina com cliente (atendimento, falta de equipamento, improdutividade, reclamação, alta demanda e remanejamento).",
         "canal_atual": "WhatsApp / Slack",
         "acionado_atual": "Consultor",
         "destino_correto": "Gestão de Oficinas",
         "impacto": "Alto",
-        "acao_recomendada": "Painel de visibilidade de capacidade e fila de atendimento."
+        "acao_recomendada": "Painel de visibilidade em tempo real sobre capacidade, demanda e fila de atendimento."
     },
     {
+        "id": 3,
         "problema_atual": "Falta de Inventário na Oficina",
+        "detalhamento": "A ausência de inventário correto na oficina impede a verificação de estoque, gerando acionamentos indevidos ao consultor.",
         "canal_atual": "WhatsApp",
         "acionado_atual": "Consultor",
         "destino_correto": "Back Office / Sistema de Estoque",
         "impacto": "Muito Alto",
-        "acao_recomendada": "Obrigatoriedade de checklist diário antes do acionamento."
+        "acao_recomendada": "Obrigatoriedade de verificação e rotina de inventário prévio no sistema antes do acionamento."
     },
     {
+        "id": 4,
         "problema_atual": "Avarias, Danos e Riscos",
+        "detalhamento": "Necessidade de vistoria no equipamento, avarias, danos detectados ou questões de qualidade do serviço prestado.",
         "canal_atual": "E-mail / WhatsApp",
         "acionado_atual": "Consultor",
         "destino_correto": "Setor de Qualidade / Vistoria",
         "impacto": "Médio",
-        "acao_recomendada": "Formulário padronizado com upload obrigatório de foto."
+        "acao_recomendada": "Formulário padronizado com upload obrigatório de fotos e laudo preliminar de vistoria."
     },
     {
+        "id": 5,
         "problema_atual": "Acionamento Back Office Oficina",
+        "detalhamento": "Acionamento direto ao Back Office da oficina em primeiro nível; acionar o consultor apenas em caso de não atendimento.",
         "canal_atual": "Slack / WhatsApp",
         "acionado_atual": "Consultor (Bypass)",
         "destino_correto": "Back Office da Oficina",
         "impacto": "Médio",
-        "acao_recomendada": "Trava de sistema: só liberar consultor se Back Office não atender."
+        "acao_recomendada": "Redirecionamento automático e trava no sistema: acionar consultor apenas como Nível 2 de transbordo."
     },
     {
-        "problema_atual": "Integração / Documentação",
+        "id": 6,
+        "problema_atual": "Integração e Documentação",
+        "detalhamento": "Falta de documentação da oficina com pedidos de apoio ao consultor para esclarecer dúvidas documentais.",
         "canal_atual": "WhatsApp",
         "acionado_atual": "Consultor",
         "destino_correto": "Portal de Conhecimento / Self-Service",
         "impacto": "Baixo",
-        "acao_recomendada": "Disponibilizar central de ajuda com download de documentos."
+        "acao_recomendada": "Central de ajuda online com download de documentação técnica, manuaise checklists em formato self-service."
     },
     {
-        "problema_atual": "Trava no Cliente (Sem frota no local)",
+        "id": 7,
+        "problema_atual": "Trava no Cliente (Acionamento Oficina)",
+        "detalhamento": "Oficina pede apoio ao consultor por travamentos no cliente (ex: falta de equipamento ou frota ausente no local).",
         "canal_atual": "WhatsApp",
         "acionado_atual": "Consultor",
         "destino_correto": "Consultor (Válido)",
         "impacto": "Alto",
-        "acao_recomendada": "Ficha de impeditivo rápida para atuação comercial do consultor."
+        "acao_recomendada": "Ficha de impeditivo rápida de campo para atuação pontual e comercial do consultor."
     },
     {
         "problema_atual": "Falta de Dados na OS",
+        "id": 8,
+        "detalhamento": "Ausência de endereço do cliente ou localização exata da frota no momento do serviço.",
         "canal_atual": "WhatsApp / E-mail",
         "acionado_atual": "Consultor",
         "destino_correto": "Emissor da OS / Validação Automática",
         "impacto": "Médio",
-        "acao_recomendada": "Bloqueio de abertura de OS sem campos de endereço e frota."
+        "acao_recomendada": "Trava no sistema bloqueando a abertura ou envio de OS sem o preenchimento de dados de localização."
     },
     {
+        "id": 9,
         "problema_atual": "Encaixe de Agendamento",
+        "detalhamento": "Acionamento do consultor solicitando encaixe na agenda, procedimento que cabe diretamente ao Back Office da Oficina.",
         "canal_atual": "WhatsApp",
         "acionado_atual": "Consultor",
         "destino_correto": "Back Office Oficina",
         "impacto": "Médio",
-        "acao_recomendada": "Fila única de solicitações de encaixe no Back Office."
+        "acao_recomendada": "Fila única e centralizada de agendamentos e encaixes gerenciada exclusivamente pelo Back Office."
+    },
+    {
+        "id": 10,
+        "problema_atual": "Suporte a Tecnologia",
+        "detalhamento": "Módulo sem atualização de firmware, falhas no aplicativo móvel ou erro de integração de OS.",
+        "canal_atual": "WhatsApp / Chamado",
+        "acionado_atual": "Consultor",
+        "destino_correto": "Suporte Técnico / TI",
+        "impacto": "Alto",
+        "acao_recomendada": "Abertura direta de ticket na central de TI com diagnósticos e logs automatizados."
     }
 ]
 
 df = pd.DataFrame(dados_acionamentos)
+
+# Cálculos dinâmicos
+total_situacoes = len(df)
+# Considerando que o acionamento do consultor só é válido na situação 7
+desvios_funcao = len(df[df["destino_correto"] != "Consultor (Válido)"])
+pct_desvio = round((desvios_funcao / total_situacoes) * 100, 1)
 
 # Função para formatar o badge HTML do impacto
 def get_impact_badge(impacto):
@@ -399,27 +433,27 @@ with aba1:
             paper_bgcolor='rgba(15, 23, 42, 0.65)',
             plot_bgcolor='rgba(0,0,0,0)',
             annotations=[dict(
-                text=f'<b>{len(df)}</b><br><span style="font-size:10px;color:#94A3B8">Total</span>',
+                text=f'<b>{total_situacoes}</b><br><span style="font-size:10px;color:#94A3B8">Total</span>',
                 x=0.5, y=0.5, font_size=18, font_color="#FFFFFF", showarrow=False
             )]
         )
 
         st.plotly_chart(fig_pizza, use_container_width=True, config={'displayModeBar': False})
         
-        # 2. BARRA DE PROGRESSO DO GARGALO OPERACIONAL
-        st.html("""
+        # 2. BARRA DE PROGRESSO DO GARGALO OPERACIONAL (DINÂMICA)
+        st.html(f"""
             <div style="background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(6px); border: 1px solid rgba(0, 153, 229, 0.3); padding: 16px; border-radius: 10px; margin-top: 10px;">
                 <div style="color: #94A3B8; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
                     <span>Gargalo da Equipe de Consultores</span>
                     <span style="color: #EF4444; font-weight: bold; background: rgba(239, 68, 68, 0.15); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(239, 68, 68, 0.4);">
-                        77.8% Desvio de Função
+                        {pct_desvio}% Desvio de Função
                     </span>
                 </div>
                 <div style="width: 100%; background-color: rgba(255,255,255,0.08); border-radius: 6px; height: 12px; overflow: hidden; padding: 2px;">
-                    <div style="width: 77.8%; background: linear-gradient(90deg, #F59E0B 0%, #EF4444 100%); height: 100%; border-radius: 4px; box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);"></div>
+                    <div style="width: {pct_desvio}%; background: linear-gradient(90deg, #F59E0B 0%, #EF4444 100%); height: 100%; border-radius: 4px; box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);"></div>
                 </div>
                 <div style="color: #64748B; font-size: 0.78rem; margin-top: 8px;">
-                    *Indica que 7 de 9 acionamentos ao consultor deveriam ser resolvidos por outros canais/áreas.
+                    *Indica que {desvios_funcao} de {total_situacoes} acionamentos direcionados ao consultor deveriam ser tratados por outros canais/áreas.
                 </div>
             </div>
         """)
@@ -435,7 +469,7 @@ with aba1:
     rows_html = ""
     for _, row in df.iterrows():
         badge = get_impact_badge(row["impacto"])
-        rows_html += f"<tr><td><strong>{row['problema_atual']}</strong></td><td>{row['canal_atual']}</td><td>{row['acionado_atual']}</td><td>{row['destino_correto']}</td><td>{badge}</td></tr>"
+        rows_html += f"<tr><td><strong>{row['id']}. {row['problema_atual']}</strong></td><td>{row['canal_atual']}</td><td>{row['acionado_atual']}</td><td>{row['destino_correto']}</td><td>{badge}</td></tr>"
 
     table_html = f"""<div class="table-container"><table class="custom-table"><thead><tr><th>Problema Atual</th><th>Canal Atual</th><th>Quem é Acionado Hoje</th><th>Destino Correto</th><th>Nível de Impacto</th></tr></thead><tbody>{rows_html}</tbody></table></div>"""
     
@@ -445,12 +479,15 @@ with aba1:
 with aba2:
     st.subheader("Detalhamento Ponto a Ponto: Como Resolver")
     
-    item_selecionado = st.selectbox(
+    opcoes_select = [f"{row['id']}. {row['problema_atual']}" for _, row in df.iterrows()]
+    
+    item_selecionado_str = st.selectbox(
         "Selecione o Problema Atual para Analisar a Solução:",
-        options=df["problema_atual"].tolist()
+        options=opcoes_select
     )
     
-    detalhe = df[df["problema_atual"] == item_selecionado].iloc[0]
+    selected_id = int(item_selecionado_str.split(".")[0])
+    detalhe = df[df["id"] == selected_id].iloc[0]
     
     st.markdown("---")
     
@@ -459,6 +496,7 @@ with aba2:
     with col_esquerda:
         st.markdown("### ❌ Como é feito hoje")
         st.warning(f"**Problema Atual:** {detalhe['problema_atual']}")
+        st.write(f"**Descrição do Cenário:** {detalhe['detalhamento']}")
         st.write(f"**Canal de Entrada:** {detalhe['canal_atual']}")
         st.write(f"**Quem é acionado:** {detalhe['acionado_atual']}")
         st.write(f"**Impacto Operacional:** {detalhe['impacto']}")
@@ -466,4 +504,4 @@ with aba2:
     with col_direita:
         st.markdown("### ✅ Fluxo Proposto (Solução)")
         st.success(f"**Destino Correto:** {detalhe['destino_correto']}")
-        st.info(f"**O que deve ser feito:** {detalhe['acao_recomendada']}")
+        st.info(f"**Ação Recomendada:** {detalhe['acao_recomendada']}")
