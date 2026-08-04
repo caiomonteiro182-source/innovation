@@ -14,11 +14,10 @@ st.caption("Visão atual dos gargalos operacionais e proposta de reestruturaçã
 
 st.divider()
 
-# Dados dos 9 Pontos
+# Dados das Causas / Problemas Atuais (sem coluna de ID)
 dados_acionamentos = [
     {
-        "id": 1,
-        "causa": "Falta de Equipamento",
+        "problema_atual": "Falta de Equipamento",
         "canal_atual": "WhatsApp / E-mail",
         "acionado_atual": "Consultor",
         "destino_correto": "Planejamento / Suprimentos",
@@ -26,8 +25,7 @@ dados_acionamentos = [
         "acao_recomendada": "Criar fluxo direto para o time de Planejamento de estoque."
     },
     {
-        "id": 2,
-        "causa": "Problemas na Oficina",
+        "problema_atual": "Problemas na Oficina",
         "canal_atual": "WhatsApp / Slack",
         "acionado_atual": "Consultor",
         "destino_correto": "Gestão de Oficinas",
@@ -35,8 +33,7 @@ dados_acionamentos = [
         "acao_recomendada": "Painel de visibilidade de capacidade e fila de atendimento."
     },
     {
-        "id": 3,
-        "causa": "Falta de Inventário na Oficina",
+        "problema_atual": "Falta de Inventário na Oficina",
         "canal_atual": "WhatsApp",
         "acionado_atual": "Consultor",
         "destino_correto": "Back Office / Sistema de Estoque",
@@ -44,8 +41,7 @@ dados_acionamentos = [
         "acao_recomendada": "Obrigatoriedade de checklist diário antes do acionamento."
     },
     {
-        "id": 4,
-        "causa": "Avarias, Danos e Riscos",
+        "problema_atual": "Avarias, Danos e Riscos",
         "canal_atual": "E-mail / WhatsApp",
         "acionado_atual": "Consultor",
         "destino_correto": "Setor de Qualidade / Vistoria",
@@ -53,8 +49,7 @@ dados_acionamentos = [
         "acao_recomendada": "Formulário padronizado com upload obrigatório de foto."
     },
     {
-        "id": 5,
-        "causa": "Acionamento Back Office Oficina",
+        "problema_atual": "Acionamento Back Office Oficina",
         "canal_atual": "Slack / WhatsApp",
         "acionado_atual": "Consultor (Bypass)",
         "destino_correto": "Back Office da Oficina",
@@ -62,8 +57,7 @@ dados_acionamentos = [
         "acao_recomendada": "Trava de sistema: só liberar consultor se Back Office não atender."
     },
     {
-        "id": 6,
-        "causa": "Integração / Documentação",
+        "problema_atual": "Integração / Documentação",
         "canal_atual": "WhatsApp",
         "acionado_atual": "Consultor",
         "destino_correto": "Portal de Conhecimento / Self-Service",
@@ -71,8 +65,7 @@ dados_acionamentos = [
         "acao_recomendada": "Disponibilizar central de ajuda com download de documentos."
     },
     {
-        "id": 7,
-        "causa": "Trava no Cliente (Sem frota no local)",
+        "problema_atual": "Trava no Cliente (Sem frota no local)",
         "canal_atual": "WhatsApp",
         "acionado_atual": "Consultor",
         "destino_correto": "Consultor (Válido)",
@@ -80,8 +73,7 @@ dados_acionamentos = [
         "acao_recomendada": "Ficha de impeditivo rápida para atuação comercial do consultor."
     },
     {
-        "id": 8,
-        "causa": "Falta de Dados na OS",
+        "problema_atual": "Falta de Dados na OS",
         "canal_atual": "WhatsApp / E-mail",
         "acionado_atual": "Consultor",
         "destino_correto": "Emissor da OS / Validação Automática",
@@ -89,8 +81,7 @@ dados_acionamentos = [
         "acao_recomendada": "Bloqueio de abertura de OS sem campos de endereço e frota."
     },
     {
-        "id": 9,
-        "causa": "Encaixe de Agendamento",
+        "problema_atual": "Encaixe de Agendamento",
         "canal_atual": "WhatsApp",
         "acionado_atual": "Consultor",
         "destino_correto": "Back Office Oficina",
@@ -101,7 +92,16 @@ dados_acionamentos = [
 
 df = pd.DataFrame(dados_acionamentos)
 
-# Link do Vídeo (Convertido para o modo preview)
+# Renomeando as colunas para exibição amigável na tabela
+df_exibicao = df.rename(columns={
+    "problema_atual": "Problema Atual",
+    "canal_atual": "Canal Atual",
+    "acionado_atual": "Quem é Acionado Hoje",
+    "destino_correto": "Destino Correto",
+    "impacto": "Nível de Impacto"
+})
+
+# Link do Vídeo (Modo Preview)
 video_url = "https://drive.google.com/file/d/1CMn5TEiWUZ-Jzul_Z4das8bYXHNJk1q6/preview"
 
 # Navegação por Abas
@@ -113,7 +113,7 @@ with aba1:
     
     with col_texto:
         st.subheader("Métricas do Processo Atual")
-        st.metric("Pontos Mapeados", len(df))
+        st.metric("Problemas Mapeados", len(df))
         st.metric("Acionamentos Indevidos ao Consultor", "7 de 9", delta="-77%", delta_color="inverse")
         st.metric("Canais Pulverizados", "3 (WhatsApp, E-mail, Slack)")
         
@@ -124,7 +124,7 @@ with aba1:
     st.markdown("---")
     st.markdown("### Tabela Resumo dos Gargalos Operacionais")
     st.dataframe(
-        df[["id", "causa", "canal_atual", "acionado_atual", "destino_correto", "impacto"]],
+        df_exibicao[["Problema Atual", "Canal Atual", "Quem é Acionado Hoje", "Destino Correto", "Nível de Impacto"]],
         use_container_width=True,
         hide_index=True
     )
@@ -134,11 +134,11 @@ with aba2:
     st.subheader("Detalhamento Ponto a Ponto: Como Resolver")
     
     item_selecionado = st.selectbox(
-        "Selecione o Acionamento para Analisar a Solução:",
-        options=df["causa"].tolist()
+        "Selecione o Problema Atual para Analisar a Solução:",
+        options=df["problema_atual"].tolist()
     )
     
-    detalhe = df[df["causa"] == item_selecionado].iloc[0]
+    detalhe = df[df["problema_atual"] == item_selecionado].iloc[0]
     
     st.markdown("---")
     
@@ -146,7 +146,7 @@ with aba2:
     
     with col_esquerda:
         st.markdown("### ❌ Como é feito hoje")
-        st.warning(f"**Causa:** {detalhe['causa']}")
+        st.warning(f"**Problema Atual:** {detalhe['problema_atual']}")
         st.write(f"**Canal de Entrada:** {detalhe['canal_atual']}")
         st.write(f"**Quem é acionado:** {detalhe['acionado_atual']}")
         st.write(f"**Impacto Operacional:** {detalhe['impacto']}")
