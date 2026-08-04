@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import base64
 
 # 1. Configuração da página
 st.set_page_config(
@@ -8,130 +9,152 @@ st.set_page_config(
     layout="wide"
 )
 
-# 2. Injeção de CSS com Fundo Escuro em Degradê e Ajustes Responsivos para Celular
-st.markdown("""
+# Função para converter a imagem local em Base64 e usar como background
+def get_base64_of_bin_file(bin_file):
+    try:
+        with open(bin_file, 'rb') as f:
+            data = f.read()
+        return base64.b64encode(data).decode()
+    except Exception:
+        return ""
+
+img_base64 = get_base64_of_bin_file("estradas.jpeg")
+
+# 2. Injeção de CSS com Marca d'Água da imagem estradas.jpeg e Fundo Dark Mode
+st.markdown(f"""
     <style>
-    /* Fundo Dark Mode com Degradê */
-    .stApp {
-        background: linear-gradient(135deg, #0A141D 0%, #0F2338 50%, #17385C 100%) !important;
+    /* Marca d'água no fundo da aplicação */
+    .stApp {{
+        background: linear-gradient(135deg, rgba(10, 20, 29, 0.92) 0%, rgba(15, 35, 56, 0.90) 50%, rgba(23, 56, 92, 0.92) 100%),
+                    url("data:image/jpeg;base64,{img_base64}") !important;
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        background-attachment: fixed !important;
         color: #F0F4F8 !important;
-    }
+    }}
 
     /* Título Principal */
-    h1 {
+    h1 {{
         color: #FFFFFF !important;
         font-weight: 800 !important;
         margin-bottom: 0px !important;
-    }
+    }}
 
     /* Subtítulos e Seções */
-    h2, h3, h4 {
+    h2, h3, h4 {{
         color: #0099E5 !important;
         font-weight: 700 !important;
-    }
+    }}
 
     /* Textos gerais */
-    p, span, label {
+    p, span, label {{
         color: #E2E8F0 !important;
-    }
+    }}
 
-    /* Estilização das Métricas */
-    [data-testid="stMetricValue"] {
+    /* Estilização Geral das Métricas do Streamlit */
+    [data-testid="stMetricValue"] {{
         color: #38BDF8 !important;
         font-weight: bold !important;
-    }
+        white-space: normal !important; /* Impede truncamento */
+        word-break: break-word !important;
+        font-size: 1.5rem !important;
+    }}
     
-    [data-testid="stMetricLabel"] {
+    [data-testid="stMetricLabel"] {{
         color: #94A3B8 !important;
         font-weight: 600 !important;
-    }
+        white-space: normal !important;
+    }}
 
-    /* Cartões / Containers internos */
-    [data-testid="stMetric"] {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(0, 153, 229, 0.2);
-        padding: 15px;
+    /* Cartões / Containers das Métricas com efeito glassmorphism */
+    [data-testid="stMetric"] {{
+        background: rgba(15, 23, 42, 0.65);
+        backdrop-filter: blur(6px);
+        border: 1px solid rgba(0, 153, 229, 0.3);
+        padding: 12px;
         border-radius: 10px;
         margin-bottom: 10px;
-    }
+        min-height: 100px;
+    }}
 
     /* Estilização das Abas */
-    button[data-baseweb="tab"] {
+    button[data-baseweb="tab"] {{
         color: #94A3B8 !important;
         font-weight: 600 !important;
         font-size: 16px !important;
-    }
+    }}
 
-    button[data-baseweb="tab"][aria-selected="true"] {
+    button[data-baseweb="tab"][aria-selected="true"] {{
         color: #38BDF8 !important;
         border-bottom-color: #0099E5 !important;
-    }
+    }}
 
     /* Caixas de Alerta */
-    .stAlert {
+    .stAlert {{
         border-radius: 8px !important;
-        background-color: rgba(15, 23, 42, 0.7) !important;
-    }
+        background-color: rgba(15, 23, 42, 0.75) !important;
+        backdrop-filter: blur(4px);
+    }}
 
     /* Selectbox estilizado */
-    div[data-baseweb="select"] > div {
-        background-color: #1E293B !important;
+    div[data-baseweb="select"] > div {{
+        background-color: rgba(30, 41, 59, 0.9) !important;
         color: #FFFFFF !important;
         border-color: #0099E5 !important;
-    }
+    }}
 
     /* Linha Divisória */
-    hr {
+    hr {{
         border-color: #0099E5 !important;
         opacity: 0.4;
-    }
+    }}
 
     /* =========================================================
        AJUSTES RESPONSIVOS PARA CELULAR / DISPOSITIVOS MÓVEIS 
        ========================================================= */
-    @media (max-width: 768px) {
-        /* Garante que o container principal preencha 100% da tela */
-        .block-container {
-            padding-left: 1rem !important;
-            padding-right: 1rem !important;
+    @media (max-width: 768px) {{
+        .block-container {{
+            padding-left: 0.8rem !important;
+            padding-right: 0.8rem !important;
             padding-top: 1rem !important;
-        }
+        }}
 
-        /* Centraliza a logo no celular */
-        [data-testid="stImage"] {
+        [data-testid="stImage"] {{
             display: flex;
             justify-content: center;
             margin: 0 auto 15px auto;
-        }
+        }}
 
-        /* Reduz tamanho dos títulos no celular para não quebrar feio */
-        h1 {
-            font-size: 1.8rem !important;
+        h1 {{
+            font-size: 1.6rem !important;
             text-align: center;
-        }
+        }}
 
-        h2, h3 {
-            font-size: 1.3rem !important;
-        }
+        h2, h3 {{
+            font-size: 1.2rem !important;
+        }}
 
-        /* Garante que o vídeo do Google Drive ocupe 100% da largura do celular */
-        iframe {
+        [data-testid="stMetricValue"] {{
+            font-size: 1.2rem !important;
+            line-height: 1.4 !important;
+        }}
+
+        iframe {{
             width: 100% !important;
-            height: 230px !important;
-        }
+            height: 220px !important;
+        }}
 
-        /* Ajusta o padding das abas para caber no touch */
-        button[data-baseweb="tab"] {
-            font-size: 14px !important;
-            padding: 8px 10px !important;
-        }
+        button[data-baseweb="tab"] {{
+            font-size: 13px !important;
+            padding: 6px 8px !important;
+        }}
 
-        /* Permite rolagem horizontal limpa na tabela sem cortar dados */
-        [data-testid="stDataFrame"] {
+        [data-testid="stDataFrame"] {{
             width: 100% !important;
             overflow-x: auto !important;
-        }
-    }
+        }}
+    }}
     </style>
 """, unsafe_allow_html=True)
 
@@ -246,6 +269,7 @@ with aba1:
     
     with col_texto:
         st.subheader("Métricas do Processo Atual")
+        
         st.metric("Problemas Mapeados", len(df))
         st.metric("Acionamentos Indevidos ao Consultor", "7 de 9", delta="-77%", delta_color="inverse")
         st.metric("Canais Pulverizados", "3 (WhatsApp, E-mail, Slack)")
