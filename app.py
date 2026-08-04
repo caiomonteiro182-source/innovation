@@ -239,15 +239,21 @@ st.markdown(f"""
     </style>
 """, unsafe_allow_html=True)
 
-# Header com a Logo e Título
-col_logo, col_titulo = st.columns([1, 4])
+# Header com a Logo e Título Centralizado no Espaço
+col_logo, col_titulo = st.columns([1, 4], vertical_alignment="center")
 
 with col_logo:
     st.image("logo.png", width=200)
 
 with col_titulo:
-    st.title("Fluxo de Atendimento de Consultores")
-    st.caption("Visão atual dos gargalos operacionais e proposta de reestruturação dos fluxos da equipe.")
+    st.markdown("""
+        <div style="text-align: center;">
+            <h1 style="margin-bottom: 4px;">Fluxo de Atendimento de Consultores</h1>
+            <p style="color: #94A3B8; margin: 0; font-size: 1rem;">
+                Visão atual dos gargalos operacionais e proposta de reestruturação dos fluxos da equipe.
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
 
 st.divider()
 
