@@ -239,11 +239,11 @@ st.markdown(f"""
     </style>
 """, unsafe_allow_html=True)
 
-# Header com a Logo Expandida e Alinhada ao Centro Vertical
-col_logo, col_titulo = st.columns([1.2, 3.8], vertical_alignment="center")
+# Header com a Logo em Tamanho Intermediário / Proporcional
+col_logo, col_titulo = st.columns([1, 4], vertical_alignment="center")
 
 with col_logo:
-    st.image("logo.png", use_container_width=True)
+    st.image("logo.png", width=260)
 
 with col_titulo:
     st.title("Fluxo de Atendimento de Consultores")
