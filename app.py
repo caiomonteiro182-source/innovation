@@ -4,7 +4,7 @@ import base64
 
 # 1. Configuração da página
 st.set_page_config(
-    page_title="Platform Science - Diagnóstico de Acionamentos",
+    page_title="Platform Science - Fluxo de Atendimento de Consultores",
     page_icon="⚡",
     layout="wide"
 )
@@ -56,7 +56,7 @@ st.markdown(f"""
     [data-testid="stMetricValue"] {{
         color: #38BDF8 !important;
         font-weight: bold !important;
-        white-space: normal !important; /* Impede truncamento */
+        white-space: normal !important;
         word-break: break-word !important;
         font-size: 1.5rem !important;
     }}
@@ -110,9 +110,7 @@ st.markdown(f"""
         opacity: 0.4;
     }}
 
-    /* =========================================================
-       AJUSTES RESPONSIVOS PARA CELULAR / DISPOSITIVOS MÓVEIS 
-       ========================================================= */
+    /* Ajustes responsivos para celular */
     @media (max-width: 768px) {{
         .block-container {{
             padding-left: 0.8rem !important;
@@ -158,14 +156,14 @@ st.markdown(f"""
     </style>
 """, unsafe_allow_html=True)
 
-# Header com a Logo e Título
+# Header com a Logo e Título Atualizado
 col_logo, col_titulo = st.columns([1, 4])
 
 with col_logo:
     st.image("logo.png", width=200)
 
 with col_titulo:
-    st.title("Diagnóstico de Acionamentos")
+    st.title("Fluxo de Atendimento de Consultores")
     st.caption("Visão atual dos gargalos operacionais e proposta de reestruturação dos fluxos da equipe.")
 
 st.divider()
