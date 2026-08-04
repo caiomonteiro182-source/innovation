@@ -25,7 +25,7 @@ img_base64 = get_base64_of_bin_file("estradas.jpeg")
 logo_ps_b64 = get_base64_of_bin_file("logo.png")
 logo_inno_b64 = get_base64_of_bin_file("logo_innovation2026.png")
 
-# 2. Injeção de CSS com Marca d'Água, Dark Mode, Glassmorphism e Tabela Customizada
+# 2. Injeção de CSS com Marca d'Água, Dark Mode, Glassmorphism e Bloqueio de Digitação
 st.markdown(f"""
     <style>
     /* Marca d'água no fundo da aplicação */
@@ -95,7 +95,7 @@ st.markdown(f"""
         color: #E2E8F0 !important;
     }}
 
-    /* CONTAINER FULL GLASSMORPHISM DE CARDS (ENVOLVENDO TÍTULO + CONTEÚDO) */
+    /* CONTAINER FULL GLASSMORPHISM DE CARDS */
     .glass-card-full {{
         background: rgba(15, 23, 42, 0.75);
         backdrop-filter: blur(10px);
@@ -141,11 +141,18 @@ st.markdown(f"""
         border-bottom-color: #0099E5 !important;
     }}
 
-    /* Selectbox estilizado */
+    /* BLOQUEIO DE DIGITAÇÃO NO SELECTBOX (APENAS ESCOLHA/CLIQUE) */
+    div[data-baseweb="select"] input {{
+        caret-color: transparent !important;
+        pointer-events: none !important;
+        user-select: none !important;
+    }}
+
     div[data-baseweb="select"] > div {{
         background-color: rgba(30, 41, 59, 0.9) !important;
         color: #FFFFFF !important;
         border-color: #0099E5 !important;
+        cursor: pointer !important;
     }}
 
     /* Linha Divisória */
