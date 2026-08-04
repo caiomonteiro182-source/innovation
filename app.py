@@ -41,7 +41,7 @@ dados_acionamentos = [
         "acionado_atual": "Consultor",
         "destino_correto": "Back Office / Sistema de Estoque",
         "impacto": "Muito Alto",
-        "acao_recomendada": "Obrigariedade de checklist diário antes do acionamento."
+        "acao_recomendada": "Obrigatoriedade de checklist diário antes do acionamento."
     },
     {
         "id": 4,
@@ -101,16 +101,6 @@ dados_acionamentos = [
 
 df = pd.DataFrame(dados_acionamentos)
 
-# Sidebar / Filtros
-st.sidebar.header("🔍 Filtros da Apresentação")
-nivel_impacto = st.sidebar.multiselect(
-    "Filtrar por Nível de Impacto:",
-    options=df["impacto"].unique(),
-    default=df["impacto"].unique()
-)
-
-df_filtrado = df[df["impacto"].isin(nivel_impacto)]
-
 # Navegação por Abas
 aba1, aba2 = st.tabs(["📊 Visão Geral & Diagnóstico", "🔄 Matriz de Redirecionamento"])
 
@@ -119,13 +109,13 @@ with aba1:
     st.subheader("Métricas do Processo Atual")
     
     col1, col2, col3 = st.columns(3)
-    col1.metric("Pontos Mapeados", len(df_filtrado))
+    col1.metric("Pontos Mapeados", len(df))
     col2.metric("Acionamentos Indevidos ao Consultor", "7 de 9", delta="-77%", delta_color="inverse")
     col3.metric("Canais Pulverizados", "3 (WhatsApp, E-mail, Slack)")
     
     st.markdown("### Tabela Resumo dos Gargalos Operacionais")
     st.dataframe(
-        df_filtrado[["id", "causa", "canal_atual", "acionado_atual", "destino_correto", "impacto"]],
+        df[["id", "causa", "canal_atual", "acionado_atual", "destino_correto", "impacto"]],
         use_container_width=True,
         hide_index=True
     )
@@ -136,7 +126,7 @@ with aba2:
     
     item_selecionado = st.selectbox(
         "Selecione o Acionamento para Analisar a Solução:",
-        options=df_filtrado["causa"].tolist()
+        options=df["causa"].tolist()
     )
     
     detalhe = df[df["causa"] == item_selecionado].iloc[0]
