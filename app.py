@@ -401,13 +401,13 @@ dados_acionamentos = [
     },
     {
         "id": 10,
-        "problema_atual": "Suporte a Tecnologia",
-        "detalhamento": "Módulo sem atualização de firmware, falhas no aplicativo móvel ou erro de integração de OS.",
-        "canal_atual": "WhatsApp / Chamado",
-        "acionado_atual": "Consultor",
-        "destino_correto": "Suporte Técnico / TI",
+        "problema_atual": "Acionamento sobre Tecnologia",
+        "detalhamento": "Módulo sem atualização de firmware, falha no aplicativo móvel, módulo desatualizado e erro de integração de OS.",
+        "canal_atual": "WhatsApp / Direto",
+        "acionado_atual": "Consultor -> Apoio (Edson)",
+        "destino_correto": "Filtro de Demandas Dedicado",
         "impacto": "Alto",
-        "acao_recomendada": "Abertura direta de ticket na central de TI com diagnósticos e logs automatizados."
+        "acao_recomendada": "Designar uma pessoa para filtrar as demandas técnicas e entender a situação antes de acionar a equipe de apoio."
     }
 ]
 
@@ -806,4 +806,32 @@ with aba2:
             **Acesso Direto às Oficinas ou Agendamento GR:**
             * Permitir o **acesso direto às oficinas** ou canalizar as solicitações via fluxo de **agendamento GR**.
             * **Regra de Escalonamento:** O consultor só deverá ser acionado **caso não haja retorno ou posicionamento** por parte da oficina ou da equipe de agendamento.
+            """)
+
+    # DESTRINCHAMENTO - CAUSA 10
+    elif selected_id == 10:
+        st.markdown("---")
+        st.markdown("## 🔍 Destrinchamento da Causa 10: Acionamento sobre Tecnologia")
+        
+        col_10_1, col_10_2 = st.columns(2)
+        
+        with col_10_1:
+            st.markdown("### ⚠️ Como é feito hoje & Impacto")
+            st.error("""
+            **Como é feito hoje?**
+            * Ocorrem falhas como: **módulo sem atualização no firmware**, **falha no aplicativo móvel**, **módulo sem atualização** e **erro de integração de OS**.
+            * O técnico faz o acionamento diretamente para o consultor.
+            * O consultor precisa acionar o apoio ao técnico (**Edson**) para verificar a situação.
+            """)
+            st.warning("""
+            **Impacto:**
+            * **Altas demandas acentuadas** tanto para o consultor quanto para o time de apoio técnico.
+            """)
+            
+        with col_10_2:
+            st.markdown("### ⚙️ Solução Proposta (Triagem Técnica)")
+            st.success("""
+            **Designação de Ponto Focal para Filtro:**
+            * Alocar **uma pessoa dedicada para filtrar as demandas** e compreender antecipadamente a situação técnica.
+            * **Evitar o Triângulo de Acionamento:** Eliminar a intermédio do consultor, direcionando apenas chamados pré-validados para a equipe de apoio técnico.
             """)
