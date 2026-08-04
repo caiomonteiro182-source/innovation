@@ -25,7 +25,7 @@ img_base64 = get_base64_of_bin_file("estradas.jpeg")
 logo_ps_b64 = get_base64_of_bin_file("logo.png")
 logo_inno_b64 = get_base64_of_bin_file("logo_innovation2026.png")
 
-# 2. Injeção de CSS com Marca d'Água, Dark Mode, Glassmorphism e Bloqueio de Digitação
+# 2. Injeção de CSS com Marca d'Água, Dark Mode, Glassmorphism e Bloqueio Total de Entrada de Texto
 st.markdown(f"""
     <style>
     /* Marca d'água no fundo da aplicação */
@@ -141,11 +141,12 @@ st.markdown(f"""
         border-bottom-color: #0099E5 !important;
     }}
 
-    /* BLOQUEIO DE DIGITAÇÃO NO SELECTBOX (APENAS ESCOLHA/CLIQUE) */
+    /* BLOQUEIO RIGOROSO DE DIGITAÇÃO EM QUALQUER CAMPO SELECT */
     div[data-baseweb="select"] input {{
-        caret-color: transparent !important;
+        opacity: 0 !important;
+        width: 0px !important;
+        position: absolute !important;
         pointer-events: none !important;
-        user-select: none !important;
     }}
 
     div[data-baseweb="select"] > div {{
@@ -153,6 +154,32 @@ st.markdown(f"""
         color: #FFFFFF !important;
         border-color: #0099E5 !important;
         cursor: pointer !important;
+        user-select: none !important;
+    }}
+
+    /* ESTILIZAÇÃO DO SEGMENTED CONTROL / RADIO BOTÕES (SEM CAIXA DE TEXTO) */
+    div[data-testid="stRadio"] > div {{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        background: rgba(15, 23, 42, 0.5);
+        padding: 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(56, 189, 248, 0.2);
+    }}
+
+    div[data-testid="stRadio"] label {{
+        background: rgba(30, 41, 59, 0.8);
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        padding: 8px 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }}
+
+    div[data-testid="stRadio"] label:hover {{
+        border-color: #38BDF8 !important;
+        background: rgba(0, 153, 229, 0.2) !important;
     }}
 
     /* Linha Divisória */
@@ -565,9 +592,11 @@ with aba2:
     
     opcoes_select = [f"{row['id']}. {row['problema_atual']}" for _, row in df.iterrows()]
     
-    item_selecionado_str = st.selectbox(
-        "Selecione o Problema Atual para Analisar a Solução:",
-        options=opcoes_select
+    # UTILIZANDO BOTÕES NATIVOS SELECIONÁVEIS IMPOSSIBILITANDO QUALQUER DIGITAÇÃO
+    item_selecionado_str = st.radio(
+        "Clique para Selecionar o Problema Atual:",
+        options=opcoes_select,
+        horizontal=True
     )
     
     selected_id = int(item_selecionado_str.split(".")[0])
