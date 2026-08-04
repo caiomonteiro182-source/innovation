@@ -584,24 +584,6 @@ with aba2:
     )
     
     selected_id = int(item_selecionado_str.split(".")[0])
-    detalhe = df[df["id"] == selected_id].iloc[0]
-    
-    st.markdown("---")
-    
-    col_esquerda, col_direita = st.columns(2)
-    
-    with col_esquerda:
-        st.markdown("### ❌ Como é feito hoje")
-        st.warning(f"**Problema Atual:** {detalhe['problema_atual']}")
-        st.write(f"**Descrição do Cenário:** {detalhe['detalhamento']}")
-        st.write(f"**Canal de Entrada:** {detalhe['canal_atual']}")
-        st.write(f"**Quem é acionado:** {detalhe['acionado_atual']}")
-        st.write(f"**Impacto Operacional:** {detalhe['impacto']}")
-        
-    with col_direita:
-        st.markdown("### ✅ Fluxo Proposto (Solução)")
-        st.success(f"**Destino Correto:** {detalhe['destino_correto']}")
-        st.info(f"**Ação Recomendada:** {detalhe['acao_recomendada']}")
 
     # DESTRINCHAMENTO - CAUSA 1
     if selected_id == 1:
