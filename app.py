@@ -129,6 +129,82 @@ st.markdown(f"""
         gap: 8px;
     }}
 
+    /* CARD EXCLUSIVO DA EQUIPE DE DESENVOLVIMENTO */
+    .team-card {{
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(56, 189, 248, 0.4);
+        border-radius: 16px;
+        padding: 20px 24px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        margin-top: 15px;
+        margin-bottom: 25px;
+        transition: all 0.3s ease-in-out;
+    }}
+
+    .team-card:hover {{
+        border-color: rgba(56, 189, 248, 0.85);
+        box-shadow: 0 0 30px rgba(0, 153, 229, 0.35);
+    }}
+
+    .team-card-header {{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid rgba(56, 189, 248, 0.25);
+        padding-bottom: 12px;
+        margin-bottom: 16px;
+    }}
+
+    .team-card-title {{
+        color: #38BDF8;
+        font-size: 1.25rem;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }}
+
+    .team-leader-badge {{
+        background: rgba(0, 153, 229, 0.2);
+        color: #38BDF8;
+        border: 1px solid rgba(0, 153, 229, 0.5);
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 700;
+    }}
+
+    .team-grid {{
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+    }}
+
+    .team-member-item {{
+        background: rgba(30, 41, 59, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 10px;
+        padding: 10px 14px;
+        display: flex;
+        flex-direction: column;
+    }}
+
+    .member-area {{
+        color: #94A3B8;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }}
+
+    .member-name {{
+        color: #F8FAFC;
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin-top: 2px;
+    }}
+
     /* Estilização das Abas */
     button[data-baseweb="tab"] {{
         color: #94A3B8 !important;
@@ -538,6 +614,48 @@ with aba1:
             """)
             st.components.v1.iframe(video_url, height=330)
             st.html("</div>")
+
+    # CARD DA EQUIPE DO PROJETO COM OS NOVOS INTEGRANTES
+    st.html("""
+        <div class="team-card">
+            <div class="team-card-header">
+                <div class="team-card-title">
+                    <span>👥 Equipe do Projeto</span>
+                </div>
+                <span class="team-leader-badge">Líder: Paulo Terra</span>
+            </div>
+            <div class="team-grid">
+                <div class="team-member-item">
+                    <span class="member-area">Integrante</span>
+                    <span class="member-name">Fabio Silva</span>
+                </div>
+                <div class="team-member-item">
+                    <span class="member-area">Integrante</span>
+                    <span class="member-name">Lucas Ribeiro</span>
+                </div>
+                <div class="team-member-item">
+                    <span class="member-area">Integrante</span>
+                    <span class="member-name">Maria Eduarda Barbosa</span>
+                </div>
+                <div class="team-member-item">
+                    <span class="member-area">Integrante</span>
+                    <span class="member-name">Verusca Cristina</span>
+                </div>
+                <div class="team-member-item">
+                    <span class="member-area">Integrante</span>
+                    <span class="member-name">Karilene Esteves</span>
+                </div>
+                <div class="team-member-item">
+                    <span class="member-area">Integrante</span>
+                    <span class="member-name">Higor Souza</span>
+                </div>
+                <div class="team-member-item">
+                    <span class="member-area">Integrante</span>
+                    <span class="member-name">Caio Monteiro</span>
+                </div>
+            </div>
+        </div>
+    """)
 
     st.markdown("---")
     st.markdown("### Resumo das Situações Atuais")
