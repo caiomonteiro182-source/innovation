@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import base64
 
-# 1. Configuração da página (Ícone da guia alterado para icon_consultor.png)
+# 1. Configuração da página (Favicon ajustado para icon_consultor.png)
 st.set_page_config(
     page_title="Platform Science - Fluxo de Atendimento de Consultores",
     page_icon="icon_consultor.png",
@@ -20,7 +20,7 @@ def get_base64_of_bin_file(bin_file):
 
 img_base64 = get_base64_of_bin_file("estradas.jpeg")
 
-# 2. Injeção de CSS com Marca d'Água da imagem estradas.jpeg, Fundo Dark Mode, Tabela e Tópicos Customizados
+# 2. Injeção de CSS com Marca d'Água, Dark Mode, Glassmorphism e Tabela Customizada
 st.markdown(f"""
     <style>
     /* Marca d'água no fundo da aplicação */
@@ -76,39 +76,6 @@ st.markdown(f"""
         border-radius: 10px;
         margin-bottom: 10px;
         min-height: 100px;
-    }}
-
-    /* ESTILO DOS CANAIS EM TÓPICOS / BADGES */
-    .canal-card {{
-        background: rgba(15, 23, 42, 0.65);
-        backdrop-filter: blur(6px);
-        border: 1px solid rgba(0, 153, 229, 0.3);
-        padding: 12px;
-        border-radius: 10px;
-        margin-bottom: 10px;
-    }}
-
-    .canal-title {{
-        color: #94A3B8;
-        font-weight: 600;
-        font-size: 0.875rem;
-        margin-bottom: 8px;
-    }}
-
-    .canal-badges-container {{
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-    }}
-
-    .canal-badge {{
-        background-color: rgba(0, 153, 229, 0.15);
-        color: #38BDF8;
-        border: 1px solid rgba(0, 153, 229, 0.4);
-        padding: 6px 12px;
-        border-radius: 6px;
-        font-size: 0.9rem;
-        font-weight: 600;
     }}
 
     /* Estilização das Abas */
@@ -375,9 +342,30 @@ with aba1:
     with col_texto:
         st.subheader("Métricas do Processo Atual")
         
-        st.metric("Problemas Mapeados", len(df))
-        st.metric("Acionamentos Indevidos ao Consultor", "7 de 9", delta="-77%", delta_color="inverse")
+        # Cartões de Métricas Principais Lado a Lado
+        kpi_col1, kpi_col2 = st.columns(2)
+        with kpi_col1:
+            st.metric("Situações Mapeadas", len(df))
+        with kpi_col2:
+            st.metric("Acionamentos Indevidos", "7 de 9", delta="-77.8%", delta_color="inverse")
         
+        # OPÇÃO 2: BARRA VISUAL DE PROGRESSO DE INEFICIÊNCIA OPERACIONAL
+        st.html("""
+            <div style="background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(6px); border: 1px solid rgba(0, 153, 229, 0.3); padding: 16px; border-radius: 10px; margin-top: 10px;">
+                <div style="color: #94A3B8; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+                    <span>Gargalo da Equipe de Consultores</span>
+                    <span style="color: #EF4444; font-weight: bold; background: rgba(239, 68, 68, 0.15); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(239, 68, 68, 0.4);">
+                        77.8% Desvio de Função
+                    </span>
+                </div>
+                <div style="width: 100%; background-color: rgba(255,255,255,0.08); border-radius: 6px; height: 12px; overflow: hidden; padding: 2px;">
+                    <div style="width: 77.8%; background: linear-gradient(90deg, #F59E0B 0%, #EF4444 100%); height: 100%; border-radius: 4px; box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);"></div>
+                </div>
+                <div style="color: #64748B; font-size: 0.78rem; margin-top: 8px;">
+                    *Indica a proporção de demandas acionadas ao consultor que deveriam ser resolvidas por outros canais/áreas.
+                </div>
+            </div>
+        """)
         
     with col_video:
         st.subheader("📺 Vídeo de Apresentação")
@@ -386,7 +374,7 @@ with aba1:
     st.markdown("---")
     st.markdown("### Resumo das Situações Atuais")
 
-    # CONSTRUÇÃO DO HTML DA TABELA
+    # CONSTRUÇÃO DO HTML DA TABELA CUSTOMIZADA
     rows_html = ""
     for _, row in df.iterrows():
         badge = get_impact_badge(row["impacto"])
