@@ -132,6 +132,7 @@ st.markdown(f"""
         padding: 18px;
         box-shadow: 0 12px 32px 0 rgba(0, 0, 0, 0.45);
         transition: all 0.3s ease-in-out;
+        margin-bottom: 10px;
     }}
 
     .video-card-container:hover {{
@@ -143,7 +144,7 @@ st.markdown(f"""
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 12px;
+        margin-bottom: 8px;
     }}
 
     .video-card-title {{
@@ -167,20 +168,11 @@ st.markdown(f"""
         text-transform: uppercase;
     }}
 
-    .video-wrapper {{
-        position: relative;
-        width: 100%;
-        border-radius: 12px;
-        overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        background: #000000;
-    }}
-
-    .video-wrapper iframe {{
-        width: 100%;
-        height: 330px;
-        border: none;
-        display: block;
+    /* Estilização dos iframes do Streamlit no player */
+    div[data-testid="stCustomComponentV1"] iframe {{
+        border-radius: 12px !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
     }}
 
     /* Estilização das Abas */
@@ -337,7 +329,7 @@ st.markdown(f"""
             margin-top: 6px !important;
         }}
 
-        .video-wrapper iframe {{
+        div[data-testid="stCustomComponentV1"] iframe {{
             height: 220px !important;
         }}
 
@@ -572,8 +564,8 @@ with aba1:
         """)
         
     with col_video:
-        # PLAYER DE VÍDEO CUSTOMIZADO COM GLASSMORPHISM
-        st.html(f"""
+        # CABEÇALHO DO CARD GLASSMORPHISM
+        st.html("""
             <div class="video-card-container">
                 <div class="video-card-header">
                     <div class="video-card-title">
@@ -581,11 +573,10 @@ with aba1:
                     </div>
                     <span class="video-badge">Apresentação Executiva</span>
                 </div>
-                <div class="video-wrapper">
-                    <iframe src="{video_url}" allow="autoplay"></iframe>
-                </div>
             </div>
         """)
+        # CARREGAMENTO SEGURO DO IFRAME STREAMLIT
+        st.components.v1.iframe(video_url, height=330)
 
     st.markdown("---")
     st.markdown("### Resumo das Situações Atuais")
@@ -763,6 +754,6 @@ with aba2:
             st.markdown("### ⚙️ Solução Proposta (Acesso Direto / GR)")
             st.success("""
             **Fluxo Direto de Atendimento:**
-            * Garantir **acesso direto às oficinas** ou direcionar solicitações pelo fluxo de **agendamento GR**.
+            * Garantir **accesso direto às oficinas** ou direcionar solicitações pelo fluxo de **agendamento GR**.
             * **Regra de Escalonamento:** O consultor só deve ser acionado **caso não haja retorno ou resolução** após a tentativa direta com a oficina/agendamento.
             """)
