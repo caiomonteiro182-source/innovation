@@ -55,12 +55,12 @@ st.markdown(f"""
     }}
 
     .header-logo-left {{
-        height: 60px;
+        height: 65px;
         object-fit: contain;
     }}
 
     .header-logo-right {{
-        height: 50px;
+        height: 55px;
         object-fit: contain;
     }}
 
@@ -69,19 +69,21 @@ st.markdown(f"""
         flex-grow: 1;
     }}
 
+    /* TEXTOS DO CABEÇALHO NO DESKTOP */
     .header-center-title h1 {{
         color: #FFFFFF !important;
         font-weight: 800 !important;
-        font-size: 1.8rem;
+        font-size: 2.3rem !important;
         margin: 0 !important;
         padding: 0 !important;
         line-height: 1.2;
     }}
 
     .header-center-title p {{
-        color: #94A3B8 !important;
-        margin: 6px 0 0 0 !important;
-        font-size: 0.9rem;
+        color: #CBD5E1 !important;
+        margin: 8px 0 0 0 !important;
+        font-size: 1.15rem !important;
+        font-weight: 500 !important;
     }}
 
     /* Subtítulos e Seções */
@@ -230,7 +232,7 @@ st.markdown(f"""
         border: 1px solid rgba(100, 116, 139, 0.5);
     }}
 
-    /* AJUSTES EXCLUSIVOS PARA CELULAR */
+    /* TEXTOS NO CELULAR */
     @media (max-width: 768px) {{
         .block-container {{
             padding-top: 3.8rem !important;
@@ -249,15 +251,15 @@ st.markdown(f"""
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }}
 
         .header-logo-left {{
-            height: 28px !important;
+            height: 32px !important;
         }}
 
         .header-logo-right {{
-            height: 28px !important;
+            height: 32px !important;
         }}
 
         .header-center-title {{
@@ -265,14 +267,14 @@ st.markdown(f"""
         }}
 
         .header-center-title h1 {{
-            font-size: 1.25rem !important;
-            line-height: 1.2 !important;
+            font-size: 1.5rem !important;
+            line-height: 1.25 !important;
         }}
 
         .header-center-title p {{
-            font-size: 0.78rem !important;
-            line-height: 1.2 !important;
-            margin-top: 4px !important;
+            font-size: 0.9rem !important;
+            line-height: 1.3 !important;
+            margin-top: 6px !important;
         }}
 
         iframe {{
@@ -288,7 +290,7 @@ st.markdown(f"""
     </style>
 """, unsafe_allow_html=True)
 
-# 3. CABEÇALHO HTML NATIVO ADAPTÁVEL
+# 3. CABEÇALHO HTML NATIVO
 src_logo_ps = f"data:image/png;base64,{logo_ps_b64}" if logo_ps_b64 else "logo.png"
 src_logo_inno = f"data:image/png;base64,{logo_inno_b64}" if logo_inno_b64 else "logo_innovation2026.png"
 
@@ -322,22 +324,22 @@ dados_acionamentos = [
     {
         "id": 2,
         "problema_atual": "Problema na Oficina",
-        "detalhamento": "Problemas de oficina com cliente (atendimento, falta de equipamento, improdutividade, reclamação, alta demanda e remanejamento).",
-        "canal_atual": "WhatsApp / Slack",
+        "detalhamento": "Problemas de oficina com cliente (atendimento, no-show, reclamação do cliente e alta demanda de oficina).",
+        "canal_atual": "WhatsApp / E-mail / Slack",
         "acionado_atual": "Consultor",
-        "destino_correto": "Gestão de Oficinas",
+        "destino_correto": "Consultor (Somente Casos Graves)",
         "impacto": "Alto",
-        "acao_recomendada": "Painel de visibilidade em tempo real sobre capacidade, demanda e fila de atendimento."
+        "acao_recomendada": "Manter o acionamento ao consultor restrito a casos graves de alta complexidade ou risco ao relacionamento."
     },
     {
         "id": 3,
         "problema_atual": "Falta de Inventário na Oficina",
-        "detalhamento": "A ausência de inventário correto na oficina impede a verificação de estoque, gerando acionamentos indevidos ao consultor.",
-        "canal_atual": "WhatsApp",
+        "detalhamento": "A ausência de inventário correto na oficina impede a verificação de estoque, gerando cobranças indevidas ao consultor.",
+        "canal_atual": "WhatsApp / Logística",
         "acionado_atual": "Consultor",
-        "destino_correto": "Back Office / Sistema de Estoque",
+        "destino_correto": "Plataforma Web / Sistema de Estoque",
         "impacto": "Muito Alto",
-        "acao_recomendada": "Obrigatoriedade de verificação e rotina de inventário prévio no sistema antes do acionamento."
+        "acao_recomendada": "Gerenciamento automatizado de estoque via plataforma web, realizando baixa automática com a execução no sistema."
     },
     {
         "id": 4,
@@ -415,7 +417,7 @@ df = pd.DataFrame(dados_acionamentos)
 
 # Cálculos dinâmicos
 total_situacoes = len(df)
-desvios_funcao = len(df[df["destino_correto"] != "Consultor (Válido)"])
+desvios_funcao = len(df[~df["destino_correto"].str.contains("Consultor")])
 pct_desvio = round((desvios_funcao / total_situacoes) * 100, 1)
 
 # Função para formatar o badge HTML do impacto
@@ -558,7 +560,7 @@ with aba2:
         st.success(f"**Destino Correto:** {detalhe['destino_correto']}")
         st.info(f"**Ação Recomendada:** {detalhe['acao_recomendada']}")
 
-    # SEÇÃO DESTINADA AO DESTRINCHAMENTO APROFUNDADO DOS TÓPICOS
+    # DESTRINCHAMENTO - CAUSA 1
     if selected_id == 1:
         st.markdown("---")
         st.markdown("## 🔍 Destrinchamento da Causa 1: Falta de Equipamento")
@@ -586,4 +588,57 @@ with aba2:
             **Impactos Financeiros e Operacionais:**
             * **Improdutivo:** Se o técnico não realizar a instalação parcial, o agendamento é perdido, gerando reagendamento e **custo duplicado** de deslocamento para a empresa.
             * **Instalação Parcial:** Gera **cobrança duplicada**, pois o técnico precisa retornar futuramente até o cliente apenas para instalar o item remanescente.
+            """)
+
+    # DESTRINCHAMENTO - CAUSA 2
+    elif selected_id == 2:
+        st.markdown("---")
+        st.markdown("## 🔍 Destrinchamento da Causa 2: Problema na Oficina")
+        
+        col_2_1, col_2_2 = st.columns(2)
+        
+        with col_2_1:
+            st.markdown("### ⚠️ Como é feito hoje?")
+            st.error("""
+            * **Acontecimentos:** Ocorre em casos de problemas de atendimento, *no-show* (ausência), reclamação direta do cliente ou alta demanda da oficina.
+            * **Canal de Comunicação:** Quem recebe a reclamação aciona diretamente o consultor via **WhatsApp, E-mail ou Slack**.
+            """)
+            
+        with col_2_2:
+            st.markdown("### 🎯 Impactos e Solução Proposta")
+            st.warning("""
+            **Impacto Atual:**
+            * Gera **altas demandas e sobrecarga** constante para a equipe de consultores.
+            """)
+            st.success("""
+            **Solução:**
+            * O processo continuará da mesma maneira, **mantendo o acionamento ao consultor restrito para casos graves** de alta relevância ou risco comercial.
+            """)
+
+    # DESTRINCHAMENTO - CAUSA 3
+    elif selected_id == 3:
+        st.markdown("---")
+        st.markdown("## 🔍 Destrinchamento da Causa 3: Cobrança pela Falta de Inventário")
+        
+        col_3_1, col_3_2 = st.columns(2)
+        
+        with col_3_1:
+            st.markdown("### 📦 Como é feito hoje & Impactos")
+            st.error("""
+            **Como é feito hoje?**
+            * Como as oficinas não realizam o inventário corretamente, não verificam previamente os itens no estoque.
+            * A **Logística aciona os consultores** cobrando posicionamento sobre a falta de inventário dessas oficinas.
+            """)
+            st.warning("""
+            **Impactos:**
+            * Falta generalizada de inventário e de peças disponíveis na oficina.
+            * **Incapacidade de execução de serviços** agendados por ausência de componentes no local.
+            """)
+            
+        with col_3_2:
+            st.markdown("### ⚙️ Solução Proposta")
+            st.success("""
+            **Gerenciamento Automatizado:**
+            * O próprio **sistema assume o gerenciamento do estoque** através de uma plataforma web dedicada.
+            * **Contagem e baixa automatizadas:** O saldo do estoque é atualizado instantaneamente conforme os equipamentos são baixados via sistema após cada serviço.
             """)
