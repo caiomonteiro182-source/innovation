@@ -344,22 +344,22 @@ dados_acionamentos = [
     {
         "id": 4,
         "problema_atual": "Avarias, Danos e Riscos",
-        "detalhamento": "Necessidade de vistoria no equipamento, avarias, danos detectados ou questões de qualidade do serviço prestado.",
-        "canal_atual": "E-mail / WhatsApp",
+        "detalhamento": "Necessidade de vistoria no equipamento, avarias ou danos detectados que impactam a qualidade do serviço.",
+        "canal_atual": "WhatsApp / E-mail / Slack",
         "acionado_atual": "Consultor",
-        "destino_correto": "Setor de Qualidade / Vistoria",
+        "destino_correto": "Análise Técnica N1/N2 (Transbordo)",
         "impacto": "Médio",
-        "acao_recomendada": "Formulário padronizado com upload obrigatório de fotos e laudo preliminar de vistoria."
+        "acao_recomendada": "Análise técnica prévia pela equipe de N1/N2. Intervenção do consultor somente se N1/N2 não identificarem o problema."
     },
     {
         "id": 5,
         "problema_atual": "Acionamento Back Office Oficina",
-        "detalhamento": "Acionamento direto ao Back Office da oficina em primeiro nível; acionar o consultor apenas em caso de não atendimento.",
-        "canal_atual": "Slack / WhatsApp",
+        "detalhamento": "Solicitações direcionadas ao consultor que deveriam ir direto ao Back Office da oficina ou agendamento GR.",
+        "canal_atual": "WhatsApp / E-mail / Slack",
         "acionado_atual": "Consultor (Bypass)",
-        "destino_correto": "Back Office da Oficina",
+        "destino_correto": "Back Office Oficina / Agendamento GR",
         "impacto": "Médio",
-        "acao_recomendada": "Redirecionamento automático e trava no sistema: acionar consultor apenas como Nível 2 de transbordo."
+        "acao_recomendada": "Acesso direto às oficinas e agendamento GR. Acionar o consultor apenas caso não obtenha retorno."
     },
     {
         "id": 6,
@@ -641,4 +641,57 @@ with aba2:
             **Gerenciamento Automatizado:**
             * O próprio **sistema assume o gerenciamento do estoque** através de uma plataforma web dedicada.
             * **Contagem e baixa automatizadas:** O saldo do estoque é atualizado instantaneamente conforme os equipamentos são baixados via sistema após cada serviço.
+            """)
+
+    # DESTRINCHAMENTO - CAUSA 4
+    elif selected_id == 4:
+        st.markdown("---")
+        st.markdown("## 🔍 Destrinchamento da Causa 4: Avarias, Danos e Riscos")
+        
+        col_4_1, col_4_2 = st.columns(2)
+        
+        with col_4_1:
+            st.markdown("### ⚠️ Como é feito hoje & Impacto")
+            st.error("""
+            **Como é feito hoje?**
+            * O cliente necessita de vistoria no equipamento ou reporta qualquer dano referente à qualidade do serviço prestado.
+            * Quem recebe a solicitação aciona **diretamente o consultor** via WhatsApp, E-mail ou Slack.
+            """)
+            st.warning("""
+            **Impacto:**
+            * Gera **altas demandas e interrupções** desnecessárias para o consultor.
+            """)
+            
+        with col_4_2:
+            st.markdown("### ⚙️ Solução Proposta (Filtro N1/N2)")
+            st.success("""
+            **Análise Técnica Especializada:**
+            * Realização de análise com **conhecimento técnico prévio sobre a causa raiz** do problema diretamente pelas equipes de **N1 / N2**.
+            * **Regra de Transbordo:** A intervenção do consultor será solicitada **exclusivamente caso o N1 ou N2 não consigam identificar ou resolver o problema**.
+            """)
+
+    # DESTRINCHAMENTO - CAUSA 5
+    elif selected_id == 5:
+        st.markdown("---")
+        st.markdown("## 🔍 Destrinchamento da Causa 5: Acionamento Back Office Oficina")
+        
+        col_5_1, col_5_2 = st.columns(2)
+        
+        with col_5_1:
+            st.markdown("### ⚠️ Como é feito hoje & Impacto")
+            st.error("""
+            **Como é feito hoje?**
+            * Quem recebe solicitações destinadas à oficina aciona **diretamente o consultor** por WhatsApp, E-mail ou Slack (fazendo *bypass* do Back Office).
+            """)
+            st.warning("""
+            **Impacto:**
+            * **Altas demandas acumuladas** no consultor por tratativas operacionais que deveriam ser resolvidas na ponta.
+            """)
+            
+        with col_5_2:
+            st.markdown("### ⚙️ Solução Proposta (Acesso Direto / GR)")
+            st.success("""
+            **Fluxo Direto de Atendimento:**
+            * Garantir **acesso direto às oficinas** ou direcionar solicitações pelo fluxo de **agendamento GR**.
+            * **Regra de Escalonamento:** O consultor só deve ser acionado **caso não haja retorno ou resolução** após a tentativa direta com a oficina/agendamento.
             """)
