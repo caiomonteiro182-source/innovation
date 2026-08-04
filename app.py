@@ -101,22 +101,26 @@ dados_acionamentos = [
 
 df = pd.DataFrame(dados_acionamentos)
 
-# Links dos Vídeos do Google Drive (convertidos para visualização embutida /preview)
-video1_url = "https://drive.google.com/file/d/1MGUsWDvAqjwVJAEkml-E4sfkjcRq6wOJ/preview"
-video2_url = "https://drive.google.com/file/d/1CMn5TEiWUZ-Jzul_Z4das8bYXHNJk1q6/preview"
+# Link do Vídeo (Convertido para o modo preview)
+video_url = "https://drive.google.com/file/d/1CMn5TEiWUZ-Jzul_Z4das8bYXHNJk1q6/preview"
 
 # Navegação por Abas
-aba1, aba2, aba3 = st.tabs(["📊 Visão Geral", "📺 Vídeos de Demonstração", "🔄 Matriz de Redirecionamento"])
+aba1, aba2 = st.tabs(["📊 Visão Geral & Vídeo", "🔄 Matriz de Redirecionamento"])
 
-# ABA 1: VISÃO GERAL
+# ABA 1: VISÃO GERAL + VÍDEO
 with aba1:
-    st.subheader("Métricas do Processo Atual")
+    col_texto, col_video = st.columns([1, 1])
     
-    col1, col2, col3 = st.columns(3)
-    col1.metric("Pontos Mapeados", len(df))
-    col2.metric("Acionamentos Indevidos ao Consultor", "7 de 9", delta="-77%", delta_color="inverse")
-    col3.metric("Canais Pulverizados", "3 (WhatsApp, E-mail, Slack)")
-    
+    with col_texto:
+        st.subheader("Métricas do Processo Atual")
+        st.metric("Pontos Mapeados", len(df))
+        st.metric("Acionamentos Indevidos ao Consultor", "7 de 9", delta="-77%", delta_color="inverse")
+        st.metric("Canais Pulverizados", "3 (WhatsApp, E-mail, Slack)")
+        
+    with col_video:
+        st.subheader("📺 Vídeo de Apresentação")
+        st.components.v1.iframe(video_url, height=360)
+
     st.markdown("---")
     st.markdown("### Tabela Resumo dos Gargalos Operacionais")
     st.dataframe(
@@ -125,22 +129,8 @@ with aba1:
         hide_index=True
     )
 
-# ABA 2: VÍDEOS DE DEMONSTRAÇÃO
+# ABA 2: DETALHAMENTO E RESOLUÇÃO DOS PONTOS
 with aba2:
-    st.subheader("📺 Vídeos de Explicativos e Demonstração")
-    
-    col_v1, col_v2 = st.columns(2)
-    
-    with col_v1:
-        st.markdown("#### Vídeo 1: Diagnóstico do Processo Atual")
-        st.components.v1.iframe(video1_url, height=360)
-        
-    with col_v2:
-        st.markdown("#### Vídeo 2: Demonstração / Novo Fluxo")
-        st.components.v1.iframe(video2_url, height=360)
-
-# ABA 3: DETALHAMENTO E RESOLUÇÃO DOS PONTOS
-with aba3:
     st.subheader("Detalhamento Ponto a Ponto: Como Resolver")
     
     item_selecionado = st.selectbox(
