@@ -1,7 +1,8 @@
 import streamlit as st
 import pandas as pd
 import base64
-import plotly.graph_objects as go
+import matplotlib.pyplot as plt
+import numpy as np
 
 # 1. Configuração da página
 st.set_page_config(
@@ -561,7 +562,7 @@ with aba1:
     col_texto, col_video = st.columns([1, 1], vertical_alignment="top")
     
     with col_texto:
-        # ENCAPSULAMENTO GLASSMOPHISM DO BLOCO COMPLETO DO GRÁFICO 3D / DONUT ESTILIZADO
+        # GERANDO O GRÁFICO 3D REAL (MATPLOTLIB PROJECTION)
         with st.container():
             st.html("""
                 <div class="glass-card-full">
@@ -573,67 +574,53 @@ with aba1:
             """)
             
             contagem_impacto = df['impacto'].value_counts()
-            
-            cores_mapa = {
-                'Muito Alto': '#EF4444',
-                'Alto': '#F59E0B',
-                'Médio': '#10B981',
-                'Baixo': '#94A3B8'
-            }
-            
             labels = contagem_impacto.index.tolist()
             values = contagem_impacto.values.tolist()
-            colors = [cores_mapa.get(l, '#0099E5') for l in labels]
             
-            # Efeito de profundidade/destaque 3D através de 'pull' diferenciado
-            pull_effect = [0.08 if l in ['Muito Alto', 'Alto'] else 0.03 for l in labels]
+            cores_dict = {
+                'Alto': '#F59E0B',
+                'Médio': '#10B981',
+                'Muito Alto': '#EF4444',
+                'Baixo': '#64748B'
+            }
+            colors = [cores_dict.get(l, '#0099E5') for l in labels]
+            explode = [0.06 if l in ['Alto', 'Muito Alto'] else 0.02 for l in labels]
 
-            fig_pizza_3d = go.Figure(data=[go.Pie(
-                labels=labels,
-                values=values,
-                hole=0.58,
-                pull=pull_effect,
-                direction='clockwise',
-                sort=False,
-                marker=dict(
-                    colors=colors, 
-                    line=dict(color='#0A141D', width=3)
-                ),
-                hovertemplate="<b>Impacto %{label}</b><br>Casos: <b>%{value}</b><br>Proporção: <b>%{percent}</b><extra></extra>",
-                textinfo="label+value",
-                texttemplate="<b>%{label}</b><br>%{value}",
-                textposition="outside",
-                textfont=dict(color='#E2E8F0', size=12, family="sans-serif")
-            )])
+            # Criando a figura 3D com Matplotlib
+            fig, ax = plt.subplots(figsize=(5.5, 3.2), subplot_kw=dict(aspect="equal"))
+            fig.patch.set_alpha(0.0)
+            ax.patch.set_alpha(0.0)
 
-            fig_pizza_3d.update_layout(
-                showlegend=True,
-                legend=dict(
-                    orientation="h",
-                    yanchor="bottom",
-                    y=-0.22,
-                    xanchor="center",
-                    x=0.5,
-                    font=dict(color="#CBD5E1", size=11)
-                ),
-                hoverlabel=dict(
-                    bgcolor="rgba(15, 23, 42, 0.95)",
-                    bordercolor="#38BDF8",
-                    font_size=13,
-                    font_family="sans-serif",
-                    font_color="#FFFFFF"
-                ),
-                margin=dict(t=20, b=30, l=35, r=35),
-                height=255,
-                paper_bgcolor='rgba(0,0,0,0)',
-                plot_bgcolor='rgba(0,0,0,0)',
-                annotations=[dict(
-                    text=f'<span style="font-size:22px;font-weight:800;color:#FFFFFF">{total_situacoes}</span><br><span style="font-size:10px;color:#38BDF8;font-weight:700">OCORRÊNCIAS</span>',
-                    x=0.5, y=0.5, font_size=14, showarrow=False
-                )]
+            # Efeito Rosca (WedgeProps com width) + Efeito Tridimensional (Shadow e Explode)
+            wedges, texts, autotexts = ax.pie(
+                values, 
+                labels=[f"{l}\n({v})" for l, v in zip(labels, values)],
+                colors=colors,
+                autopct='%1.0f%%',
+                pctdistance=0.75,
+                explode=explode,
+                shadow=True,
+                startangle=140,
+                wedgeprops=dict(width=0.45, edgecolor='#0A141D', linewidth=2.5)
             )
 
-            st.plotly_chart(fig_pizza_3d, use_container_width=True, config={'displayModeBar': False})
+            # Estilização das fontes internas e externas
+            for t in texts:
+                t.set_color('#E2E8F0')
+                t.set_fontsize(9)
+                t.set_weight('bold')
+
+            for at in autotexts:
+                at.set_color('#FFFFFF')
+                at.set_fontsize(9)
+                at.set_weight('bold')
+
+            # Texto central de total no miolo do 3D
+            ax.text(0, 0, f"{total_situacoes}\nTotal", ha='center', va='center', 
+                    color='#FFFFFF', fontsize=14, weight='bold')
+
+            plt.tight_layout()
+            st.pyplot(fig, clear_figure=True, use_container_width=True)
             st.html("</div>")
         
         # BARRA DE PROGRESSO DO GARGALO OPERACIONAL
