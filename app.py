@@ -2,10 +2,10 @@ import streamlit as st
 import pandas as pd
 import base64
 
-# 1. Configuração da página
+# 1. Configuração da página (Ícone da guia alterado para icon_consultor.png)
 st.set_page_config(
     page_title="Platform Science - Fluxo de Atendimento de Consultores",
-    page_icon="⚡",
+    page_icon="icon_consultor.png",
     layout="wide"
 )
 
@@ -156,7 +156,7 @@ st.markdown(f"""
     </style>
 """, unsafe_allow_html=True)
 
-# Header com a Logo e Título Atualizado
+# Header com a Logo e Título
 col_logo, col_titulo = st.columns([1, 4])
 
 with col_logo:
@@ -259,9 +259,9 @@ df_exibicao = df.rename(columns={
 video_url = "https://drive.google.com/file/d/1CMn5TEiWUZ-Jzul_Z4das8bYXHNJk1q6/preview"
 
 # Navegação por Abas
-aba1, aba2 = st.tabs(["📊 Visão Geral & Vídeo", "🔄 Matriz de Redirecionamento"])
+aba1, aba2 = st.tabs(["📊 Visão Geral Atual", "🔄 Detalhamento - Como Resolver?"])
 
-# ABA 1: VISÃO GERAL + VÍDEO
+# ABA 1: VISÃO GERAL ATUAL
 with aba1:
     col_texto, col_video = st.columns([1, 1])
     
@@ -284,7 +284,7 @@ with aba1:
         hide_index=True
     )
 
-# ABA 2: DETALHAMENTO E RESOLUÇÃO DOS PONTOS
+# ABA 2: DETALHAMENTO - COMO RESOLVER?
 with aba2:
     st.subheader("Detalhamento Ponto a Ponto: Como Resolver")
     
