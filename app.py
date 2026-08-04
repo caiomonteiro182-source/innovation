@@ -239,39 +239,18 @@ st.markdown(f"""
     </style>
 """, unsafe_allow_html=True)
 
-# Header com a Logo Principal
-col_logo, col_titulo = st.columns([1, 4], vertical_alignment="center")
+# Header de 3 Colunas (Logo Esquerda | Título Central | Logo Innovation Direita)
+col_logo, col_titulo, col_innovation = st.columns([1.5, 4, 1.5], vertical_alignment="center")
 
 with col_logo:
-    st.image("logo.png", width=260)
+    st.image("logo.png", width=220)
 
 with col_titulo:
     st.title("Fluxo de Atendimento de Consultores")
     st.caption("Visão atual dos gargalos operacionais e proposta de reestruturação dos fluxos da equipe.")
 
-# CARD DE DESTAQUE: INNOVATION DAY 2026
-with st.container():
-    col_img, col_txt = st.columns([1, 4], vertical_alignment="center")
-    
-    with col_img:
-        st.image("logo_innovation2026.png", use_container_width=True)
-        
-    with col_txt:
-        st.markdown("""
-            <span style="
-                background: linear-gradient(90deg, #38BDF8, #0099E5); 
-                -webkit-background-clip: text; 
-                -webkit-text-fill-color: transparent; 
-                font-weight: 800; 
-                font-size: 0.85rem; 
-                letter-spacing: 1px; 
-                text-transform: uppercase;
-            ">Iniciativa Oficial</span>
-            <h4 style="margin: 2px 0 4px 0; color: #FFFFFF; font-size: 1.1rem;">Innovation Day 2026</h4>
-            <p style="margin: 0; color: #94A3B8; font-size: 0.88rem; line-height: 1.3;">
-                Ação estratégica para mapeamento de gargalos operacionais, otimização de fluxos internos e transformação digital dos processos de atendimento.
-            </p>
-        """, unsafe_allow_html=True)
+with col_innovation:
+    st.image("logo_innovation2026.png", width=180)
 
 st.divider()
 
