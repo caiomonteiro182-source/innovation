@@ -8,10 +8,10 @@ st.set_page_config(
     layout="wide"
 )
 
-# 2. Injeção de CSS com Fundo Escuro em Degradê Azul
+# 2. Injeção de CSS com Fundo Escuro em Degradê e Ajustes Responsivos para Celular
 st.markdown("""
     <style>
-    /* Fundo Dark Mode com Degradê nos tons da marca */
+    /* Fundo Dark Mode com Degradê */
     .stApp {
         background: linear-gradient(135deg, #0A141D 0%, #0F2338 50%, #17385C 100%) !important;
         color: #F0F4F8 !important;
@@ -52,6 +52,7 @@ st.markdown("""
         border: 1px solid rgba(0, 153, 229, 0.2);
         padding: 15px;
         border-radius: 10px;
+        margin-bottom: 10px;
     }
 
     /* Estilização das Abas */
@@ -66,7 +67,7 @@ st.markdown("""
         border-bottom-color: #0099E5 !important;
     }
 
-    /* Caixas de Alerta (Ajuste de transparência para dark mode) */
+    /* Caixas de Alerta */
     .stAlert {
         border-radius: 8px !important;
         background-color: rgba(15, 23, 42, 0.7) !important;
@@ -84,15 +85,61 @@ st.markdown("""
         border-color: #0099E5 !important;
         opacity: 0.4;
     }
+
+    /* =========================================================
+       AJUSTES RESPONSIVOS PARA CELULAR / DISPOSITIVOS MÓVEIS 
+       ========================================================= */
+    @media (max-width: 768px) {
+        /* Garante que o container principal preencha 100% da tela */
+        .block-container {
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+            padding-top: 1rem !important;
+        }
+
+        /* Centraliza a logo no celular */
+        [data-testid="stImage"] {
+            display: flex;
+            justify-content: center;
+            margin: 0 auto 15px auto;
+        }
+
+        /* Reduz tamanho dos títulos no celular para não quebrar feio */
+        h1 {
+            font-size: 1.8rem !important;
+            text-align: center;
+        }
+
+        h2, h3 {
+            font-size: 1.3rem !important;
+        }
+
+        /* Garante que o vídeo do Google Drive ocupe 100% da largura do celular */
+        iframe {
+            width: 100% !important;
+            height: 230px !important;
+        }
+
+        /* Ajusta o padding das abas para caber no touch */
+        button[data-baseweb="tab"] {
+            font-size: 14px !important;
+            padding: 8px 10px !important;
+        }
+
+        /* Permite rolagem horizontal limpa na tabela sem cortar dados */
+        [data-testid="stDataFrame"] {
+            width: 100% !important;
+            overflow-x: auto !important;
+        }
+    }
     </style>
 """, unsafe_allow_html=True)
 
-# Header com a Logo do GitHub e Título
+# Header com a Logo e Título
 col_logo, col_titulo = st.columns([1, 4])
 
 with col_logo:
-    # Carrega a imagem da logo que está na raiz do repositório
-    st.image("logo.png", width=220)
+    st.image("logo.png", width=200)
 
 with col_titulo:
     st.title("Diagnóstico de Acionamentos")
