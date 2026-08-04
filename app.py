@@ -250,24 +250,14 @@ with col_titulo:
     st.caption("Visão atual dos gargalos operacionais e proposta de reestruturação dos fluxos da equipe.")
 
 # CARD DE DESTAQUE: INNOVATION DAY 2026
-st.html("""
-    <div style="
-        background: rgba(15, 23, 42, 0.65); 
-        backdrop-filter: blur(8px); 
-        border: 1px solid rgba(56, 189, 248, 0.3); 
-        border-radius: 12px; 
-        padding: 16px 24px; 
-        margin-top: 15px; 
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        gap: 20px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-    ">
-        <div style="flex-shrink: 0;">
-            <img src="app/static/logo_innovation2026.png" style="height: 65px; object-fit: contain;" alt="Innovation Day 2026" onerror="this.onerror=null; this.src='logo_innovation2026.png';">
-        </div>
-        <div style="border-left: 1px solid rgba(255, 255, 255, 0.15); padding-left: 20px;">
+with st.container():
+    col_img, col_txt = st.columns([1, 4], vertical_alignment="center")
+    
+    with col_img:
+        st.image("logo_innovation2026.png", use_container_width=True)
+        
+    with col_txt:
+        st.markdown("""
             <span style="
                 background: linear-gradient(90deg, #38BDF8, #0099E5); 
                 -webkit-background-clip: text; 
@@ -281,9 +271,7 @@ st.html("""
             <p style="margin: 0; color: #94A3B8; font-size: 0.88rem; line-height: 1.3;">
                 Ação estratégica para mapeamento de gargalos operacionais, otimização de fluxos internos e transformação digital dos processos de atendimento.
             </p>
-        </div>
-    </div>
-""")
+        """, unsafe_allow_html=True)
 
 st.divider()
 
