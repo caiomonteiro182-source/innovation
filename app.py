@@ -102,17 +102,26 @@ dados_acionamentos = [
 df = pd.DataFrame(dados_acionamentos)
 
 # Navegação por Abas
-aba1, aba2 = st.tabs(["📊 Visão Geral & Diagnóstico", "🔄 Matriz de Redirecionamento"])
+aba1, aba2 = st.tabs(["📊 Visão Geral & Vídeo", "🔄 Matriz de Redirecionamento"])
 
-# ABA 1: VISÃO GERAL
+# ABA 1: VISÃO GERAL + VÍDEO
 with aba1:
-    st.subheader("Métricas do Processo Atual")
+    col_texto, col_video = st.columns([1, 1])
     
-    col1, col2, col3 = st.columns(3)
-    col1.metric("Pontos Mapeados", len(df))
-    col2.metric("Acionamentos Indevidos ao Consultor", "7 de 9", delta="-77%", delta_color="inverse")
-    col3.metric("Canais Pulverizados", "3 (WhatsApp, E-mail, Slack)")
-    
+    with col_texto:
+        st.subheader("Métricas do Processo Atual")
+        st.metric("Pontos Mapeados", len(df))
+        st.metric("Acionamentos Indevidos ao Consultor", "7 de 9", delta="-77%", delta_color="inverse")
+        st.metric("Canais Pulverizados", "3 (WhatsApp, E-mail, Slack)")
+        
+    with col_video:
+        st.subheader("📺 Vídeo Explicativo do Processo")
+        # Substitui '/view?usp=sharing' por '/preview' para permitir exibição embutida no iFrame
+        video_url = "https://drive.google.com/file/d/1MGUsWDvAqjwVJAEkml-E4sfkjcRq6wOJ/preview"
+        
+        st.components.v1.iframe(video_url, width=540, height=320)
+
+    st.markdown("---")
     st.markdown("### Tabela Resumo dos Gargalos Operacionais")
     st.dataframe(
         df[["id", "causa", "canal_atual", "acionado_atual", "destino_correto", "impacto"]],
