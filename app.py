@@ -277,7 +277,7 @@ with aba1:
         st.components.v1.iframe(video_url, height=360)
 
     st.markdown("---")
-    st.markdown("### Resumo de situações atuais")
+    st.markdown("### Resumo das Situações Atuais")
     st.dataframe(
         df_exibicao[["Problema Atual", "Canal Atual", "Quem é Acionado Hoje", "Destino Correto", "Nível de Impacto"]],
         use_container_width=True,
