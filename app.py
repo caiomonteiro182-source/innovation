@@ -198,7 +198,7 @@ st.markdown(f"""
         border: 1px solid rgba(100, 116, 139, 0.5);
     }}
 
-    /* Ajustes responsivos para celular */
+    /* AJUSTES RESPONSIVOS PARA DISPOSITIVOS MÓVEIS (CELULAR) */
     @media (max-width: 768px) {{
         .block-container {{
             padding-left: 0.8rem !important;
@@ -206,14 +206,22 @@ st.markdown(f"""
             padding-top: 1rem !important;
         }}
 
+        /* Redimensiona as logos no celular */
+        [data-testid="stImage"] img {{
+            max-width: 120px !important;
+            height: auto !important;
+            margin: 0 auto !important;
+            display: block !important;
+        }}
+
         [data-testid="stImage"] {{
             display: flex;
             justify-content: center;
-            margin: 0 auto 15px auto;
+            margin: 0 auto 10px auto;
         }}
 
         h1 {{
-            font-size: 1.6rem !important;
+            font-size: 1.4rem !important;
             text-align: center;
         }}
 
