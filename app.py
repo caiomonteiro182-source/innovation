@@ -382,22 +382,22 @@ dados_acionamentos = [
     {
         "id": 8,
         "problema_atual": "Falta de Dados na OS",
-        "detalhamento": "Ausência de endereço do cliente ou localização exata da frota no momento do serviço.",
-        "canal_atual": "WhatsApp / E-mail",
+        "detalhamento": "Falta de endereço na OS (endereço do cliente ou localização de onde a frota se encontra na hora do serviço).",
+        "canal_atual": "WhatsApp / Chamado",
         "acionado_atual": "Consultor",
-        "destino_correto": "Emissor da OS / Validação Automática",
-        "impacto": "Médio",
-        "acao_recomendada": "Trava no sistema bloqueando a abertura ou envio de OS sem o preenchimento de dados de localização."
+        "destino_correto": "Agendamento GR",
+        "impacto": "Alto",
+        "acao_recomendada": "Acionar o time de agendamento GR para validação e inclusão de dados de localização da frota."
     },
     {
         "id": 9,
         "problema_atual": "Encaixe de Agendamento",
-        "detalhamento": "Acionamento do consultor solicitando encaixe na agenda, procedimento que cabe diretamente ao Back Office da Oficina.",
-        "canal_atual": "WhatsApp",
+        "detalhamento": "Acionamento do consultor para encaixe de agendamento, quando o contato poderia ser direto com o Back Office da oficina.",
+        "canal_atual": "WhatsApp / E-mail / Slack",
         "acionado_atual": "Consultor",
-        "destino_correto": "Back Office Oficina",
-        "impacto": "Médio",
-        "acao_recomendada": "Fila única e centralizada de agendamentos e encaixes gerenciada exclusivamente pelo Back Office."
+        "destino_correto": "Oficinas / Agendamento GR",
+        "impacto": "Alto",
+        "acao_recomendada": "Acesso direto às oficinas ou agendamento GR. Acionar o consultor apenas caso não obtenha retorno."
     },
     {
         "id": 10,
@@ -752,4 +752,58 @@ with aba2:
             **Designação de Ponto Focal para Triagem:**
             * Definição de **uma pessoa responsável por filtrar as demandas** e compreender a situação técnica/operacional.
             * **Fluxo de Escalonamento:** Apenas casos que exijam atuação comercial ou negociação direta com a liderança do cliente serão repassados ao consultor.
+            """)
+
+    # DESTRINCHAMENTO - CAUSA 8
+    elif selected_id == 8:
+        st.markdown("---")
+        st.markdown("## 🔍 Destrinchamento da Causa 8: Falta de Dados na OS")
+        
+        col_8_1, col_8_2 = st.columns(2)
+        
+        with col_8_1:
+            st.markdown("### ⚠️ Como é feito hoje & Impacto")
+            st.error("""
+            **Como é feito hoje?**
+            * Falta de dados essenciais na Ordem de Serviço, especificamente o endereço do cliente ou a localização exata de onde a frota se encontra no momento do atendimento.
+            * O técnico aciona **diretamente o consultor** quando identifica qualquer pendência de falta de informações na OS.
+            """)
+            st.warning("""
+            **Impacto:**
+            * Gera **altas demandas e sobrecarga** operacional constante no consultor para resolução de inconsistências cadastrais.
+            """)
+            
+        with col_8_2:
+            st.markdown("### ⚙️ Solução Proposta (Agendamento GR)")
+            st.success("""
+            **Direcionamento para Agendamento GR:**
+            * Redirecionar os acionamentos por falta de dados de localização diretamente para o **time de agendamento GR**.
+            * Cabe a essa equipe realizar a validação prévia e inclusão dos dados de endereço antes de enviar a OS para atendimento em campo.
+            """)
+
+    # DESTRINCHAMENTO - CAUSA 9
+    elif selected_id == 9:
+        st.markdown("---")
+        st.markdown("## 🔍 Destrinchamento da Causa 9: Encaixe de Agendamento")
+        
+        col_9_1, col_9_2 = st.columns(2)
+        
+        with col_9_1:
+            st.markdown("### ⚠️ Como é feito hoje & Impacto")
+            st.error("""
+            **Como é feito hoje?**
+            * Acionamento do consultor para realizar encaixes de agendamento na grade de atendimento.
+            * Quem recebe a solicitação entra em contato diretamente com o consultor via **WhatsApp, E-mail ou Slack**.
+            """)
+            st.warning("""
+            **Impacto:**
+            * Gera **altas demandas e interrupções rotineiras** no trabalho estratégico do consultor.
+            """)
+            
+        with col_9_2:
+            st.markdown("### ⚙️ Solução Proposta (Atendimento Direto / GR)")
+            st.success("""
+            **Acesso Direto às Oficinas ou Agendamento GR:**
+            * Permitir o **acesso direto às oficinas** ou canalizar as solicitações via fluxo de **agendamento GR**.
+            * **Regra de Escalonamento:** O consultor só deverá ser acionado **caso não haja retorno ou posicionamento** por parte da oficina ou da equipe de agendamento.
             """)
