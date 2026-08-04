@@ -39,7 +39,7 @@ st.markdown(f"""
         color: #F0F4F8 !important;
     }}
 
-    /* Ajuste de margem superior para o conteúdo não ficar escondido pela barra do Streamlit */
+    /* Ajuste de margem superior */
     .block-container {{
         padding-top: 3.5rem !important;
     }}
@@ -69,7 +69,6 @@ st.markdown(f"""
         flex-grow: 1;
     }}
 
-    /* TEXTOS DO CABEÇALHO NO DESKTOP */
     .header-center-title h1 {{
         color: #FFFFFF !important;
         font-weight: 800 !important;
@@ -92,71 +91,45 @@ st.markdown(f"""
         font-weight: 700 !important;
     }}
 
-    /* Textos gerais */
     p, span, label {{
         color: #E2E8F0 !important;
     }}
 
-    /* Estilização Geral das Métricas do Streamlit */
-    [data-testid="stMetricValue"] {{
-        color: #38BDF8 !important;
-        font-weight: bold !important;
-        white-space: normal !important;
-        word-break: break-word !important;
-        font-size: 1.5rem !important;
-    }}
-    
-    [data-testid="stMetricLabel"] {{
-        color: #94A3B8 !important;
-        font-weight: 600 !important;
-        white-space: normal !important;
-    }}
-
-    /* Cartões / Containers das Métricas com efeito glassmorphism */
-    [data-testid="stMetric"] {{
-        background: rgba(15, 23, 42, 0.65);
-        backdrop-filter: blur(6px);
-        border: 1px solid rgba(0, 153, 229, 0.3);
-        padding: 12px;
-        border-radius: 10px;
-        margin-bottom: 10px;
-        min-height: 100px;
-    }}
-
-    /* ESTILIZAÇÃO MODERNA DO PLAYER DE VÍDEO E DO CONTAINER DO GRÁFICO (GLASSMORPHISM CARD WITH HOVER) */
+    /* CARTÃO DO GRÁFICO E VÍDEO COM EFEITO HOVER GLASSMORPHISM */
     .video-card-container, .chart-card-container {{
         background: rgba(15, 23, 42, 0.75);
         backdrop-filter: blur(10px);
         border: 1px solid rgba(56, 189, 248, 0.35);
         border-radius: 16px;
-        padding: 18px;
+        padding: 16px;
         box-shadow: 0 12px 32px 0 rgba(0, 0, 0, 0.45);
         transition: all 0.3s ease-in-out;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
     }}
 
     .video-card-container:hover, .chart-card-container:hover {{
-        border-color: rgba(56, 189, 248, 0.7);
-        box-shadow: 0 12px 40px 0 rgba(0, 153, 229, 0.25);
+        border-color: rgba(56, 189, 248, 0.8) !important;
+        box-shadow: 0 0 25px rgba(0, 153, 229, 0.4) !important;
+        transform: translateY(-2px);
     }}
 
-    .video-card-header {{
+    .video-card-header, .chart-card-header {{
         display: flex;
         align-items: center;
         justify-content: space-between;
         margin-bottom: 8px;
     }}
 
-    .video-card-title {{
+    .video-card-title, .chart-card-title {{
         color: #FFFFFF;
-        font-size: 1.15rem;
+        font-size: 1.1rem;
         font-weight: 700;
         display: flex;
         align-items: center;
         gap: 8px;
     }}
 
-    .video-badge {{
+    .video-badge, .chart-badge {{
         background: rgba(56, 189, 248, 0.15);
         color: #38BDF8;
         border: 1px solid rgba(56, 189, 248, 0.4);
@@ -166,18 +139,6 @@ st.markdown(f"""
         font-weight: 700;
         letter-spacing: 0.5px;
         text-transform: uppercase;
-    }}
-
-    /* Efeito de cursor pointer no gráfico ao passar o mouse */
-    .js-plotly-plot .plotly .cursor-pointer {{
-        cursor: pointer !important;
-    }}
-
-    /* Estilização dos iframes do Streamlit no player */
-    div[data-testid="stCustomComponentV1"] iframe {{
-        border-radius: 12px !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
     }}
 
     /* Estilização das Abas */
@@ -212,7 +173,7 @@ st.markdown(f"""
         opacity: 0.4;
     }}
 
-    /* ESTILO DA TABELA PERSONALIZADA */
+    /* TABELA PERSONALIZADA */
     .table-container {{
         width: 100%;
         overflow-x: auto;
@@ -289,7 +250,7 @@ st.markdown(f"""
         border: 1px solid rgba(100, 116, 139, 0.5);
     }}
 
-    /* TEXTOS E LAYOUT NO CELULAR */
+    /* RESPONSIVIDADE MOBILE */
     @media (max-width: 768px) {{
         .block-container {{
             padding-top: 3.8rem !important;
@@ -420,12 +381,12 @@ dados_acionamentos = [
     {
         "id": 6,
         "problema_atual": "Integração e Documentação",
-        "detalhamento": "Falta de documentação da oficina com pedidos de apoio ao consultor para esclarecer dúvidas documentais.",
-        "canal_atual": "WhatsApp",
+        "detalhamento": "Falta ou demora na entrega da documentação da oficina com acionamento indevido ao consultor.",
+        "canal_atual": "WhatsApp / Chamado",
         "acionado_atual": "Consultor",
-        "destino_correto": "Portal de Conhecimento / Self-Service",
+        "destino_correto": "Setor de Inteligência (Robson)",
         "impacto": "Baixo",
-        "acao_recomendada": "Central de ajuda online com download de documentação técnica, manuais e checklists em formato self-service."
+        "acao_recomendada": "Redirecionar tratativas sobre documentos da oficina diretamente para o Setor de Inteligência."
     },
     {
         "id": 7,
@@ -498,9 +459,18 @@ with aba1:
     col_texto, col_video = st.columns([1, 1], vertical_alignment="top")
     
     with col_texto:
-        st.subheader("Métricas do Processo Atual")
+        # 1. CONTAINER GLASSMOPHISM DO GRÁFICO
+        st.html("""
+            <div class="chart-card-container">
+                <div class="chart-card-header">
+                    <div class="chart-card-title">
+                        <span>📊 Distribuição por Nível de Impacto</span>
+                    </div>
+                    <span class="chart-badge">Métrica Global</span>
+                </div>
+            </div>
+        """)
         
-        # 1. GRÁFICO DE PIZZA / ROSCA (NÍVEIS DE IMPACTO COM EFEITO HOVER)
         contagem_impacto = df['impacto'].value_counts()
         
         cores_mapa = {
@@ -522,19 +492,12 @@ with aba1:
                 colors=colors, 
                 line=dict(color='#0A141D', width=2)
             ),
-            # EFEITO HOVER PROFISSIONAL: PROJEÇÃO 3D DA FATIA E TOOLTIP ESTILIZADA
-            pull=[0.05] * len(labels),
-            hoverinfo="label+value+percent",
-            hovertemplate="<b>Impacto %{label}</b><br>Quantidade: <b>%{value}</b><br>Proporção: <b>%{percent}</b><extra></extra>",
+            hovertemplate="<b>Impacto %{label}</b><br>Ocorrências: <b>%{value}</b><br>Proporção: <b>%{percent}</b><extra></extra>",
             textinfo="value",
             textfont=dict(color='#FFFFFF', size=14, family="sans-serif")
         )])
 
         fig_pizza.update_layout(
-            title=dict(
-                text="Distribuição por Nível de Impacto",
-                font=dict(color="#94A3B8", size=14, family="sans-serif")
-            ),
             showlegend=True,
             legend=dict(
                 orientation="h",
@@ -544,17 +507,16 @@ with aba1:
                 x=0.5,
                 font=dict(color="#E2E8F0", size=12)
             ),
-            # ESTILIZAÇÃO DA CAIXA DE DICA NO HOVER (HOVERLABEL)
             hoverlabel=dict(
                 bgcolor="rgba(15, 23, 42, 0.95)",
-                bordercolor="rgba(56, 189, 248, 0.8)",
+                bordercolor="#38BDF8",
                 font_size=13,
                 font_family="sans-serif",
                 font_color="#FFFFFF"
             ),
-            margin=dict(t=35, b=25, l=10, r=10),
-            height=250,
-            paper_bgcolor='rgba(15, 23, 42, 0.65)',
+            margin=dict(t=10, b=25, l=10, r=10),
+            height=230,
+            paper_bgcolor='rgba(0,0,0,0)',
             plot_bgcolor='rgba(0,0,0,0)',
             annotations=[dict(
                 text=f'<b>{total_situacoes}</b><br><span style="font-size:10px;color:#94A3B8">Total</span>',
@@ -583,7 +545,7 @@ with aba1:
         """)
         
     with col_video:
-        # CABEÇALHO DO CARD GLASSMORPHISM
+        # CABEÇALHO DO CARD GLASSMORPHISM DO VÍDEO
         st.html("""
             <div class="video-card-container">
                 <div class="video-card-header">
@@ -775,4 +737,30 @@ with aba2:
             **Fluxo Direto de Atendimento:**
             * Garantir **acesso direto às oficinas** ou direcionar solicitações pelo fluxo de **agendamento GR**.
             * **Regra de Escalonamento:** O consultor só deve ser acionado **caso não haja retorno ou resolução** após a tentativa direta com a oficina/agendamento.
+            """)
+
+    # DESTRINCHAMENTO - CAUSA 6
+    elif selected_id == 6:
+        st.markdown("---")
+        st.markdown("## 🔍 Destrinchamento da Causa 6: Integração e Documentação")
+        
+        col_6_1, col_6_2 = st.columns(2)
+        
+        with col_6_1:
+            st.markdown("### ⚠️ Como é feito hoje & Impacto")
+            st.error("""
+            **Como é feito hoje?**
+            * O consultor é acionado diretamente quando a oficina demora para entregar os documentos requeridos.
+            """)
+            st.warning("""
+            **Impacto:**
+            * Gera **altas demandas operacionais e desvio de foco** do consultor com cobranças de rotina.
+            """)
+            
+        with col_6_2:
+            st.markdown("### ⚙️ Solução Proposta (Setor de Inteligência)")
+            st.success("""
+            **Redirecionamento para o Setor de Inteligência:**
+            * Acionar o **Setor de Inteligência (Robson)** para conduzir todas as tratativas e cobranças de documentos diretamente com a oficina.
+            * Desonerar o consultor desse acompanhamento burocrático diário.
             """)
