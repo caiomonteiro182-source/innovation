@@ -1,20 +1,90 @@
 import streamlit as st
 import pandas as pd
 
-# Configuração da página
+# 1. Configuração da página
 st.set_page_config(
-    page_title="Diagnóstico & Solução de Acionamentos",
-    page_icon="🛠️",
+    page_title="Platform Science - Diagnóstico de Acionamentos",
+    page_icon="⚡",
     layout="wide"
 )
 
-# Título Principal
-st.title("🛠️ Diagnóstico de Acionamentos & Matriz de Solução")
-st.caption("Visão atual dos gargalos operacionais e proposta de reestruturação dos fluxos.")
+# 2. Injeção de CSS com a Paleta de Cores da Logo da Platform Science
+st.markdown("""
+    <style>
+    /* Cores Principais: 
+       Azul Vivo: #0099E5 
+       Azul Escuro: #2A3B50
+       Fundo Leve: #F8FAFC
+    */
+
+    /* Fundo da aplicação */
+    .stApp {
+        background-color: #F8FAFC;
+    }
+
+    /* Título Principal */
+    h1 {
+        color: #2A3B50 !important;
+        font-weight: 800 !important;
+        margin-bottom: 0px !important;
+    }
+
+    /* Subtítulos e Seções */
+    h2, h3, h4 {
+        color: #0099E5 !important;
+        font-weight: 700 !important;
+    }
+
+    /* Estilização das Métricas */
+    [data-testid="stMetricValue"] {
+        color: #0099E5 !important;
+        font-weight: bold !important;
+    }
+    
+    [data-testid="stMetricLabel"] {
+        color: #2A3B50 !important;
+        font-weight: 600 !important;
+    }
+
+    /* Estilização das Abas */
+    button[data-baseweb="tab"] {
+        color: #2A3B50 !important;
+        font-weight: 600 !important;
+        font-size: 16px !important;
+    }
+
+    button[data-baseweb="tab"][aria-selected="true"] {
+        color: #0099E5 !important;
+        border-bottom-color: #0099E5 !important;
+    }
+
+    /* Caixas de Alertas */
+    .stAlert {
+        border-radius: 8px !important;
+    }
+
+    /* Linha Divisória */
+    hr {
+        border-color: #0099E5 !important;
+        opacity: 0.3;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# Header com a Logo do GitHub e Título
+col_logo, col_titulo = st.columns([1, 4])
+
+with col_logo:
+    # Carrega a imagem da logo que está na raiz do repositório
+    st.image("logo.png", width=220)
+
+with col_titulo:
+    st.title("Diagnóstico de Acionamentos")
+    st.caption("Visão atual dos gargalos operacionais e proposta de reestruturação dos fluxos da equipe.")
 
 st.divider()
 
-# Dados das Causas / Problemas Atuais (sem coluna de ID)
+# Dados das Causas / Problemas Atuais
 dados_acionamentos = [
     {
         "problema_atual": "Falta de Equipamento",
@@ -92,7 +162,7 @@ dados_acionamentos = [
 
 df = pd.DataFrame(dados_acionamentos)
 
-# Renomeando as colunas para exibição amigável na tabela
+# Renomeando as colunas para exibição amigável
 df_exibicao = df.rename(columns={
     "problema_atual": "Problema Atual",
     "canal_atual": "Canal Atual",
