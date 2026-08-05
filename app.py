@@ -149,75 +149,6 @@ st.markdown(f"""
         letter-spacing: 0.5px;
     }}
 
-    /* CONTAINER E CONTROLES DE ZOOM PARA O FLUXO */
-    .zoom-wrapper {{
-        position: relative;
-        width: 100%;
-        border-radius: 12px;
-        border: 1px solid rgba(56, 189, 248, 0.3);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-        background: rgba(15, 23, 42, 0.95);
-        overflow: hidden;
-    }}
-
-    .zoom-controls {{
-        position: absolute;
-        top: 14px;
-        right: 14px;
-        display: flex;
-        gap: 8px;
-        z-index: 10;
-        background: rgba(15, 23, 42, 0.85);
-        padding: 6px 10px;
-        border-radius: 30px;
-        border: 1px solid rgba(56, 189, 248, 0.4);
-        backdrop-filter: blur(8px);
-    }}
-
-    .zoom-btn {{
-        background: rgba(30, 41, 59, 0.9);
-        color: #38BDF8;
-        border: 1px solid rgba(56, 189, 248, 0.3);
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        font-size: 1.1rem;
-        font-weight: bold;
-        cursor: pointer;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: all 0.2s ease;
-    }}
-
-    .zoom-btn:hover {{
-        background: #0099E5;
-        color: #FFFFFF;
-        box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
-    }}
-
-    .flow-viewport {{
-        width: 100%;
-        height: 520px;
-        overflow: hidden;
-        cursor: grab;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }}
-
-    .flow-viewport:active {{
-        cursor: grabbing;
-    }}
-
-    .flow-img-zoomable {{
-        max-width: 100%;
-        max-height: 100%;
-        transform-origin: center center;
-        transition: transform 0.1s ease-out;
-        user-select: none;
-    }}
-
     /* CARD EXCLUSIVO DA EQUIPE COM DESTAQUE EM FOTO */
     .team-card {{
         background: rgba(15, 23, 42, 0.85);
@@ -465,10 +396,6 @@ st.markdown(f"""
         button[data-baseweb="tab"] {{
             font-size: 12px !important;
             padding: 4px 6px !important;
-        }}
-
-        .flow-viewport {{
-            height: 350px !important;
         }}
     }}
     </style>
@@ -766,68 +693,120 @@ with aba1:
 with aba2:
     st.subheader("Proposta de Reestruturação do Fluxo")
     
+    st.markdown("""
+        <div class="glass-card-full">
+            <div class="glass-card-header">
+                <div class="glass-card-title">
+                    <span>💡 Novo Fluxo Proposto (Redução de Acionamentos ao Consultor Externo)</span>
+                </div>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
     src_fluxo = f"data:image/jpeg;base64,{fluxo_atualizado_b64}" if fluxo_atualizado_b64 else ""
 
     if src_fluxo:
-        fluxo_html = f'''
-            <div class="zoom-wrapper">
-                <div class="zoom-controls">
-                    <button class="zoom-btn" onclick="zoomIn()" title="Aumentar Zoom">+</button>
-                    <button class="zoom-btn" onclick="zoomOut()" title="Diminuir Zoom">−</button>
-                    <button class="zoom-btn" onclick="resetZoom()" title="Resetar Zoom">🔄</button>
-                </div>
-                <div class="flow-viewport" id="flowViewport" onwheel="handleWheel(event)">
-                    <img src="{src_fluxo}" id="flowImg" class="flow-img-zoomable" alt="Fluxo Atualizado de Atendimento" draggable="false">
+        # Renderização via componente IFRAME do Streamlit para suportar interação com Scroll/Drag
+        html_zoom_component = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+                body {{
+                    background: transparent;
+                    overflow: hidden;
+                    font-family: system-ui, -apple-system, sans-serif;
+                }}
+                .zoom-container {{
+                    position: relative;
+                    width: 100%;
+                    height: 560px;
+                    border-radius: 12px;
+                    border: 1px solid rgba(56, 189, 248, 0.35);
+                    background: rgba(15, 23, 42, 0.95);
+                    overflow: hidden;
+                }}
+                .zoom-hint {{
+                    position: absolute;
+                    bottom: 12px;
+                    right: 14px;
+                    z-index: 10;
+                    background: rgba(15, 23, 42, 0.85);
+                    color: #38BDF8;
+                    padding: 6px 12px;
+                    border-radius: 20px;
+                    font-size: 0.78rem;
+                    font-weight: 600;
+                    border: 1px solid rgba(56, 189, 248, 0.3);
+                    backdrop-filter: blur(8px);
+                    pointer-events: none;
+                }}
+                .flow-viewport {{
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: grab;
+                }}
+                .flow-viewport:active {{
+                    cursor: grabbing;
+                }}
+                .flow-img {{
+                    max-width: 95%;
+                    max-height: 95%;
+                    transform-origin: center center;
+                    transition: transform 0.08s ease-out;
+                    user-select: none;
+                    -webkit-user-drag: none;
+                }}
+            </style>
+        </head>
+        <body>
+            <div class="zoom-container">
+                <div class="zoom-hint">🔍 Role o mouse para dar Zoom | Clique e arraste para Mover</div>
+                <div class="flow-viewport" id="viewport">
+                    <img src="{src_fluxo}" id="flowImg" class="flow-img" alt="Fluxo Atualizado">
                 </div>
             </div>
 
             <script>
-                let scale = 1;
-                let isDragging = false;
-                let startX, startY, translateX = 0, translateY = 0;
-
+                const viewport = document.getElementById('viewport');
                 const img = document.getElementById('flowImg');
-                const viewport = document.getElementById('flowViewport');
+
+                let scale = 1;
+                let translateX = 0;
+                let translateY = 0;
+                let isDragging = false;
+                let startX = 0;
+                let startY = 0;
 
                 function updateTransform() {{
                     img.style.transform = `translate(${{translateX}}px, ${{translateY}}px) scale(${{scale}})`;
                 }}
 
-                function zoomIn() {{
-                    scale = Math.min(scale + 0.3, 4);
-                    updateTransform();
-                }}
-
-                function zoomOut() {{
-                    scale = Math.max(scale - 0.3, 0.8);
-                    if (scale <= 1) {{
-                        translateX = 0;
-                        translateY = 0;
-                    }}
-                    updateTransform();
-                }}
-
-                function resetZoom() {{
-                    scale = 1;
-                    translateX = 0;
-                    translateY = 0;
-                    updateTransform();
-                }}
-
-                function handleWheel(e) {{
+                // ZOOM ATRAVÉS DA BARRA DE ROLAGEM (WHEEL / TOUCHPAD)
+                viewport.addEventListener('wheel', (e) => {{
                     e.preventDefault();
+                    
+                    const zoomFactor = 0.15;
                     if (e.deltaY < 0) {{
-                        scale = Math.min(scale + 0.15, 4);
+                        scale = Math.min(scale + zoomFactor, 5.0); // Zoom in máximo 5x
                     }} else {{
-                        scale = Math.max(scale - 0.15, 0.8);
+                        scale = Math.max(scale - zoomFactor, 0.8); // Zoom out mínimo 0.8x
                     }}
+
+                    // Reset de posição se voltar ao tamanho padrão ou menor
                     if (scale <= 1) {{
                         translateX = 0;
                         translateY = 0;
                     }}
-                    updateTransform();
-                }}
 
+                    updateTransform();
+                }}, {{ passive: false }});
+
+                // ARRASTAR IMAGEM (DRAG & PAN)
                 viewport.addEventListener('mousedown', (e) => {{
                     if (scale > 1) {{
                         isDragging = true;
@@ -848,28 +827,20 @@ with aba2:
                     isDragging = false;
                 }});
 
-                viewport.addEventListener('dblclick', resetZoom);
+                // RESETA COM DUPLO CLIQUE
+                viewport.addEventListener('dblclick', () => {{
+                    scale = 1;
+                    translateX = 0;
+                    translateY = 0;
+                    updateTransform();
+                }});
             </script>
-        '''
+        </body>
+        </html>
+        """
+        st.components.v1.html(html_zoom_component, height=580)
     else:
-        fluxo_html = '''
-            <div style="color: #94A3B8; text-align: center; padding: 40px 20px;">
-                <span style="font-size: 2rem;">🗺️</span><br>
-                <strong style="color: #E2E8F0;">Espaço Reservado para o Fluxo Atualizado</strong><br>
-                <small style="color: #64748B;">Adicione o arquivo 'fluxo_atualizado.jpg' na pasta do projeto.</small>
-            </div>
-        '''
-
-    st.html(f"""
-        <div class="glass-card-full">
-            <div class="glass-card-header">
-                <div class="glass-card-title">
-                    <span>💡 Novo Fluxo Proposto (Redução de Acionamentos ao Consultor Externo)</span>
-                </div>
-            </div>
-            {fluxo_html}
-        </div>
-    """)
+        st.warning("Adicione o arquivo 'fluxo_atualizado.jpg' na pasta do projeto.")
 
     st.markdown("---")
     st.subheader("Detalhamento Ponto a Ponto: Como Resolver")
@@ -1122,7 +1093,7 @@ with aba2:
             st.markdown("### ⚙️ Solução Proposta (Atendimento Direto / GR)")
             st.success("""
             **Acesso Direto às Oficinas ou Agendamento GR:**
-            * Permitir o **accesso direto às oficinas** ou canalizar as solicitações via fluxo de **agendamento GR**.
+            * Permitir o **acesso direto às oficinas** ou canalizar as solicitações via fluxo de **agendamento GR**.
             * **Regra de Escalonamento:** O consultor só deverá ser acionado **caso não haja retorno ou posicionamento** por parte da oficina ou da equipe de agendamento.
             """)
 
