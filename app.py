@@ -21,10 +21,11 @@ def get_base64_of_bin_file(bin_file):
 
 img_base64 = get_base64_of_bin_file("estradas.jpeg")
 
-# Converte as logos e foto da equipe para Base64
+# Converte as logos, foto da equipe e imagem do novo fluxo para Base64
 logo_ps_b64 = get_base64_of_bin_file("logo.png")
 logo_inno_b64 = get_base64_of_bin_file("logo_innovation2026.png")
 foto_equipe_b64 = get_base64_of_bin_file("equipe_fluxo.jpg")
+fluxo_atualizado_b64 = get_base64_of_bin_file("fluxo_atualizado.jpg")
 
 # 2. Injeção de CSS com Marca d'Água, Dark Mode, Glassmorphism e Tabela Customizada
 st.markdown(f"""
@@ -146,6 +147,28 @@ st.markdown(f"""
         align-items: center;
         gap: 10px;
         letter-spacing: 0.5px;
+    }}
+
+    /* CONTAINER DA IMAGEM DO NOVO FLUXO */
+    .flow-img-container {{
+        width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        background: rgba(15, 23, 42, 0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+    }}
+
+    .flow-img {{
+        width: 100%;
+        height: auto;
+        max-height: 550px;
+        object-fit: contain;
+        border-radius: 8px;
     }}
 
     /* CARD EXCLUSIVO DA EQUIPE COM DESTAQUE EM FOTO */
@@ -584,7 +607,7 @@ with aba1:
             sort=False,
             marker=dict(
                 colors=colors, 
-                line=dict(color='#38BDF8', width=2.5)  # Borda Neon Cyan para profundidade
+                line=dict(color='#38BDF8', width=2.5)
             ),
             hovertemplate="<b>Impacto %{label}</b><br>Casos: <b>%{value}</b><br>Proporção: <b>%{percent}</b><extra></extra>",
             textinfo="label+value",
@@ -604,7 +627,7 @@ with aba1:
                 font=dict(color="#CBD5E1", size=13)
             ),
             margin=dict(t=25, b=35, l=40, r=40),
-            height=420,  # GRÁFICO AMPLIADO
+            height=420,
             paper_bgcolor='rgba(0,0,0,0)',
             plot_bgcolor='rgba(0,0,0,0)',
             annotations=[dict(
@@ -690,6 +713,36 @@ with aba1:
 
 # ABA 2: DETALHAMENTO - COMO RESOLVER?
 with aba2:
+    st.subheader("Proposta de Reestruturação do Fluxo")
+    
+    # CARD VISUAL DO FLUXO ATUALIZADO (IDEIA PRINCIPAL)
+    src_fluxo = f"data:image/jpeg;base64,{fluxo_atualizado_b64}" if fluxo_atualizado_b64 else ""
+
+    if src_fluxo:
+        fluxo_html = f'<img src="{src_fluxo}" class="flow-img" alt="Fluxo Atualizado de Atendimento">'
+    else:
+        fluxo_html = '''
+            <div style="color: #94A3B8; text-align: center; padding: 40px 20px;">
+                <span style="font-size: 2rem;">🗺️</span><br>
+                <strong style="color: #E2E8F0;">Espaço Reservado para o Fluxo Atualizado</strong><br>
+                <small style="color: #64748B;">Adicione o arquivo 'fluxo_atualizado.jpg' na pasta do projeto.</small>
+            </div>
+        '''
+
+    st.html(f"""
+        <div class="glass-card-full">
+            <div class="glass-card-header">
+                <div class="glass-card-title">
+                    <span>💡 Novo Fluxo Proposto (Redução de Acionamentos ao Consultor Externo)</span>
+                </div>
+            </div>
+            <div class="flow-img-container">
+                {fluxo_html}
+            </div>
+        </div>
+    """)
+
+    st.markdown("---")
     st.subheader("Detalhamento Ponto a Ponto: Como Resolver")
     
     opcoes_select = [f"{row['id']}. {row['problema_atual']}" for _, row in df.iterrows()]
