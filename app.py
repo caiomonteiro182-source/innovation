@@ -782,10 +782,6 @@ with aba2:
                 let startX = 0;
                 let startY = 0;
 
-                function updateTransform() {{
-                    img.style.transform = `translate(${{translateX}}px, ${{translateY}}px) scale(${{scale}})`;
-                }}
-
                 // ZOOM ATRAVÉS DA BARRA DE ROLAGEM (WHEEL / TOUCHPAD)
                 viewport.addEventListener('wheel', (e) => {{
                     e.preventDefault();
@@ -805,6 +801,10 @@ with aba2:
 
                     updateTransform();
                 }}, {{ passive: false }});
+
+                function updateTransform() {{
+                    img.style.transform = `translate(${{translateX}}px, ${{translateY}}px) scale(${{scale}})`;
+                }}
 
                 // ARRASTAR IMAGEM (DRAG & PAN)
                 viewport.addEventListener('mousedown', (e) => {{
@@ -841,6 +841,24 @@ with aba2:
         st.components.v1.html(html_zoom_component, height=580)
     else:
         st.warning("Adicione o arquivo 'fluxo_atualizado.jpg' na pasta do projeto.")
+
+    # NOVO CARD DE DETALHAMENTO DO NOVO FLUXO
+    st.markdown("""
+        <div class="glass-card-full" style="margin-top: 20px;">
+            <div class="glass-card-header">
+                <div class="glass-card-title">
+                    <span>📋 Detalhamento do Novo Fluxo Proposto</span>
+                </div>
+            </div>
+            <div style="padding: 10px 5px; color: #E2E8F0; line-height: 1.6;">
+                <div style="background: rgba(30, 41, 59, 0.5); border: 1px dashed rgba(56, 189, 248, 0.4); padding: 20px; border-radius: 12px; text-align: center;">
+                    <span style="font-size: 1.5rem;">📝</span><br>
+                    <strong style="color: #38BDF8; font-size: 1.1rem;">Espaço Reservado para o Texto Explicativo</strong><br>
+                    <span style="color: #94A3B8; font-size: 0.9rem;">O detalhamento descritivo das etapas do novo fluxo será inserido aqui assim que encaminhado.</span>
+                </div>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
 
     st.markdown("---")
     st.subheader("Detalhamento Ponto a Ponto: Como Resolver")
@@ -1110,7 +1128,7 @@ with aba2:
             **Como é feito hoje?**
             * Ocorrem falhas como: **módulo sem atualização no firmware**, **falha no aplicativo móvel**, **módulo sem atualização** e **erro de integração de OS**.
             * O técnico faz o acionamento diretamente para o consultor.
-            * O consultor precisa acionar o apoio ao técnico (**Edson**) para verificar a situação.
+            * O consultor precisa acionar o apoio ao técnico (**Edson**) para verificar a situation.
             """)
             st.warning("""
             **Impacto:**
