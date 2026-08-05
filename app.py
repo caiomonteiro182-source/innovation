@@ -120,7 +120,7 @@ st.markdown(f"""
         backdrop-filter: blur(14px);
         border: 1px solid rgba(56, 189, 248, 0.45);
         border-radius: 20px;
-        padding: 24px 28px 16px 28px;
+        padding: 24px 28px 20px 28px;
         box-shadow: 0 16px 40px 0 rgba(0, 0, 0, 0.55), inset 0 0 20px rgba(56, 189, 248, 0.1);
         transition: all 0.3s ease-in-out;
         margin-bottom: 16px;
@@ -782,18 +782,16 @@ with aba2:
                 let startX = 0;
                 let startY = 0;
 
-                // ZOOM ATRAVÉS DA BARRA DE ROLAGEM (WHEEL / TOUCHPAD)
                 viewport.addEventListener('wheel', (e) => {{
                     e.preventDefault();
                     
                     const zoomFactor = 0.15;
                     if (e.deltaY < 0) {{
-                        scale = Math.min(scale + zoomFactor, 5.0); // Zoom in máximo 5x
+                        scale = Math.min(scale + zoomFactor, 5.0);
                     }} else {{
-                        scale = Math.max(scale - zoomFactor, 0.8); // Zoom out mínimo 0.8x
+                        scale = Math.max(scale - zoomFactor, 0.8);
                     }}
 
-                    // Reset de posição se voltar ao tamanho padrão ou menor
                     if (scale <= 1) {{
                         translateX = 0;
                         translateY = 0;
@@ -806,7 +804,6 @@ with aba2:
                     img.style.transform = `translate(${{translateX}}px, ${{translateY}}px) scale(${{scale}})`;
                 }}
 
-                // ARRASTAR IMAGEM (DRAG & PAN)
                 viewport.addEventListener('mousedown', (e) => {{
                     if (scale > 1) {{
                         isDragging = true;
@@ -827,7 +824,6 @@ with aba2:
                     isDragging = false;
                 }});
 
-                // RESETA COM DUPLO CLIQUE
                 viewport.addEventListener('dblclick', () => {{
                     scale = 1;
                     translateX = 0;
@@ -842,19 +838,128 @@ with aba2:
     else:
         st.warning("Adicione o arquivo 'fluxo_atualizado.jpg' na pasta do projeto.")
 
-    # NOVO CARD DE DETALHAMENTO DO NOVO FLUXO
+    # NOVO CARD DE DETALHAMENTO DO FLUXO COM O TEXTO ENCAMINHADO
     st.markdown("""
         <div class="glass-card-full" style="margin-top: 20px;">
             <div class="glass-card-header">
                 <div class="glass-card-title">
-                    <span>📋 Detalhamento do Novo Fluxo Proposto</span>
+                    <span>📋 Detalhamento do Novo Fluxo</span>
                 </div>
             </div>
-            <div style="padding: 10px 5px; color: #E2E8F0; line-height: 1.6;">
-                <div style="background: rgba(30, 41, 59, 0.5); border: 1px dashed rgba(56, 189, 248, 0.4); padding: 20px; border-radius: 12px; text-align: center;">
-                    <span style="font-size: 1.5rem;">📝</span><br>
-                    <strong style="color: #38BDF8; font-size: 1.1rem;">Espaço Reservado para o Texto Explicativo</strong><br>
-                    <span style="color: #94A3B8; font-size: 0.9rem;">O detalhamento descritivo das etapas do novo fluxo será inserido aqui assim que encaminhado.</span>
+            
+            <!-- BLOCAGEM DE SITUAÇÕES ESTRATÉGICAS -->
+            <div style="background: rgba(0, 153, 229, 0.12); border-left: 4px solid #38BDF8; padding: 14px 18px; border-radius: 8px; margin-bottom: 20px;">
+                <h4 style="margin: 0 0 8px 0; color: #38BDF8 !important; font-size: 1.05rem;">🎯 Somente situações estratégicas seguem para o Consultor Externo:</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;">
+                    <span class="badge" style="background: rgba(30, 41, 59, 0.9); color: #F8FAFC; border: 1px solid rgba(56, 189, 248, 0.3);">Reclamação crítica de cliente</span>
+                    <span class="badge" style="background: rgba(30, 41, 59, 0.9); color: #F8FAFC; border: 1px solid rgba(56, 189, 248, 0.3);">Problema operacional em campo</span>
+                    <span class="badge" style="background: rgba(30, 41, 59, 0.9); color: #F8FAFC; border: 1px solid rgba(56, 189, 248, 0.3);">Necessidade de visita presencial</span>
+                    <span class="badge" style="background: rgba(30, 41, 59, 0.9); color: #F8FAFC; border: 1px solid rgba(56, 189, 248, 0.3);">Auditorias</span>
+                    <span class="badge" style="background: rgba(30, 41, 59, 0.9); color: #F8FAFC; border: 1px solid rgba(56, 189, 248, 0.3);">Implantações</span>
+                    <span class="badge" style="background: rgba(30, 41, 59, 0.9); color: #F8FAFC; border: 1px solid rgba(56, 189, 248, 0.3);">Relacionamento comercial</span>
+                    <span class="badge" style="background: rgba(30, 41, 59, 0.9); color: #F8FAFC; border: 1px solid rgba(56, 189, 248, 0.3);">Crises operacionais</span>
+                </div>
+            </div>
+
+            <!-- DIVISÃO DE RESPONSABILIDADES -->
+            <h4 style="color: #38BDF8 !important; font-size: 1.1rem; margin-top: 15px; margin-bottom: 12px;">⚖️ Divisão das Responsabilidades</h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 20px;">
+                <!-- CONSULTOR INTERNO -->
+                <div style="background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 16px;">
+                    <h5 style="color: #38BDF8 !important; margin-top: 0; margin-bottom: 10px; font-size: 1rem; font-weight: 700;">🖥️ Consultor Interno</h5>
+                    <ul style="margin: 0; padding-left: 18px; color: #CBD5E1; font-size: 0.9rem; line-height: 1.6;">
+                        <li>Receber chamados</li>
+                        <li>Fazer triagem</li>
+                        <li>Cobrar áreas responsáveis</li>
+                        <li>Atualizar área solicitante</li>
+                        <li>Resolver dúvidas administrativas</li>
+                        <li>Acionar planejamento</li>
+                        <li>Acionar tecnologia</li>
+                    </ul>
+                </div>
+                <!-- CONSULTOR EXTERNO -->
+                <div style="background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(0, 153, 229, 0.4); border-radius: 12px; padding: 16px;">
+                    <h5 style="color: #0099E5 !important; margin-top: 0; margin-bottom: 10px; font-size: 1rem; font-weight: 700;">🚗 Consultor Externo</h5>
+                    <ul style="margin: 0; padding-left: 18px; color: #CBD5E1; font-size: 0.9rem; line-height: 1.6;">
+                        <li>Visitas presenciais</li>
+                        <li>Auditorias</li>
+                        <li>Relacionamento com cliente</li>
+                        <li>Implantações</li>
+                        <li>Problemas críticos</li>
+                        <li>Gestão da operação regional</li>
+                        <li>Desenvolvimento de oficinas</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- DEMANDAS E ESCALONAMENTO -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 20px;">
+                <!-- DEMANDAS ABSORVIDAS PELO CONSULTOR INTERNO -->
+                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 12px; padding: 16px;">
+                    <h5 style="color: #10B981 !important; margin-top: 0; margin-bottom: 10px; font-size: 1rem; font-weight: 700;">✅ Demandas Absorvidas pelo Consultor Interno (Resolve Diretamente)</h5>
+                    <ul style="margin: 0; padding-left: 18px; color: #E2E8F0; font-size: 0.9rem; line-height: 1.6;">
+                        <li>Falta de equipamento</li>
+                        <li>Falta de itens na OS</li>
+                        <li>Acionamento do planejamento</li>
+                        <li>Cobrança de inventário</li>
+                        <li>Documentação de integração</li>
+                        <li>Atualização de endereço da OS</li>
+                        <li>Encaixe de agenda</li>
+                        <li>Acionamentos para Back Office (Oficina)</li>
+                        <li>Tecnologia (abertura e acompanhamento de chamados)</li>
+                    </ul>
+                </div>
+                <!-- ESCALA PARA CONSULTOR EXTERNO -->
+                <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 12px; padding: 16px;">
+                    <h5 style="color: #F59E0B !important; margin-top: 0; margin-bottom: 10px; font-size: 1rem; font-weight: 700;">🚨 Escala para Consultor Externo</h5>
+                    <ul style="margin: 0; padding-left: 18px; color: #E2E8F0; font-size: 0.9rem; line-height: 1.6;">
+                        <li>Oficina em conflito com cliente</li>
+                        <li>Reclamação grave</li>
+                        <li>Excesso de visita improdutiva</li>
+                        <li>Vistoria presencial</li>
+                        <li>Avarias</li>
+                        <li>Negociação com cliente (Ex: oficina dedicada)</li>
+                        <li>Situações de risco operacional</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- BENEFÍCIOS OPERACIONAIS -->
+            <h4 style="color: #38BDF8 !important; font-size: 1.1rem; margin-top: 20px; margin-bottom: 12px;">📈 Benefícios Operacionais</h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                <!-- PARA O CONSULTOR EXTERNO -->
+                <div style="background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 12px; padding: 16px;">
+                    <h5 style="color: #38BDF8 !important; margin-top: 0; margin-bottom: 10px; font-size: 0.95rem; font-weight: 700;">👤 Para o Consultor Externo</h5>
+                    <ul style="margin: 0; padding-left: 18px; color: #CBD5E1; font-size: 0.88rem; line-height: 1.6;">
+                        <li>Menor volume de interrupções.</li>
+                        <li>Mais tempo em visitas.</li>
+                        <li>Maior produtividade.</li>
+                        <li>Melhor relacionamento com clientes e oficinas.</li>
+                        <li>Menor tempo gasto com atividades administrativas.</li>
+                    </ul>
+                </div>
+                <!-- PARA A EMPRESA -->
+                <div style="background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 12px; padding: 16px;">
+                    <h5 style="color: #38BDF8 !important; margin-top: 0; margin-bottom: 10px; font-size: 0.95rem; font-weight: 700;">🏢 Para a Empresa</h5>
+                    <ul style="margin: 0; padding-left: 18px; color: #CBD5E1; font-size: 0.88rem; line-height: 1.6;">
+                        <li>Redução do tempo médio de atendimento (TMA).</li>
+                        <li>Processos mais padronizados.</li>
+                        <li>Controle de chamados.</li>
+                        <li>Priorização de CCO, CX e CC (áreas com contato direto ao cliente).</li>
+                        <li>Menor retrabalho.</li>
+                        <li>Melhor utilização dos técnicos para serviços externos.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- GANHO FINANCEIRO E BENEFÍCIOS INDIRETOS -->
+            <div style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 16px; margin-top: 16px;">
+                <p style="margin: 0 0 8px 0; font-weight: 700; color: #38BDF8;">✨ Além do ganho financeiro em potencial, há benefícios indiretos que podem gerar ainda mais valor:</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px;">
+                    <span style="background: rgba(30, 41, 59, 0.9); color: #E2E8F0; padding: 6px 12px; border-radius: 8px; font-size: 0.85rem; border: 1px solid rgba(56, 189, 248, 0.3);">🚗 Menor deslocamento desnecessário</span>
+                    <span style="background: rgba(30, 41, 59, 0.9); color: #E2E8F0; padding: 6px 12px; border-radius: 8px; font-size: 0.85rem; border: 1px solid rgba(56, 189, 248, 0.3);">🏭 Maior cobertura de oficinas pelos consultores externos</span>
+                    <span style="background: rgba(30, 41, 59, 0.9); color: #E2E8F0; padding: 6px 12px; border-radius: 8px; font-size: 0.85rem; border: 1px solid rgba(56, 189, 248, 0.3);">⏱️ Redução de SLA</span>
+                    <span style="background: rgba(30, 41, 59, 0.9); color: #E2E8F0; padding: 6px 12px; border-radius: 8px; font-size: 0.85rem; border: 1px solid rgba(56, 189, 248, 0.3);">⭐ Maior satisfação do cliente</span>
                 </div>
             </div>
         </div>
@@ -1128,7 +1233,7 @@ with aba2:
             **Como é feito hoje?**
             * Ocorrem falhas como: **módulo sem atualização no firmware**, **falha no aplicativo móvel**, **módulo sem atualização** e **erro de integração de OS**.
             * O técnico faz o acionamento diretamente para o consultor.
-            * O consultor precisa acionar o apoio ao técnico (**Edson**) para verificar a situation.
+            * O consultor precisa acionar o apoio ao técnico (**Edson**) para verificar a situação.
             """)
             st.warning("""
             **Impacto:**
