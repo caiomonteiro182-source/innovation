@@ -24,7 +24,7 @@ img_base64 = get_base64_of_bin_file("estradas.jpeg")
 # Converte as logos e foto da equipe para Base64
 logo_ps_b64 = get_base64_of_bin_file("logo.png")
 logo_inno_b64 = get_base64_of_bin_file("logo_innovation2026.png")
-foto_equipe_b64 = get_base64_of_bin_file("equipe_fluxo.jpg") # Atualizado para equipe_fluxo.jpg
+foto_equipe_b64 = get_base64_of_bin_file("equipe_fluxo.jpg")
 
 # 2. Injeção de CSS com Marca d'Água, Dark Mode, Glassmorphism e Tabela Customizada
 st.markdown(f"""
@@ -193,15 +193,15 @@ st.markdown(f"""
         font-weight: 700;
     }}
 
-    /* ÁREA DA FOTO DA EQUIPE */
+    /* ÁREA DA FOTO DA EQUIPE AJUSTADA PARA PROPORÇÃO 960x732 */
     .team-photo-container {{
         width: 100%;
-        max-height: 420px;
+        aspect-ratio: 960 / 732;
         border-radius: 12px;
         overflow: hidden;
         border: 1px solid rgba(56, 189, 248, 0.3);
         box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-        background: rgba(30, 41, 59, 0.4);
+        background: rgba(15, 23, 42, 0.9);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -210,8 +210,7 @@ st.markdown(f"""
     .team-photo {{
         width: 100%;
         height: 100%;
-        max-height: 420px;
-        object-fit: cover;
+        object-fit: contain;
         border-radius: 12px;
     }}
 
@@ -399,10 +398,6 @@ st.markdown(f"""
         button[data-baseweb="tab"] {{
             font-size: 12px !important;
             padding: 4px 6px !important;
-        }}
-
-        .team-photo-container {{
-            max-height: 260px;
         }}
     }}
     </style>
