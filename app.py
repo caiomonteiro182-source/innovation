@@ -24,7 +24,7 @@ img_base64 = get_base64_of_bin_file("estradas.jpeg")
 # Converte as logos e foto da equipe para Base64
 logo_ps_b64 = get_base64_of_bin_file("logo.png")
 logo_inno_b64 = get_base64_of_bin_file("logo_innovation2026.png")
-foto_equipe_b64 = get_base64_of_bin_file("foto_equipe.jpg") # Insira sua foto amanhã com esse nome
+foto_equipe_b64 = get_base64_of_bin_file("equipe_fluxo.jpg") # Atualizado para equipe_fluxo.jpg
 
 # 2. Injeção de CSS com Marca d'Água, Dark Mode, Glassmorphism e Tabela Customizada
 st.markdown(f"""
@@ -674,7 +674,7 @@ with aba1:
     
     st.html(table_html)
 
-    # CARD DA EQUIPE REESTRUTURADO PARA RECEBER A FOTO AMANHÃ
+    # CARD DA EQUIPE REESTRUTURADO PARA RECEBER A FOTO
     src_foto_equipe = f"data:image/jpeg;base64,{foto_equipe_b64}" if foto_equipe_b64 else ""
 
     if src_foto_equipe:
@@ -684,7 +684,7 @@ with aba1:
             <div style="color: #94A3B8; text-align: center; padding: 40px 20px;">
                 <span style="font-size: 2rem;">📷</span><br>
                 <strong style="color: #E2E8F0;">Espaço Reservado para a Foto da Equipe</strong><br>
-                <small style="color: #64748B;">Adicione o arquivo 'foto_equipe.jpg' na pasta do projeto.</small>
+                <small style="color: #64748B;">Adicione o arquivo 'equipe_fluxo.jpg' na pasta do projeto.</small>
             </div>
         '''
 
