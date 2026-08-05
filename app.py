@@ -529,8 +529,8 @@ df = pd.DataFrame(dados_acionamentos)
 
 # Cálculos dinâmicos
 total_situacoes = len(df)
-desvios_funcao = len(df[~df["destino_correto"].str.contains("Consultor")])
-pct_desvio = round((desvios_funcao / total_situacoes) * 100, 1)
+demandas_centralizadas = len(df[~df["destino_correto"].str.contains("Consultor")])
+pct_sobrecarga = round((demandas_centralizadas / total_situacoes) * 100, 1)
 
 # Função para formatar o badge HTML do impacto
 def get_impact_badge(impacto):
@@ -617,20 +617,20 @@ with aba1:
         st.plotly_chart(fig_pizza, use_container_width=True, config={'displayModeBar': False})
         st.html("</div>")
     
-    # BARRA DE PROGRESSO DO GARGALO OPERACIONAL
+    # BARRA DE PROGRESSO DO GARGALO OPERACIONAL (ATUALIZADA)
     st.html(f"""
         <div style="background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(6px); border: 1px solid rgba(0, 153, 229, 0.3); padding: 16px; border-radius: 10px; margin-top: 10px;">
             <div style="color: #94A3B8; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
                 <span>Gargalo da Equipe de Consultores</span>
                 <span style="color: #EF4444; font-weight: bold; background: rgba(239, 68, 68, 0.15); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(239, 68, 68, 0.4);">
-                    {pct_desvio}% Desvio de Função
+                    {pct_sobrecarga}% Sobrecarga Operacional
                 </span>
             </div>
             <div style="width: 100%; background-color: rgba(255,255,255,0.08); border-radius: 6px; height: 12px; overflow: hidden; padding: 2px;">
-                <div style="width: {pct_desvio}%; background: linear-gradient(90deg, #F59E0B 0%, #EF4444 100%); height: 100%; border-radius: 4px; box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);"></div>
+                <div style="width: {pct_sobrecarga}%; background: linear-gradient(90deg, #F59E0B 0%, #EF4444 100%); height: 100%; border-radius: 4px; box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);"></div>
             </div>
             <div style="color: #64748B; font-size: 0.78rem; margin-top: 8px;">
-                *Indica que {desvios_funcao} de {total_situacoes} acionamentos direcionados ao consultor deveriam ser tratados por outros canais/áreas.
+                *Indica que {demandas_centralizadas} de {total_situacoes} acionamentos direcionados ao consultor tratam de rotinas operacionais que poderiam ser reestruturadas ou filtradas por outros canais/áreas.
             </div>
         </div>
     """)
