@@ -115,19 +115,19 @@ st.markdown(f"""
 
     /* CONTAINER FULL GLASSMORPHISM DE CARDS */
     .glass-card-full {{
-        background: rgba(15, 23, 42, 0.75);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(56, 189, 248, 0.35);
-        border-radius: 16px;
-        padding: 18px 20px 8px 20px;
-        box-shadow: 0 12px 32px 0 rgba(0, 0, 0, 0.45);
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(14px);
+        border: 1px solid rgba(56, 189, 248, 0.45);
+        border-radius: 20px;
+        padding: 24px 28px 16px 28px;
+        box-shadow: 0 16px 40px 0 rgba(0, 0, 0, 0.55), inset 0 0 20px rgba(56, 189, 248, 0.1);
         transition: all 0.3s ease-in-out;
-        margin-bottom: 12px;
+        margin-bottom: 16px;
     }}
 
     .glass-card-full:hover {{
-        border-color: rgba(56, 189, 248, 0.8) !important;
-        box-shadow: 0 0 25px rgba(0, 153, 229, 0.4) !important;
+        border-color: rgba(56, 189, 248, 0.85) !important;
+        box-shadow: 0 0 35px rgba(0, 153, 229, 0.5) !important;
         transform: translateY(-2px);
     }}
 
@@ -135,16 +135,17 @@ st.markdown(f"""
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 12px;
+        margin-bottom: 16px;
     }}
 
     .glass-card-title {{
         color: #FFFFFF;
-        font-size: 1.15rem;
-        font-weight: 700;
+        font-size: 1.35rem;
+        font-weight: 800;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
+        letter-spacing: 0.5px;
     }}
 
     /* CARD EXCLUSIVO DA EQUIPE COM DESTAQUE EM FOTO */
@@ -559,36 +560,37 @@ with aba1:
         
         contagem_impacto = df['impacto'].value_counts()
         
+        # Paleta Neon / Gradiente Moderno
         cores_mapa = {
-            'Muito Alto': '#EF4444',
-            'Alto': '#F59E0B',
-            'Médio': '#10B981',
-            'Baixo': '#94A3B8'
+            'Muito Alto': '#FF3B30',
+            'Alto': '#FF9500',
+            'Médio': '#34C759',
+            'Baixo': '#5AC8FA'
         }
         
         labels = contagem_impacto.index.tolist()
         values = contagem_impacto.values.tolist()
         colors = [cores_mapa.get(l, '#0099E5') for l in labels]
         
-        # Efeito visual de destaque nas fatias
-        pull_effect = [0.06 if l in ['Muito Alto', 'Alto'] else 0.02 for l in labels]
+        # Efeito de destaque tridimensional por projeção física de fatias
+        pull_effect = [0.08 if l in ['Muito Alto', 'Alto'] else 0.03 for l in labels]
 
         fig_pizza = go.Figure(data=[go.Pie(
             labels=labels,
             values=values,
-            hole=0.6,
+            hole=0.58,
             pull=pull_effect,
             direction='clockwise',
             sort=False,
             marker=dict(
                 colors=colors, 
-                line=dict(color='#0A141D', width=2)
+                line=dict(color='#38BDF8', width=2.5)  # Borda Neon Cyan para profundidade
             ),
             hovertemplate="<b>Impacto %{label}</b><br>Casos: <b>%{value}</b><br>Proporção: <b>%{percent}</b><extra></extra>",
             textinfo="label+value",
-            texttemplate="<b>%{label}</b><br>%{value}",
+            texttemplate="<b>%{label}</b><br><span style='font-size:16px;'>%{value}</span>",
             textposition="outside",
-            textfont=dict(color='#E2E8F0', size=12, family="sans-serif")
+            textfont=dict(color='#F8FAFC', size=14, family="sans-serif")
         )])
 
         fig_pizza.update_layout(
@@ -596,18 +598,18 @@ with aba1:
             legend=dict(
                 orientation="h",
                 yanchor="bottom",
-                y=-0.2,
+                y=-0.15,
                 xanchor="center",
                 x=0.5,
-                font=dict(color="#CBD5E1", size=11)
+                font=dict(color="#CBD5E1", size=13)
             ),
-            margin=dict(t=15, b=25, l=30, r=30),
-            height=260,
+            margin=dict(t=25, b=35, l=40, r=40),
+            height=420,  # GRÁFICO AMPLIADO
             paper_bgcolor='rgba(0,0,0,0)',
             plot_bgcolor='rgba(0,0,0,0)',
             annotations=[dict(
-                text=f'<span style="font-size:22px;font-weight:800;color:#FFFFFF">{total_situacoes}</span><br><span style="font-size:10px;color:#38BDF8;font-weight:700">TOTAL</span>',
-                x=0.5, y=0.5, font_size=14, showarrow=False
+                text=f'<span style="font-size:36px;font-weight:900;color:#FFFFFF;text-shadow: 0 0 12px rgba(56, 189, 248, 0.6);">{total_situacoes}</span><br><span style="font-size:12px;color:#38BDF8;font-weight:800;letter-spacing:1px;">TOTAL</span>',
+                x=0.5, y=0.5, font_size=16, showarrow=False
             )]
         )
 
