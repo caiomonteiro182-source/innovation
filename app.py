@@ -693,7 +693,7 @@ with aba1:
 with aba2:
     st.subheader("Proposta de Reestruturação do Fluxo")
     
-    st.markdown("""
+    st.html("""
         <div class="glass-card-full">
             <div class="glass-card-header">
                 <div class="glass-card-title">
@@ -701,12 +701,11 @@ with aba2:
                 </div>
             </div>
         </div>
-    """, unsafe_allow_html=True)
+    """)
 
     src_fluxo = f"data:image/jpeg;base64,{fluxo_atualizado_b64}" if fluxo_atualizado_b64 else ""
 
     if src_fluxo:
-        # Renderização via componente IFRAME do Streamlit para suportar interação com Scroll/Drag
         html_zoom_component = f"""
         <!DOCTYPE html>
         <html>
@@ -838,8 +837,8 @@ with aba2:
     else:
         st.warning("Adicione o arquivo 'fluxo_atualizado.jpg' na pasta do projeto.")
 
-    # NOVO CARD DE DETALHAMENTO DO FLUXO COM O TEXTO ENCAMINHADO
-    st.markdown("""
+    # NOVO CARD DE DETALHAMENTO DO FLUXO (RENDERIZADO NATIVAMENTE VIA ST.HTML)
+    st.html("""
         <div class="glass-card-full" style="margin-top: 20px;">
             <div class="glass-card-header">
                 <div class="glass-card-title">
@@ -963,7 +962,7 @@ with aba2:
                 </div>
             </div>
         </div>
-    """, unsafe_allow_html=True)
+    """)
 
     st.markdown("---")
     st.subheader("Detalhamento Ponto a Ponto: Como Resolver")
